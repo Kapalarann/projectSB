@@ -18,7 +18,7 @@ public class HealthBarManager : MonoBehaviour
     {
         GameObject instance = Instantiate(healthBarPrefab, canvasRect);
         healthBars[character] = instance.GetComponent<RectTransform>();
-        instance.GetComponent<Image>().enabled = false;
+        healthBars[character].gameObject.SetActive(false);
     }
 
     public void RemoveHealthBar(Transform character)
@@ -28,8 +28,8 @@ public class HealthBarManager : MonoBehaviour
     }
 
     public void UpdateHealth(Transform character, float currentHealth, float maxHealth)
-    {   
-        healthBars[character].GetComponent<Image>().enabled = true;
+    {
+        healthBars[character].gameObject.SetActive(true);
         healthBars[character].Find("Health Fill").localScale = new Vector3(currentHealth / maxHealth, 1f, 1f);
     }
 
@@ -37,13 +37,14 @@ public class HealthBarManager : MonoBehaviour
     {
         foreach (var pair in healthBars)
         {
+            if (!pair.Key.gameObject.activeInHierarchy) continue;
+
             Transform character = pair.Key;
-            if (!healthBars[character].GetComponent<Image>().enabled) continue;
             RectTransform healthBarRect = pair.Value;
 
             if (character != null)
             {
-                Vector3 screenPosition = Camera.main.WorldToScreenPoint(character.position + Vector3.up * 2f); // Offset height
+                Vector3 screenPosition = Camera.main.WorldToScreenPoint(character.position + Vector3.up * 2f);
 
                 Vector2 localPosition;
                 if (RectTransformUtility.ScreenPointToLocalPointInRectangle(canvasRect, screenPosition, Camera.main, out localPosition))

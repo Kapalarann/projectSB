@@ -21,10 +21,9 @@ public class Duwende_Arrow : MonoBehaviour
     private void OnTriggerEnter(Collider other)
     {
         Health health = other.GetComponent<Health>();
-        if (health != null)
-        {
-            health.TakeDamage(damage);
-        }
+        if (health == null || health.isInvulnerable) return;
+        
+        health.TakeDamage(damage);
         Destroy(gameObject);
     }
 }
