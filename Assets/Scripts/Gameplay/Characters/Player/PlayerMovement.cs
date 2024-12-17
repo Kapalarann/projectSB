@@ -73,6 +73,8 @@ public class PlayerMovement : MonoBehaviour
         _dashDir = movementValue;
         _animator.SetTrigger("onDash");
         _animator.SetFloat("dashSpeed",_dashDuration);
+
+        gameObject.GetComponent<Audio>().PlayDashSound();
     }
     void Update()
     {
@@ -89,6 +91,9 @@ public class PlayerMovement : MonoBehaviour
             _characterController.Move(dash);
             return;
         }
+
+        if (movementValue.magnitude > 0) gameObject.GetComponent<Audio>().PlayWalkSound();
+        else gameObject.GetComponent<Audio>().StopWalkSound();
 
         Vector3 moveH = movementValue * _movementSpeed;
         Vector3 move = new Vector3(moveH.x, verticalVelocity, moveH.z) * Time.deltaTime;

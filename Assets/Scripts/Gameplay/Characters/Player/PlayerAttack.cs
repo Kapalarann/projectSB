@@ -31,6 +31,8 @@ public class PlayerAttack : MonoBehaviour
     }
     public void DealDamage(AnimationEvent animationEvent)
     {
+        gameObject.GetComponent<Audio>().PlaySlashSound();
+
         _attackEffect.Play("Main_Character_Attack1_Effect");
 
         Collider[] hitColliders = Physics.OverlapSphere(_attackPoint.position, _attackRadius, _targetLayer);
@@ -44,7 +46,7 @@ public class PlayerAttack : MonoBehaviour
             Health health = hit.GetComponent<Health>();
             if (health != null)
             {
-                health.TakeDamage(_damage);
+                health.TakeDamage(_damage, transform.position);
             }
         }
     }

@@ -34,8 +34,11 @@ public class Health : MonoBehaviour
         healthBar.AddHealthBar(transform);
         healthBar.UpdateHealth(transform, HP, maxHP);
     }
-    public void TakeDamage(float damage)
+    public void TakeDamage(float damage, Vector3 attackerPos)
     {
+        if(gameObject.GetComponent<Audio>() != null) gameObject.GetComponent<Audio>().PlayHurtSound(); //hurt sfx
+        if (gameObject.GetComponent<BloodEffect>() != null) gameObject.GetComponent<BloodEffect>().PlayEffect(attackerPos); //blood particle fx
+
         ShowDamageNumber(gameObject.transform.position, damage);
         HP -= damage;
         HP = Mathf.Clamp(HP, 0, maxHP);

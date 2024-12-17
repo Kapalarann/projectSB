@@ -23,7 +23,7 @@ public class Duwende_Arrow : MonoBehaviour
         Health health = other.GetComponent<Health>();
         if (health == null || health.isInvulnerable) return;
         
-        health.TakeDamage(damage);
+        health.TakeDamage(damage, transform.position);
         Destroy(gameObject);
     }
 }
