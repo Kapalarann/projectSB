@@ -7,6 +7,7 @@ public class HealthBarManager : MonoBehaviour
 {
     [SerializeField] private RectTransform canvasRect;
     [SerializeField] public GameObject healthBarPrefab;
+    [SerializeField] float yOffset = 2f;
     [SerializeField] float healthBarTime;
 
     private RectTransform healthBarInstance;
@@ -44,7 +45,7 @@ public class HealthBarManager : MonoBehaviour
 
             if (character != null)
             {
-                Vector3 screenPosition = Camera.main.WorldToScreenPoint(character.position + Vector3.up * 2f);
+                Vector3 screenPosition = Camera.main.WorldToScreenPoint(character.position + Vector3.up * yOffset);
 
                 Vector2 localPosition;
                 if (RectTransformUtility.ScreenPointToLocalPointInRectangle(canvasRect, screenPosition, Camera.main, out localPosition))

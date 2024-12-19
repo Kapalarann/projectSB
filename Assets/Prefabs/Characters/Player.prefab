@@ -510,10 +510,12 @@ MonoBehaviour:
   maxHP: 10
   HP: 0
   damageNumberYOffset: 1.5
-  maxSP: 0
+  maxSP: 5
   SP: 0
   stunResMultiplier: 0
   stunResPerPlayer: 0
+  _animator: {fileID: 5235221205479957441}
+  _receiver: {fileID: 6278342242069635708}
 --- !u!114 &7407920682063627386
 MonoBehaviour:
   m_ObjectHideFlags: 0

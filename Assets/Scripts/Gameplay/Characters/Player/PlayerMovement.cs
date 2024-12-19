@@ -30,12 +30,14 @@ public class PlayerMovement : MonoBehaviour
 
     private Camera _camera;
     private CharacterController _characterController;
+    private Health _health;
     float flipScale = 1f, xScaleMult = 1f;
     private void Awake()
     {
         Players.Add(this);
-        _characterController = GetComponent<CharacterController>();
         _camera = Camera.main;
+        _characterController = GetComponent<CharacterController>();
+        _health = gameObject.GetComponent<Health>();
         xScaleMult = _sprite.transform.localScale.x;
 
         _receiver.DashEnd += DashEnd;
@@ -67,7 +69,7 @@ public class PlayerMovement : MonoBehaviour
 
     public void OnDash()
     {
-        if (movementValue.sqrMagnitude == 0) return;
+        if (movementValue.sqrMagnitude == 0 || _animator.GetBool("isStunned")) return;
         isDashing = true;
         this.GetComponent<Health>().isInvulnerable = true;
         _dashDir = movementValue;
@@ -76,10 +78,13 @@ public class PlayerMovement : MonoBehaviour
 
         gameObject.GetComponent<Audio>().PlayDashSound();
     }
+
     void Update()
     {
         if (_characterController.isGrounded && verticalVelocity < 0) verticalVelocity = -2f; // Small downward force to keep grounded
         if (!_characterController.isGrounded) verticalVelocity += gravity * Time.deltaTime;
+
+        if (_animator.GetBool("isStunned")) return;
 
         if (movementValue.x > 0) flipScale = 1;
         else if (movementValue.x < 0) flipScale = -1;

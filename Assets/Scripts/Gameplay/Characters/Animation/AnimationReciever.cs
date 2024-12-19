@@ -9,6 +9,7 @@ public class AnimationReciever : MonoBehaviour
     public event Action<AnimationEvent> AttackFrame;
     public event Action<AnimationEvent> AttackEnd;
     public event Action<AnimationEvent> DashEnd;
+    public event Action<AnimationEvent> StunEnd;
     void OnAttackWarning(AnimationEvent animationEvent)
     {
         AttackWarning?.Invoke(animationEvent);
@@ -22,9 +23,13 @@ public class AnimationReciever : MonoBehaviour
     {
         AttackEnd?.Invoke(animationEvent);
     }
-
     void OnDashEnd(AnimationEvent animationEvent)
     {
         DashEnd?.Invoke(animationEvent);
+    }
+
+    void OnStunEnd(AnimationEvent animationEvent)
+    {
+        StunEnd?.Invoke(animationEvent);
     }
 }

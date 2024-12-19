@@ -17,22 +17,41 @@ public class Health : MonoBehaviour
     [Header("Stamina")]
     [SerializeField] float maxSP;
     [SerializeField] float SP;
+    [SerializeField] float stunDuration = 1f;
     [SerializeField] float stunResMultiplier;
     [SerializeField] float stunResPerPlayer;
 
-    [System.NonSerialized] public bool isInvulnerable = false;
-    private HealthBarManager healthBar;
-    private GlobalDamageNumberPool damageNumberPool;
+    [Header("References")]
+    [SerializeField] Animator _animator;
+    [SerializeField] AnimationReciever _receiver;
 
+    [System.NonSerialized] public bool isInvulnerable = false;
+    private PlayerMovement playerMovement;
+    private HealthBarManager healthBar;
+    private StaminaBarManager staminaBar;
+    private GlobalDamageNumberPool damageNumberPool;
+    [System.NonSerialized] public bool isStunned = false;
     private void Awake()
     {
         HP = maxHP;
+        SP = maxSP;
 
+        playerMovement = gameObject.GetComponent<PlayerMovement>();
         healthBar = FindObjectOfType<HealthBarManager>();
+        staminaBar = FindObjectOfType<StaminaBarManager>();
         damageNumberPool = FindObjectOfType<GlobalDamageNumberPool>();
 
         healthBar.AddHealthBar(transform);
         healthBar.UpdateHealth(transform, HP, maxHP);
+
+        staminaBar.AddStaminaBar(transform);
+        staminaBar.UpdateStamina(transform, SP, maxSP);
+
+        _receiver.StunEnd += StunEnd;
+    }
+    private void OnDestroy()
+    {
+        _receiver.StunEnd -= StunEnd;
     }
     public void TakeDamage(float damage, Vector3 attackerPos)
     {
@@ -43,8 +62,20 @@ public class Health : MonoBehaviour
         HP -= damage;
         HP = Mathf.Clamp(HP, 0, maxHP);
 
+        if (HP <= 0) 
+        { 
+            Die();
+            return;
+        }
         healthBar.UpdateHealth(transform, HP, maxHP);
-        if (HP <= 0) Die();
+
+        if (isStunned) return;
+        SP -= damage;
+        SP = Mathf.Clamp(SP, 0, maxSP);
+
+        if (SP <= 0) Stun();
+
+        staminaBar.UpdateStamina(transform, SP, maxSP);
     }
 
     public void ShowDamageNumber(Vector3 worldPosition, float damage)
@@ -72,9 +103,25 @@ public class Health : MonoBehaviour
         damageNumberPool.ReturnDamageNumber(damageNumber);
     }
 
+    void Stun()
+    {
+        isStunned = true;
+        _animator.SetBool("isStunned", true);
+        _animator.SetFloat("stunDuration", 1/stunDuration);
+    }
+
+    public void StunEnd(AnimationEvent animationEvent)
+    {
+        isStunned = false;
+        _animator.SetBool("isStunned", false);
+        SP = maxSP;
+        staminaBar.UpdateStamina(transform, SP, maxSP);
+    }
+
     void Die()
     {
         healthBar.RemoveHealthBar(transform);
+        staminaBar.RemoveStaminaBar(transform);
         Destroy(gameObject);
     }
 }
