@@ -377,14 +377,6 @@ PrefabInstance:
       propertyPath: m_Name
       value: Duwende
       objectReference: {fileID: 0}
-    - target: {fileID: 7011772920030886419, guid: 9e445741e6bf1e94b900451a7618e865, type: 3}
-      propertyPath: _range
-      value: 7
-      objectReference: {fileID: 0}
-    - target: {fileID: 7011772920030886419, guid: 9e445741e6bf1e94b900451a7618e865, type: 3}
-      propertyPath: _projectileSpeed
-      value: 10
-      objectReference: {fileID: 0}
     - target: {fileID: 8651808735449554962, guid: 9e445741e6bf1e94b900451a7618e865, type: 3}
       propertyPath: m_LocalPosition.x
       value: 1

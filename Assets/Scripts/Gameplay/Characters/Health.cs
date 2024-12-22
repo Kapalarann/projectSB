@@ -11,7 +11,7 @@ public class Health : MonoBehaviour
     [SerializeField] float maxHP;
     [SerializeField] float HP;
 
-    [Header("Damage Number")]
+    [Header("Damage Effects")]
     [SerializeField] float damageNumberYOffset = 1.5f;
 
     [Header("Stamina")]
@@ -24,12 +24,14 @@ public class Health : MonoBehaviour
     [Header("References")]
     [SerializeField] Animator _animator;
     [SerializeField] AnimationReciever _receiver;
+    [SerializeField] SpriteEffects spriteEffects;
 
     [System.NonSerialized] public bool isInvulnerable = false;
     private PlayerMovement playerMovement;
     private HealthBarManager healthBar;
     private StaminaBarManager staminaBar;
     private GlobalDamageNumberPool damageNumberPool;
+    private Audio _audio;
     [System.NonSerialized] public bool isStunned = false;
     private void Awake()
     {
@@ -40,6 +42,7 @@ public class Health : MonoBehaviour
         healthBar = FindObjectOfType<HealthBarManager>();
         staminaBar = FindObjectOfType<StaminaBarManager>();
         damageNumberPool = FindObjectOfType<GlobalDamageNumberPool>();
+        _audio = GetComponent<Audio>();
 
         healthBar.AddHealthBar(transform);
         healthBar.UpdateHealth(transform, HP, maxHP);
@@ -55,7 +58,7 @@ public class Health : MonoBehaviour
     }
     public void TakeDamage(float damage, Vector3 attackerPos)
     {
-        if(gameObject.GetComponent<Audio>() != null) gameObject.GetComponent<Audio>().PlayHurtSound(); //hurt sfx
+        if(_audio != null) _audio.PlayHurtSound(); //hurt sfx
         if (gameObject.GetComponent<BloodEffect>() != null) gameObject.GetComponent<BloodEffect>().PlayEffect(attackerPos); //blood particle fx
 
         ShowDamageNumber(gameObject.transform.position, damage);
@@ -105,6 +108,8 @@ public class Health : MonoBehaviour
 
     void Stun()
     {
+        if (_audio != null) _audio.PlayStunSound(); //stun sfx
+        spriteEffects.FlashWhite(stunDuration / 10);
         isStunned = true;
         _animator.SetBool("isStunned", true);
         _animator.SetFloat("stunDuration", 1/stunDuration);

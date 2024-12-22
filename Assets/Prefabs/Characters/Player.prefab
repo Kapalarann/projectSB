@@ -12,6 +12,7 @@ GameObject:
   - component: {fileID: 3702359772698652030}
   - component: {fileID: 5235221205479957441}
   - component: {fileID: 6278342242069635708}
+  - component: {fileID: 1931622460169953284}
   m_Layer: 0
   m_Name: Sprite
   m_TagString: Untagged
@@ -121,6 +122,19 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d1ddf592271329f46a663d6fa52f7c3d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!114 &1931622460169953284
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 131299571691295107}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 64ea004015d4eb7479bac95a0deb0fef, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  whiteFlashMaterial: {fileID: 2100000, guid: f4de788c8f4ef5349b074be638b420ff, type: 2}
 --- !u!1 &390724651676010711
 GameObject:
   m_ObjectHideFlags: 0
@@ -512,10 +526,12 @@ MonoBehaviour:
   damageNumberYOffset: 1.5
   maxSP: 5
   SP: 0
+  stunDuration: 1
   stunResMultiplier: 0
   stunResPerPlayer: 0
   _animator: {fileID: 5235221205479957441}
   _receiver: {fileID: 6278342242069635708}
+  spriteEffects: {fileID: 1931622460169953284}
 --- !u!114 &7407920682063627386
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -541,6 +557,9 @@ MonoBehaviour:
   hurtSFX:
     clip: {fileID: 8300000, guid: 8b23b175a78d6b5458322e3a6c9905d0, type: 3}
     volume: 1
+  stunSFX:
+    clip: {fileID: 8300000, guid: 1cf2fcc3f695ad647b67208d15185e30, type: 3}
+    volume: 0.5
 --- !u!82 &-6737236675665592195
 AudioSource:
   m_ObjectHideFlags: 0

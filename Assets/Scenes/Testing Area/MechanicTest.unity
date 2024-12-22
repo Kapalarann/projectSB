@@ -1238,11 +1238,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: bbc6ead4617d68f40a5d5ad7817076d3, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _enemyList:
-  - enemyPrefab: {fileID: 1444261942843475992, guid: 9e445741e6bf1e94b900451a7618e865, type: 3}
-    enemyCost: 1
-  _budget: 5
-  _spawnInterval: 1
+  currentWave: {fileID: 11400000, guid: 48a356b6ea709374e8c97324c912a64f, type: 2}
   _spawnPoints:
   - {fileID: 401710099}
   - {fileID: 1247531632}

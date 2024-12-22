@@ -12,6 +12,7 @@ public class Audio : MonoBehaviour
     [SerializeField] private SoundData slashSFX; // Slashing sound effect
     [SerializeField] private SoundData dashSFX;  // Dashing sound effect
     [SerializeField] private SoundData hurtSFX;  // Hurt sound effect
+    [SerializeField] private SoundData stunSFX;  // Hurt sound effect
 
     public void PlayWalkSound()
     {
@@ -42,6 +43,10 @@ public class Audio : MonoBehaviour
     public void PlayHurtSound()
     {
         if (hurtSFX != null) audioSource.PlayOneShot(hurtSFX.clip, hurtSFX.volume);
+    }
+    public void PlayStunSound()
+    {
+        if (hurtSFX != null) audioSource.PlayOneShot(stunSFX.clip, stunSFX.volume);
     }
 
     [System.Serializable]

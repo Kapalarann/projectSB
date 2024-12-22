@@ -12,6 +12,7 @@ GameObject:
   - component: {fileID: 7513136961810950317}
   - component: {fileID: 2555126515458401244}
   - component: {fileID: 9127113412756686386}
+  - component: {fileID: 6818088948608595368}
   m_Layer: 0
   m_Name: Sprite
   m_TagString: Untagged
@@ -120,6 +121,19 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d1ddf592271329f46a663d6fa52f7c3d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!114 &6818088948608595368
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 938578727556647692}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 64ea004015d4eb7479bac95a0deb0fef, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  whiteFlashMaterial: {fileID: 2100000, guid: f4de788c8f4ef5349b074be638b420ff, type: 2}
 --- !u!1 &1444261942843475992
 GameObject:
   m_ObjectHideFlags: 0
@@ -208,6 +222,7 @@ MonoBehaviour:
   stunResPerPlayer: 0
   _animator: {fileID: 2555126515458401244}
   _receiver: {fileID: 9127113412756686386}
+  spriteEffects: {fileID: 6818088948608595368}
 --- !u!114 &7011772920030886419
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -226,7 +241,7 @@ MonoBehaviour:
   _attackCooldown: 5
   _minRange: 3
   _maxRange: 5
-  _projectileSpeed: 5
+  _projectileSpeed: 10
   _attackDamage: 1
   _attackLifeTime: 2
   _animator: {fileID: 2555126515458401244}
@@ -263,7 +278,10 @@ MonoBehaviour:
     volume: 1
   hurtSFX:
     clip: {fileID: 8300000, guid: 2b21ef916f6943c439b71a7c74568878, type: 3}
-    volume: 1
+    volume: 0.65
+  stunSFX:
+    clip: {fileID: 8300000, guid: 1cf2fcc3f695ad647b67208d15185e30, type: 3}
+    volume: 0.5
 --- !u!82 &4665802406327251703
 AudioSource:
   m_ObjectHideFlags: 0
