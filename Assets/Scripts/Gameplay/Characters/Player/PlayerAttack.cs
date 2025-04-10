@@ -1,7 +1,4 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
-using UnityEngine.InputSystem;
 
 public class PlayerAttack : MonoBehaviour
 {
@@ -15,10 +12,13 @@ public class PlayerAttack : MonoBehaviour
     [Header("Attack 1 stats")]
     [SerializeField] float _attackRadius = 1.5f;
     [SerializeField] float _damage = 1f;
+    [SerializeField] float _attackSpeed = 1f;
 
     public void OnAttack()
     {
         _animator.SetTrigger("onAttack");
+        _animator.SetFloat("attackSpeed", _attackSpeed);
+        _attackEffect.SetFloat("attackSpeed", _attackSpeed);
     }
 
     private void Awake()

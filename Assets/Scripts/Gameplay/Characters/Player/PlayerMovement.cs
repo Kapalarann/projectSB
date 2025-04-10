@@ -9,8 +9,7 @@ public class PlayerMovement : MonoBehaviour
 
     [Header("Movement")]
     [SerializeField] float _movementSpeed;
-    [Range(0.0f, 1.0f)]
-    [SerializeField] float _flipDampening;
+    [SerializeField] float _flipDampening = 5f;
     [Range(0.0f, 1.0f)]
     [SerializeField] float _mouseDeadzone;
     Vector3 movementValue;
@@ -88,8 +87,15 @@ public class PlayerMovement : MonoBehaviour
 
         if (movementValue.x > 0) flipScale = 1;
         else if (movementValue.x < 0) flipScale = -1;
-        if (Mathf.Abs(_sprite.transform.localScale.x - (flipScale * xScaleMult)) > 0.01f) _sprite.transform.localScale = new Vector3(Mathf.Lerp(_sprite.transform.localScale.x, flipScale * xScaleMult, _flipDampening), _sprite.transform.localScale.y, _sprite.transform.localScale.z);
-        
+        if (Mathf.Abs(_sprite.transform.localScale.x - (flipScale * xScaleMult)) > 0.01f)
+        {
+            _sprite.transform.localScale = new Vector3(
+            Mathf.Lerp(_sprite.transform.localScale.x, flipScale * xScaleMult, _flipDampening * Time.deltaTime),
+            _sprite.transform.localScale.y,
+            _sprite.transform.localScale.z
+            );
+        }
+
         if (isDashing)
         {
             Vector3 dash = movementValue * _movementSpeed * _dashSpeedMultiplier * Time.deltaTime;

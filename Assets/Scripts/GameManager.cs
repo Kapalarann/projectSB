@@ -20,16 +20,18 @@ public class GameManager : MonoBehaviour
         else Destroy(gameObject);
     }
 
-    public void PauseGame()
+    private void Update()
     {
-        isPaused = true;
-        Time.timeScale = 0f; // Pause physics and animation
+        if (Input.GetKeyDown(KeyCode.Escape))
+        {
+            OnPause();
+        }
     }
 
-    public void ResumeGame()
+    public void OnPause()
     {
-        isPaused = false;
-        Time.timeScale = 1f; // Resume physics and animation
+        isPaused = !isPaused;
+        Time.timeScale = (isPaused) ? 0 : 1;
     }
 
     public void RestartLevel()
