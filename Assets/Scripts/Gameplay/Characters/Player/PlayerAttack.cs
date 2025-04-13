@@ -42,7 +42,12 @@ public class PlayerAttack : MonoBehaviour
             if (hit.gameObject == this.gameObject) continue;
 
             Health health = hit.GetComponent<Health>();
-            if (health != null || !health.isInvulnerable)
+            if (health == null) return;
+            if (health.isInvulnerable)
+            {
+                health.TakeDamage(0f, transform.position);
+            }
+            else
             {
                 health.TakeDamage(_damage, transform.position);
             }

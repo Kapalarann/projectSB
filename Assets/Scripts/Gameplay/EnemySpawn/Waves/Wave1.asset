@@ -15,4 +15,4 @@ MonoBehaviour:
   enemyList:
   - {fileID: 11400000, guid: 7305f05678f941f4daeb2428ad8d133b, type: 2}
   budget: 6
-  spawnInterval: 3
+  spawnInterval: 5

@@ -7,6 +7,8 @@ using UnityEngine.UI;
 
 public class Health : MonoBehaviour
 {
+    [SerializeField] bool isPlayer;
+
     [Header("Health")]
     [SerializeField] float maxHP;
     [SerializeField] float HP;
@@ -27,7 +29,6 @@ public class Health : MonoBehaviour
     [SerializeField] SpriteEffects spriteEffects;
 
     [System.NonSerialized] public bool isInvulnerable = false;
-    private PlayerMovement playerMovement;
     private HealthBarManager healthBar;
     private StaminaBarManager staminaBar;
     private GlobalDamageNumberPool damageNumberPool;
@@ -38,10 +39,9 @@ public class Health : MonoBehaviour
         HP = maxHP;
         SP = maxSP;
 
-        playerMovement = gameObject.GetComponent<PlayerMovement>();
-        healthBar = FindObjectOfType<HealthBarManager>();
-        staminaBar = FindObjectOfType<StaminaBarManager>();
-        damageNumberPool = FindObjectOfType<GlobalDamageNumberPool>();
+        healthBar = FindFirstObjectByType<HealthBarManager>();
+        staminaBar = FindFirstObjectByType<StaminaBarManager>();
+        damageNumberPool = FindFirstObjectByType<GlobalDamageNumberPool>();
         _audio = GetComponent<Audio>();
 
         healthBar.AddHealthBar(transform);
@@ -59,6 +59,11 @@ public class Health : MonoBehaviour
     public void TakeDamage(float damage, Vector3 attackerPos)
     {
         if(_audio != null) _audio.PlayHurtSound(); //hurt sfx
+        if(isPlayer)
+        {
+            HitStop.Instance.DoHitStop(0.2f);
+            ScreenShake.Instance.Shake(0.1f, 0.1f);
+        }
         if (gameObject.GetComponent<BloodEffect>() != null) gameObject.GetComponent<BloodEffect>().PlayEffect(attackerPos); //blood particle fx
 
         ShowDamageNumber(gameObject.transform.position, damage);
@@ -109,6 +114,8 @@ public class Health : MonoBehaviour
     void Stun()
     {
         if (_audio != null) _audio.PlayStunSound(); //stun sfx
+        HitStop.Instance.DoHitStop(0.2f);
+        ScreenShake.Instance.Shake(0.1f, 0.05f);
         spriteEffects.FlashWhite(stunDuration / 10);
         isStunned = true;
         _animator.SetBool("isStunned", true);

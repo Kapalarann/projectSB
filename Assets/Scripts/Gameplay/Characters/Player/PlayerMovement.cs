@@ -17,10 +17,13 @@ public class PlayerMovement : MonoBehaviour
     private float verticalVelocity = 0f;
 
     [Header("Dash")]
-    [SerializeField] float _dashSpeedMultiplier;
-    [SerializeField] float _dashDuration;
+    [SerializeField] private AnimationCurve dashSpeedCurve;
+    [SerializeField] private float _dashDistance = 5f;
+    [SerializeField] private float _dashDuration = 0.3f;
     bool isDashing = false;
-    Vector3 _dashDir;
+    private float dashTimeElapsed;
+    private Vector3 dashStartPosition;
+    private Vector3 _dashDir;
 
     [Header("Reference")]
     [SerializeField] Animator _animator;
@@ -38,8 +41,6 @@ public class PlayerMovement : MonoBehaviour
         _characterController = GetComponent<CharacterController>();
         _health = gameObject.GetComponent<Health>();
         xScaleMult = _sprite.transform.localScale.x;
-
-        _receiver.DashEnd += DashEnd;
     }
 
     public void OnMove(InputValue value)
@@ -69,13 +70,16 @@ public class PlayerMovement : MonoBehaviour
     public void OnDash()
     {
         if (movementValue.sqrMagnitude == 0 || _animator.GetBool("isStunned")) return;
-        isDashing = true;
-        this.GetComponent<Health>().isInvulnerable = true;
-        _dashDir = movementValue;
-        _animator.SetTrigger("onDash");
-        _animator.SetFloat("dashSpeed",_dashDuration);
 
-        gameObject.GetComponent<Audio>().PlayDashSound();
+        isDashing = true;
+        dashTimeElapsed = 0f;
+        _dashDir = movementValue.normalized;
+
+        _health.isInvulnerable = true;
+        _animator.SetTrigger("onDash");
+        _animator.SetFloat("dashSpeed", 1/_dashDuration);
+
+        GetComponent<Audio>().PlayDashSound();
     }
 
     void Update()
@@ -98,8 +102,21 @@ public class PlayerMovement : MonoBehaviour
 
         if (isDashing)
         {
-            Vector3 dash = movementValue * _movementSpeed * _dashSpeedMultiplier * Time.deltaTime;
-            _characterController.Move(dash);
+            dashTimeElapsed += Time.deltaTime;
+            float normalizedTime = dashTimeElapsed / _dashDuration;
+            float dashSpeedFactor = dashSpeedCurve.Evaluate(normalizedTime);
+
+            float frameSpeed = (_dashDistance / _dashDuration) * dashSpeedFactor;
+            Vector3 dashVelocity = _dashDir * frameSpeed * Time.deltaTime;
+
+            _characterController.Move(dashVelocity);
+
+            if (dashTimeElapsed >= _dashDuration)
+            {
+                isDashing = false;
+                _health.isInvulnerable = false;
+            }
+
             return;
         }
 
@@ -116,12 +133,5 @@ public class PlayerMovement : MonoBehaviour
     private void OnDestroy()
     {
         Players.Remove(this);
-        _receiver.DashEnd -= DashEnd;
-    }
-
-    public void DashEnd(AnimationEvent animationEvent)
-    {
-        isDashing = false;
-        this.GetComponent<Health>().isInvulnerable = false;
     }
 }

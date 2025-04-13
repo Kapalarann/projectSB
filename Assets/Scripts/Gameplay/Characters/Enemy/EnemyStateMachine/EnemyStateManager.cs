@@ -69,7 +69,7 @@ public class EnemyStateManager : MonoBehaviour
         if (gameObject.GetComponent<Health>().isStunned) return;
 
         if (_characterController.isGrounded && verticalVelocity < 0) verticalVelocity = -2f; // Small downward force to keep grounded
-        if (!_characterController.isGrounded)
+        if (!_characterController.isGrounded && _characterController != null)
         {
             verticalVelocity += gravity * Time.deltaTime;
             _characterController.Move(new Vector3(0f, verticalVelocity * Time.deltaTime, 0f));

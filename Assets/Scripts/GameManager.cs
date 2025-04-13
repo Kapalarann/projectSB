@@ -9,7 +9,6 @@ public class GameManager : MonoBehaviour
 
     public bool isPaused = false;
 
-
     private void Awake()
     {
         if (Instance == null)
@@ -25,6 +24,11 @@ public class GameManager : MonoBehaviour
         if (Input.GetKeyDown(KeyCode.Escape))
         {
             OnPause();
+        }
+
+        if (Input.GetKeyDown(KeyCode.Return))
+        {
+            RestartLevel();
         }
     }
 
