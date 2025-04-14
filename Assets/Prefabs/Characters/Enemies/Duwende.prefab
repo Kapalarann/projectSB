@@ -272,7 +272,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2dcbe5fd46e509549840f2197ba9cecd, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  audioSource: {fileID: 4665802406327251703}
+  audioOneShot: {fileID: 4665802406327251703}
+  audioLoop: {fileID: 0}
   walkSFX:
     clip: {fileID: 0}
     volume: 1
@@ -300,7 +301,7 @@ AudioSource:
   OutputAudioMixerGroup: {fileID: 0}
   m_audioClip: {fileID: 0}
   m_Resource: {fileID: 0}
-  m_PlayOnAwake: 1
+  m_PlayOnAwake: 0
   m_Volume: 1
   m_Pitch: 1
   Loop: 0

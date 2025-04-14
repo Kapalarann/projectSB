@@ -64,6 +64,8 @@ public class Block : MonoBehaviour
             // TODO: reflect projectile or damage attacker’s poise
 
             ComboCounterUI.instance.IncreaseCombo();
+            GetComponent<Audio>().PlayBlockSound();
+            GetComponent<Audio>().PlayParrySound();
 
             isPerfect = true;
             return true;
@@ -71,6 +73,7 @@ public class Block : MonoBehaviour
         else
         {
             ComboCounterUI.instance.ResetCombo();
+            GetComponent<Audio>().PlayBlockSound();
 
             return true;
         }

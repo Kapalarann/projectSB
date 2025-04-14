@@ -124,7 +124,7 @@ public class PlayerMovement : MonoBehaviour
             return;
         }
 
-        if (movementValue.magnitude > 0) gameObject.GetComponent<Audio>().PlayWalkSound();
+        if (movementValue.magnitude > 0.1) gameObject.GetComponent<Audio>().PlayWalkSound();
         else gameObject.GetComponent<Audio>().StopWalkSound();
 
         Vector3 moveH = movementValue * _movementSpeed;
