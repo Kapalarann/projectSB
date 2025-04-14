@@ -62,11 +62,16 @@ public class Block : MonoBehaviour
         if (timeHeld <= perfectBlockWindow)
         {
             // TODO: reflect projectile or damage attacker’s poise
+
+            ComboCounterUI.instance.IncreaseCombo();
+
             isPerfect = true;
             return true;
         }
         else
         {
+            ComboCounterUI.instance.ResetCombo();
+
             return true;
         }
     }

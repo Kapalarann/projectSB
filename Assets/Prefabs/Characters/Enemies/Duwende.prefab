@@ -53,6 +53,9 @@ SpriteRenderer:
   m_ReflectionProbeUsage: 1
   m_RayTracingMode: 0
   m_RayTraceProcedural: 0
+  m_RayTracingAccelStructBuildFlagsOverride: 0
+  m_RayTracingAccelStructBuildFlags: 1
+  m_SmallMeshCulling: 1
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
@@ -90,7 +93,7 @@ SpriteRenderer:
   m_SpriteSortPoint: 0
 --- !u!95 &2555126515458401244
 Animator:
-  serializedVersion: 5
+  serializedVersion: 7
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
@@ -104,6 +107,7 @@ Animator:
   m_ApplyRootMotion: 0
   m_LinearVelocityBlending: 0
   m_StabilizeFeet: 0
+  m_AnimatePhysics: 0
   m_WarningMessage: 
   m_HasTransformHierarchy: 1
   m_AllowConstantClipSamplingOptimization: 1
@@ -189,7 +193,6 @@ CharacterController:
     serializedVersion: 2
     m_Bits: 0
   m_LayerOverridePriority: 0
-  m_IsTrigger: 0
   m_ProvidesContacts: 0
   m_Enabled: 1
   serializedVersion: 3
@@ -212,6 +215,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f62e9a13ea4b9a140a749036e2a425f3, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  isPlayer: 0
   maxHP: 5
   HP: 0
   damageNumberYOffset: 1.5
@@ -223,6 +227,7 @@ MonoBehaviour:
   _animator: {fileID: 2555126515458401244}
   _receiver: {fileID: 9127113412756686386}
   spriteEffects: {fileID: 6818088948608595368}
+  bloodEffects: {fileID: 0}
 --- !u!114 &7011772920030886419
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -238,16 +243,17 @@ MonoBehaviour:
   _idleDuration: 1
   _movementSpeed: 2
   _flipDampening: 0.2
-  _attackCooldown: 5
-  _minRange: 3
-  _maxRange: 5
-  _projectileSpeed: 10
-  _attackDamage: 1
-  _attackLifeTime: 2
+  rangedAttack:
+    _attackCooldown: 3
+    _minRange: 4
+    _maxRange: 6
+    projectilePrefab: {fileID: 2650703135811824497, guid: d83e33b4db935a5448a6ace16f81aba5, type: 3}
+    attackPoint: {fileID: 3299560034911192707}
+    damage: 1
+    speed: 10
+    lifeTime: 5
   _animator: {fileID: 2555126515458401244}
   _sprite: {fileID: 938578727556647692}
-  _projectile: {fileID: 2650703135811824497, guid: d83e33b4db935a5448a6ace16f81aba5, type: 3}
-  _attackPoint: {fileID: 3299560034911192707}
   _targetLayer:
     serializedVersion: 2
     m_Bits: 1
@@ -293,6 +299,7 @@ AudioSource:
   serializedVersion: 4
   OutputAudioMixerGroup: {fileID: 0}
   m_audioClip: {fileID: 0}
+  m_Resource: {fileID: 0}
   m_PlayOnAwake: 1
   m_Volume: 1
   m_Pitch: 1
@@ -5177,6 +5184,9 @@ ParticleSystemRenderer:
   m_ReflectionProbeUsage: 0
   m_RayTracingMode: 0
   m_RayTraceProcedural: 0
+  m_RayTracingAccelStructBuildFlagsOverride: 0
+  m_RayTracingAccelStructBuildFlags: 1
+  m_SmallMeshCulling: 1
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:

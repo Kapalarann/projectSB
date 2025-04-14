@@ -23,19 +23,12 @@ public class EnemyStateManager : MonoBehaviour
     float gravity = -8.77f;
     private float verticalVelocity = 0f;
 
-    [Header("Attack")]
-    [SerializeField] public float _attackCooldown;
-    [SerializeField] public float _minRange = 5f;
-    [SerializeField] public float _maxRange = 7f;
-    [SerializeField] float _projectileSpeed;
-    [SerializeField] float _attackDamage = 1f;
-    [SerializeField] float _attackLifeTime;
+    [Header("Attacks")]
+    [SerializeField] public RangedAttack rangedAttack;
 
     [Header("References")]
     [SerializeField] public Animator _animator;
     [SerializeField] public GameObject _sprite;
-    [SerializeField] GameObject _projectile;
-    [SerializeField] Transform _attackPoint;
     [SerializeField] LayerMask _targetLayer;
     [SerializeField] AnimationReciever _receiver;
 
@@ -77,7 +70,7 @@ public class EnemyStateManager : MonoBehaviour
 
         currentState.UpdateState(this);
 
-        if (_attackTime < _attackCooldown) _attackTime += Time.deltaTime;
+        if (_attackTime < rangedAttack._attackCooldown) _attackTime += Time.deltaTime;
         if (Mathf.Abs(_sprite.transform.localScale.x - (flipScale * xScaleMult)) > 0.01f) _sprite.transform.localScale = new Vector3(Mathf.Lerp(_sprite.transform.localScale.x, flipScale * xScaleMult, _flipDampening), _sprite.transform.localScale.y, _sprite.transform.localScale.z);
     }
 
@@ -124,15 +117,9 @@ public class EnemyStateManager : MonoBehaviour
     void Shoot(AnimationEvent animationEvent)
     {
         _sprite.GetComponent<SpriteRenderer>().color = Color.white;
-
-        if(_target == null) return;
-        Vector3 direction = (_target.transform.position - transform.position).normalized;
-
-        GameObject projectile = Instantiate(_projectile, _attackPoint.transform.position, Quaternion.LookRotation(direction));
-        projectile.GetComponent<Duwende_Arrow>().speed = _projectileSpeed;
-        projectile.GetComponent<Duwende_Arrow>().lifeTime = _attackLifeTime;
-        projectile.GetComponent<Duwende_Arrow>().damage = _attackDamage;
+        rangedAttack.FireAtTarget(gameObject, _target);
     }
+
     public void FinishAttack(AnimationEvent animationEvent)
     {
         SwitchState(idleState);
