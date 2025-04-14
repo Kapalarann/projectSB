@@ -33,13 +33,15 @@ public class PlayerMovement : MonoBehaviour
     private Camera _camera;
     private CharacterController _characterController;
     private Health _health;
+    private Block _block;
     float flipScale = 1f, xScaleMult = 1f;
     private void Awake()
     {
         Players.Add(this);
         _camera = Camera.main;
         _characterController = GetComponent<CharacterController>();
-        _health = gameObject.GetComponent<Health>();
+        _health = GetComponent<Health>();
+        _block = GetComponent<Block>();
         xScaleMult = _sprite.transform.localScale.x;
     }
 
@@ -74,6 +76,8 @@ public class PlayerMovement : MonoBehaviour
         isDashing = true;
         dashTimeElapsed = 0f;
         _dashDir = movementValue.normalized;
+
+        if(_block != null) _block.CancelBlock();
 
         _health.isInvulnerable = true;
         _animator.SetTrigger("onDash");

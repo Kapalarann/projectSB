@@ -10,29 +10,31 @@ public class Health : MonoBehaviour
     [SerializeField] bool isPlayer;
 
     [Header("Health")]
-    [SerializeField] float maxHP;
-    [SerializeField] float HP;
+    [SerializeField] public float maxHP;
+    [SerializeField] public float HP;
 
     [Header("Damage Effects")]
     [SerializeField] float damageNumberYOffset = 1.5f;
 
     [Header("Stamina")]
-    [SerializeField] float maxSP;
-    [SerializeField] float SP;
-    [SerializeField] float stunDuration = 1f;
-    [SerializeField] float stunResMultiplier;
-    [SerializeField] float stunResPerPlayer;
+    [SerializeField] public float maxSP;
+    [SerializeField] public float SP;
+    [SerializeField] public float stunDuration = 1f;
+    [SerializeField] public float stunResMultiplier;
+    [SerializeField] public float stunResPerPlayer;
 
     [Header("References")]
     [SerializeField] Animator _animator;
     [SerializeField] AnimationReciever _receiver;
     [SerializeField] SpriteEffects spriteEffects;
+    [SerializeField] BloodEffect bloodEffects;
 
     [System.NonSerialized] public bool isInvulnerable = false;
     private HealthBarManager healthBar;
     private StaminaBarManager staminaBar;
     private GlobalDamageNumberPool damageNumberPool;
     private Audio _audio;
+    private Block block;
     [System.NonSerialized] public bool isStunned = false;
     private void Awake()
     {
@@ -43,6 +45,7 @@ public class Health : MonoBehaviour
         staminaBar = FindFirstObjectByType<StaminaBarManager>();
         damageNumberPool = FindFirstObjectByType<GlobalDamageNumberPool>();
         _audio = GetComponent<Audio>();
+        block = GetComponent<Block>();
 
         healthBar.AddHealthBar(transform);
         healthBar.UpdateHealth(transform, HP, maxHP);
@@ -58,32 +61,40 @@ public class Health : MonoBehaviour
     }
     public void TakeDamage(float damage, Vector3 attackerPos)
     {
-        if(_audio != null) _audio.PlayHurtSound(); //hurt sfx
-        if(isPlayer)
+        if (block != null)
         {
-            HitStop.Instance.DoHitStop(0.2f);
-            ScreenShake.Instance.Shake(0.1f, 0.1f);
+            bool isPerfect;
+            float blockVal;
+            if (block.TryBlock(damage, attackerPos, out isPerfect, out blockVal))
+            {
+                float staminaDamage = isPerfect ? 0 : damage * (1 - blockVal);
+                float intensity = isPerfect ? 1f : 0.5f;
+
+                if(isPerfect) spriteEffects.FlashWhite(0.1f);
+
+                HitAndShake(intensity);
+                ApplyStaminaDamage(staminaDamage);
+                return;
+            }
         }
-        if (gameObject.GetComponent<BloodEffect>() != null) gameObject.GetComponent<BloodEffect>().PlayEffect(attackerPos); //blood particle fx
+
+        if (_audio != null) _audio.PlayHurtSound(); //hurt sfx
+
+        if (bloodEffects != null) bloodEffects.PlayEffect(attackerPos); //blood particle fx
 
         ShowDamageNumber(gameObject.transform.position, damage);
         HP -= damage;
         HP = Mathf.Clamp(HP, 0, maxHP);
 
-        if (HP <= 0) 
-        { 
+        if (HP <= 0)
+        {
             Die();
             return;
         }
         healthBar.UpdateHealth(transform, HP, maxHP);
 
-        if (isStunned) return;
-        SP -= damage;
-        SP = Mathf.Clamp(SP, 0, maxSP);
-
-        if (SP <= 0) Stun();
-
-        staminaBar.UpdateStamina(transform, SP, maxSP);
+        HitAndShake(1f);
+        ApplyStaminaDamage(damage);
     }
 
     public void ShowDamageNumber(Vector3 worldPosition, float damage)
@@ -99,7 +110,7 @@ public class Health : MonoBehaviour
             damageNumber.GetComponent<RectTransform>().localPosition = localPosition;
         }
 
-        damageNumber.GetComponent<TextMeshProUGUI>().fontSize = damageNumberPool.fontSize * (damageNumberPool.fontSizeMult * (1 + Mathf.Floor(damage * damageNumberPool.globalDamageDisplayMult / damageNumberPool.fontSizeChangeThreshold) ) );
+        damageNumber.GetComponent<TextMeshProUGUI>().fontSize = damageNumberPool.fontSize * (damageNumberPool.fontSizeMult * (1 + Mathf.Floor(damage * damageNumberPool.globalDamageDisplayMult / damageNumberPool.fontSizeChangeThreshold)));
         damageNumber.GetComponent<DamageNumber>().Initialize((damage * damageNumberPool.globalDamageDisplayMult).ToString(), Color.white);
 
         StartCoroutine(ReturnAfterDuration(damageNumber));
@@ -111,6 +122,27 @@ public class Health : MonoBehaviour
         damageNumberPool.ReturnDamageNumber(damageNumber);
     }
 
+    private void HitAndShake(float intensity)
+    {
+        if (isPlayer)
+        {
+            HitStop.Instance.DoHitStop(0.2f * intensity);
+            ScreenShake.Instance.Shake(0.1f , 0.1f * intensity);
+        }
+    }
+
+    private void ApplyStaminaDamage(float amount)
+    {
+        if (isStunned) return;
+
+        SP -= amount;
+        SP = Mathf.Clamp(SP, 0, maxSP);
+
+        if (SP <= 0) Stun();
+
+        staminaBar.UpdateStamina(transform, SP, maxSP);
+    }
+
     void Stun()
     {
         if (_audio != null) _audio.PlayStunSound(); //stun sfx
@@ -118,6 +150,9 @@ public class Health : MonoBehaviour
         ScreenShake.Instance.Shake(0.1f, 0.05f);
         spriteEffects.FlashWhite(stunDuration / 10);
         isStunned = true;
+
+        if (block != null) block.CancelBlock();
+
         _animator.SetBool("isStunned", true);
         _animator.SetFloat("stunDuration", 1/stunDuration);
     }

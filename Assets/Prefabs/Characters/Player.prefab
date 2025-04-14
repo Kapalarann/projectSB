@@ -318,12 +318,10 @@ GameObject:
   - component: {fileID: 9191328559233657291}
   - component: {fileID: 7611333634711174827}
   - component: {fileID: 4635182161267759673}
+  - component: {fileID: -3640166133368597214}
   - component: {fileID: 8286748519264088613}
   - component: {fileID: 7407920682063627386}
   - component: {fileID: -6737236675665592195}
-  - component: {fileID: -8162158119022705311}
-  - component: {fileID: -253669182054861842}
-  - component: {fileID: 3894326849845629594}
   m_Layer: 0
   m_Name: Player
   m_TagString: Player
@@ -345,6 +343,7 @@ Transform:
   m_ConstrainProportionsScale: 1
   m_Children:
   - {fileID: 1339291674570066071}
+  - {fileID: 6408427565074490826}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!33 &5242095435502948184
@@ -472,7 +471,35 @@ MonoBehaviour:
   m_ControlsChangedEvent:
     m_PersistentCalls:
       m_Calls: []
-  m_ActionEvents: []
+  m_ActionEvents:
+  - m_PersistentCalls:
+      m_Calls: []
+    m_ActionId: 62673756-6475-4271-88f1-c1a67768ae4f
+    m_ActionName: 'Player Movement/Move[/Keyboard/w,/Keyboard/s,/Keyboard/a,/Keyboard/d,/Keyboard/upArrow,/Keyboard/downArrow,/Keyboard/leftArrow,/Keyboard/rightArrow]'
+  - m_PersistentCalls:
+      m_Calls: []
+    m_ActionId: cbfa841d-618a-4ca6-a0ba-cc497c134e97
+    m_ActionName: 'Player Movement/Attack[/Keyboard/j,/Keyboard/c,/Mouse/leftButton]'
+  - m_PersistentCalls:
+      m_Calls: []
+    m_ActionId: 1aaad837-78a3-4f11-b7b2-8f4d954e6df8
+    m_ActionName: 'Player Movement/Block[/Keyboard/leftCtrl,/Mouse/middleButton]'
+  - m_PersistentCalls:
+      m_Calls: []
+    m_ActionId: 5aebaa9c-4c4b-4c61-baf5-be4a67e23393
+    m_ActionName: 'Player Movement/Dash[/Keyboard/leftShift,/Keyboard/z,/Mouse/rightButton]'
+  - m_PersistentCalls:
+      m_Calls: []
+    m_ActionId: 8607c5fa-5e12-4af3-a96a-8714b8ee4ac1
+    m_ActionName: 'Player Movement/Jump[/Keyboard/space,/Keyboard/x]'
+  - m_PersistentCalls:
+      m_Calls: []
+    m_ActionId: d72ac3c6-c2fa-4622-9390-f4fdc3b64e9b
+    m_ActionName: 'Player Movement/Mouse Move[/Mouse/position]'
+  - m_PersistentCalls:
+      m_Calls: []
+    m_ActionId: 01a95df2-dc87-49ac-98c6-cf827093d46b
+    m_ActionName: 'Menus/Pause[/Keyboard/escape]'
   m_NeverAutoSwitchControlSchemes: 0
   m_DefaultControlScheme: 
   m_DefaultActionMap: Player Movement
@@ -562,6 +589,21 @@ MonoBehaviour:
   _animator: {fileID: 5235221205479957441}
   _sprite: {fileID: 131299571691295107}
   _receiver: {fileID: 6278342242069635708}
+--- !u!114 &-3640166133368597214
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 904410703393564044}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 778a69683079c774cb9f73dd33053694, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  perfectBlockWindow: 0.2
+  blockValue: 0.5
+  animator: {fileID: 5235221205479957441}
 --- !u!114 &8286748519264088613
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -586,6 +628,7 @@ MonoBehaviour:
   _animator: {fileID: 5235221205479957441}
   _receiver: {fileID: 6278342242069635708}
   spriteEffects: {fileID: 1931622460169953284}
+  bloodEffects: {fileID: 2057496772416942116}
 --- !u!114 &7407920682063627386
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -711,13 +754,47 @@ AudioSource:
     m_PreInfinity: 2
     m_PostInfinity: 2
     m_RotationOrder: 4
---- !u!198 &-8162158119022705311
+--- !u!1 &1130435097684123464
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 6408427565074490826}
+  - component: {fileID: 6389902578946485926}
+  - component: {fileID: 2057496772416942116}
+  - component: {fileID: 4140976172104720760}
+  m_Layer: 0
+  m_Name: Blood VFX
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &6408427565074490826
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1130435097684123464}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 707687946856377298}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!198 &6389902578946485926
 ParticleSystem:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 904410703393564044}
+  m_GameObject: {fileID: 1130435097684123464}
   serializedVersion: 8
   lengthInSec: 1
   simulationSpeed: 1
@@ -5492,14 +5569,26 @@ ParticleSystem:
         m_PostInfinity: 2
         m_RotationOrder: 4
     vectorLabel1_3: W
---- !u!199 &-253669182054861842
+--- !u!114 &2057496772416942116
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1130435097684123464}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 7d7ebe3ab5a41004fa5bb734fbb868ee, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!199 &4140976172104720760
 ParticleSystemRenderer:
   serializedVersion: 6
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 904410703393564044}
+  m_GameObject: {fileID: 1130435097684123464}
   m_Enabled: 1
   m_CastShadows: 0
   m_ReceiveShadows: 0
@@ -5569,15 +5658,3 @@ ParticleSystemRenderer:
   m_MeshWeighting2: 1
   m_MeshWeighting3: 1
   m_MaskInteraction: 0
---- !u!114 &3894326849845629594
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 904410703393564044}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 7d7ebe3ab5a41004fa5bb734fbb868ee, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
