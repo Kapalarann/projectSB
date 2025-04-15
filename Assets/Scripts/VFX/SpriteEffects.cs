@@ -1,17 +1,15 @@
 using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
 public class SpriteEffects : MonoBehaviour
 {
+    [SerializeField] Color flashColor = Color.white;
+
     private SpriteRenderer spriteRenderer;
-    private Material originalMaterial;
-    [SerializeField] private Material whiteFlashMaterial;
 
     void Awake()
     {
         spriteRenderer = GetComponent<SpriteRenderer>();
-        originalMaterial = spriteRenderer.material;
     }
 
     public void FlashWhite(float flashDuration)
@@ -21,10 +19,19 @@ public class SpriteEffects : MonoBehaviour
 
     private IEnumerator FlashRoutine(float flashDuration)
     {
-        spriteRenderer.material = whiteFlashMaterial;
+        spriteRenderer.material.SetColor("_FlashColor", flashColor);
 
-        yield return new WaitForSeconds(flashDuration);
+        float elapsedTime = 0f;
 
-        spriteRenderer.material = originalMaterial;
+        while (elapsedTime < flashDuration)
+        {
+            elapsedTime += Time.deltaTime;
+
+            spriteRenderer.material.SetFloat("_FlashAmount", 
+                Mathf.Lerp(1f, 0f, (elapsedTime / flashDuration))
+                );
+
+            yield return null;
+        }
     }
 }

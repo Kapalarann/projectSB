@@ -80,7 +80,10 @@ public class Health : MonoBehaviour
 
         if (_audio != null) _audio.PlayHurtSound(); //hurt sfx
 
+        if(spriteEffects != null) spriteEffects.FlashWhite(0.1f);
         if (bloodEffects != null) bloodEffects.PlayEffect(attackerPos); //blood particle fx
+        if (isPlayer) HitAndShake(1f);
+        else HitAndShake(0.5f);
 
         ShowDamageNumber(gameObject.transform.position, damage);
         HP -= damage;
@@ -93,7 +96,6 @@ public class Health : MonoBehaviour
         }
         healthBar.UpdateHealth(transform, HP, maxHP);
 
-        HitAndShake(1f);
         ApplyStaminaDamage(damage);
     }
 
@@ -124,11 +126,8 @@ public class Health : MonoBehaviour
 
     private void HitAndShake(float intensity)
     {
-        if (isPlayer)
-        {
-            HitStop.Instance.DoHitStop(0.2f * intensity);
-            ScreenShake.Instance.Shake(0.1f , 0.1f * intensity);
-        }
+        HitStop.Instance.DoHitStop(0.2f * intensity);
+        ScreenShake.Instance.Shake(0.1f , 0.1f * intensity);
     }
 
     private void ApplyStaminaDamage(float amount)

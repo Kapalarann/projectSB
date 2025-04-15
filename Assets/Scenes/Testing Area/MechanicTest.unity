@@ -311,7 +311,7 @@ MeshRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 10303, guid: 0000000000000000f000000000000000, type: 0}
+  - {fileID: 2100000, guid: 31321ba15b8f8eb4c954353edc038b1d, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -472,7 +472,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: bc8eec69c3a536e4e98ed5ce9caf27b8, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  canvasRect: {fileID: 651611579}
   healthBarPrefab: {fileID: 7226670179021942879, guid: 1c30cfd311c322a4fba837bed87e725b, type: 3}
   yOffset: 2
   healthBarTime: 0
@@ -506,7 +505,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: acd5fad7ede56bf44b0b63bc64c0cfb7, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  canvasRect: {fileID: 651611579}
   staminaBarPrefab: {fileID: 6261654558830306833, guid: 42238332e91a2524880ab4b8bc7ff61d, type: 3}
   yOffset: 1.8
   staminaBarTime: 0
@@ -684,7 +682,7 @@ MeshRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 10303, guid: 0000000000000000f000000000000000, type: 0}
+  - {fileID: 2100000, guid: 31321ba15b8f8eb4c954353edc038b1d, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
