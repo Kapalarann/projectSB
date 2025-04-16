@@ -1,9 +1,7 @@
 using System.Collections;
-using System.Collections.Generic;
 using TMPro;
-using Unity.VisualScripting;
+using UnityEditor.ShaderGraph.Internal;
 using UnityEngine;
-using UnityEngine.UI;
 
 public class Health : MonoBehaviour
 {
@@ -33,6 +31,7 @@ public class Health : MonoBehaviour
     private HealthBarManager healthBar;
     private StaminaBarManager staminaBar;
     private GlobalDamageNumberPool damageNumberPool;
+    private Knockback knockback;
     private Audio _audio;
     private Block block;
     [System.NonSerialized] public bool isStunned = false;
@@ -44,6 +43,7 @@ public class Health : MonoBehaviour
         healthBar = FindFirstObjectByType<HealthBarManager>();
         staminaBar = FindFirstObjectByType<StaminaBarManager>();
         damageNumberPool = FindFirstObjectByType<GlobalDamageNumberPool>();
+        knockback = GetComponent<Knockback>();
         _audio = GetComponent<Audio>();
         block = GetComponent<Block>();
 
@@ -72,6 +72,7 @@ public class Health : MonoBehaviour
 
                 if(isPerfect) spriteEffects.FlashWhite(0.1f);
 
+                if(knockback != null) knockback.ApplyKnockback(attackerPos, damage * 5f);
                 HitAndShake(intensity);
                 ApplyStaminaDamage(staminaDamage);
                 return;
@@ -83,7 +84,6 @@ public class Health : MonoBehaviour
         if(spriteEffects != null) spriteEffects.FlashWhite(0.1f);
         if (bloodEffects != null) bloodEffects.PlayEffect(attackerPos); //blood particle fx
         if (isPlayer) HitAndShake(1f);
-        else HitAndShake(0.5f);
 
         ShowDamageNumber(gameObject.transform.position, damage);
         HP -= damage;
@@ -96,6 +96,11 @@ public class Health : MonoBehaviour
         }
         healthBar.UpdateHealth(transform, HP, maxHP);
 
+        if (knockback != null) 
+        {
+            float angle = isStunned ? 45f : 0f;
+            knockback.ApplyKnockback(attackerPos, damage * 5f, angle); 
+        }
         ApplyStaminaDamage(damage);
     }
 

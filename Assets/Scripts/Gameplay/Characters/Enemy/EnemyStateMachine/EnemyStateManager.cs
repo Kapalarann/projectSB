@@ -1,8 +1,5 @@
-using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using UnityEngine.InputSystem;
-using static UnityEngine.GraphicsBuffer;
 
 public class EnemyStateManager : MonoBehaviour
 {
@@ -17,11 +14,9 @@ public class EnemyStateManager : MonoBehaviour
     [SerializeField] public float _idleDuration;
 
     [Header("Movement")]
-    [SerializeField] float _movementSpeed;
+    [SerializeField] float _movementSpeed = 3f;
     [Range(0.0f, 1.0f)]
-    [SerializeField] float _flipDampening;
-    float gravity = -8.77f;
-    private float verticalVelocity = 0f;
+    [SerializeField] float _flipDampening = 0.2f;
 
     [Header("Attacks")]
     [SerializeField] public RangedAttack rangedAttack;
@@ -34,12 +29,19 @@ public class EnemyStateManager : MonoBehaviour
 
     [HideInInspector] public float _attackTime = 0f;
     [HideInInspector] public GameObject _target;
-    private CharacterController _characterController;
+
+    Rigidbody _rigidbody;
+    Vector3 _desiredMove = Vector3.zero;
+
     float flipScale = 1f, xScaleMult = 1f;
-    private void Start()
+
+    void Start()
     {
         Enemies.Add(this);
-        _characterController = GetComponent<CharacterController>();
+        _rigidbody = GetComponent<Rigidbody>();
+        _rigidbody.constraints = RigidbodyConstraints.FreezeRotation;
+        _rigidbody.useGravity = true;
+
         xScaleMult = _sprite.transform.localScale.x;
 
         currentState = idleState;
@@ -50,28 +52,48 @@ public class EnemyStateManager : MonoBehaviour
         _receiver.AttackEnd += FinishAttack;
     }
 
-    private void OnDestroy()
+    void OnDestroy()
     {
         _receiver.AttackWarning -= Warning;
         _receiver.AttackFrame -= Shoot;
         _receiver.AttackEnd -= FinishAttack;
     }
 
-    private void Update()
+    void FixedUpdate()
     {
-        if (gameObject.GetComponent<Health>().isStunned) return;
-
-        if (_characterController.isGrounded && verticalVelocity < 0) verticalVelocity = -2f; // Small downward force to keep grounded
-        if (!_characterController.isGrounded && _characterController != null)
+        if (GetComponent<Health>().isStunned)
         {
-            verticalVelocity += gravity * Time.deltaTime;
-            _characterController.Move(new Vector3(0f, verticalVelocity * Time.deltaTime, 0f));
+            Vector3 currentVel = _rigidbody.linearVelocity;
+            _rigidbody.linearVelocity = new Vector3(0f, currentVel.y, 0f);
+            return;
         }
 
+        _desiredMove = Vector3.zero;
+
+        // Update state logic
         currentState.UpdateState(this);
 
-        if (_attackTime < rangedAttack._attackCooldown) _attackTime += Time.deltaTime;
-        if (Mathf.Abs(_sprite.transform.localScale.x - (flipScale * xScaleMult)) > 0.01f) _sprite.transform.localScale = new Vector3(Mathf.Lerp(_sprite.transform.localScale.x, flipScale * xScaleMult, _flipDampening), _sprite.transform.localScale.y, _sprite.transform.localScale.z);
+        // Attack cooldown
+        if (_attackTime < rangedAttack._attackCooldown)
+            _attackTime += Time.fixedDeltaTime;
+
+        // Smooth sprite flip
+        if (Mathf.Abs(_sprite.transform.localScale.x - (flipScale * xScaleMult)) > 0.01f)
+        {
+            _sprite.transform.localScale = new Vector3(
+                Mathf.Lerp(_sprite.transform.localScale.x, flipScale * xScaleMult, _flipDampening),
+                _sprite.transform.localScale.y,
+                _sprite.transform.localScale.z
+            );
+        }
+
+        // Apply horizontal movement with preserved vertical velocity
+        Vector3 currentVelocity = _rigidbody.linearVelocity;
+        Vector3 horizontalVelocity = new Vector3(_desiredMove.x, currentVelocity.y, _desiredMove.z);
+        _rigidbody.linearVelocity = horizontalVelocity;
+
+        float moveSpeed = new Vector3(_desiredMove.x, 0, _desiredMove.z).magnitude;
+        _animator.SetFloat("moveSpeed", moveSpeed);
     }
 
     public void SwitchState(EnemyBaseState state)
@@ -99,14 +121,10 @@ public class EnemyStateManager : MonoBehaviour
 
     public void Move(Vector3 movementValue)
     {
+        _desiredMove = movementValue.normalized * _movementSpeed;
+
         if (movementValue.x > 0) flipScale = 1;
         else if (movementValue.x < 0) flipScale = -1;
-
-        Vector3 move = movementValue * _movementSpeed * Time.deltaTime;
-        _characterController.Move(move);
-
-        float speed = new Vector3(movementValue.x, 0, movementValue.z).magnitude;
-        _animator.SetFloat("moveSpeed", speed);
     }
 
     void Warning(AnimationEvent animationEvent)

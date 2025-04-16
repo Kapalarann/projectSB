@@ -137,7 +137,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 64ea004015d4eb7479bac95a0deb0fef, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  whiteFlashMaterial: {fileID: 2100000, guid: f4de788c8f4ef5349b074be638b420ff, type: 2}
+  flashColor: {r: 1, g: 1, b: 1, a: 1}
 --- !u!1 &1444261942843475992
 GameObject:
   m_ObjectHideFlags: 0
@@ -147,8 +147,10 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 8651808735449554962}
-  - component: {fileID: 7616853065048536935}
+  - component: {fileID: 8992742543726629600}
+  - component: {fileID: 4897815444704815033}
   - component: {fileID: 3730046500933007581}
+  - component: {fileID: 6212326632674846487}
   - component: {fileID: 7011772920030886419}
   - component: {fileID: -3206045343194929498}
   - component: {fileID: 4665802406327251703}
@@ -178,8 +180,8 @@ Transform:
   - {fileID: 6200081353836888468}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!143 &7616853065048536935
-CharacterController:
+--- !u!136 &8992742543726629600
+CapsuleCollider:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
@@ -193,16 +195,41 @@ CharacterController:
     serializedVersion: 2
     m_Bits: 0
   m_LayerOverridePriority: 0
+  m_IsTrigger: 0
   m_ProvidesContacts: 0
   m_Enabled: 1
-  serializedVersion: 3
-  m_Height: 1
+  serializedVersion: 2
   m_Radius: 0.3
-  m_SlopeLimit: 45
-  m_StepOffset: 0.3
-  m_SkinWidth: 0.08
-  m_MinMoveDistance: 0.001
+  m_Height: 1
+  m_Direction: 1
   m_Center: {x: 0, y: 0.5, z: 0}
+--- !u!54 &4897815444704815033
+Rigidbody:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1444261942843475992}
+  serializedVersion: 4
+  m_Mass: 1
+  m_Drag: 0
+  m_AngularDrag: 0.05
+  m_CenterOfMass: {x: 0, y: 0, z: 0}
+  m_InertiaTensor: {x: 1, y: 1, z: 1}
+  m_InertiaRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ImplicitCom: 1
+  m_ImplicitTensor: 1
+  m_UseGravity: 1
+  m_IsKinematic: 0
+  m_Interpolate: 0
+  m_Constraints: 112
+  m_CollisionDetection: 0
 --- !u!114 &3730046500933007581
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -216,7 +243,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   isPlayer: 0
-  maxHP: 5
+  maxHP: 7
   HP: 0
   damageNumberYOffset: 1.5
   maxSP: 3
@@ -228,6 +255,19 @@ MonoBehaviour:
   _receiver: {fileID: 9127113412756686386}
   spriteEffects: {fileID: 6818088948608595368}
   bloodEffects: {fileID: 0}
+--- !u!114 &6212326632674846487
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1444261942843475992}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 00cd8868fda195c429cea89726077167, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  knockbackResistance: 0
 --- !u!114 &7011772920030886419
 MonoBehaviour:
   m_ObjectHideFlags: 0

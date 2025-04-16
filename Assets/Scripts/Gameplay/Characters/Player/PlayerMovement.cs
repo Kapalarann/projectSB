@@ -1,4 +1,3 @@
-using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.InputSystem;
@@ -13,8 +12,6 @@ public class PlayerMovement : MonoBehaviour
     [Range(0.0f, 1.0f)]
     [SerializeField] float _mouseDeadzone;
     Vector3 movementValue;
-    float gravity = -8.77f;
-    private float verticalVelocity = 0f;
 
     [Header("Dash")]
     [SerializeField] private AnimationCurve dashSpeedCurve;
@@ -22,7 +19,6 @@ public class PlayerMovement : MonoBehaviour
     [SerializeField] private float _dashDuration = 0.3f;
     bool isDashing = false;
     private float dashTimeElapsed;
-    private Vector3 dashStartPosition;
     private Vector3 _dashDir;
 
     [Header("Reference")]
@@ -31,7 +27,7 @@ public class PlayerMovement : MonoBehaviour
     [SerializeField] AnimationReciever _receiver;
 
     private Camera _camera;
-    private CharacterController _characterController;
+    private Rigidbody _rb;
     private Health _health;
     private Block _block;
     float flipScale = 1f, xScaleMult = 1f;
@@ -39,9 +35,11 @@ public class PlayerMovement : MonoBehaviour
     {
         Players.Add(this);
         _camera = Camera.main;
-        _characterController = GetComponent<CharacterController>();
+        _rb = GetComponent<Rigidbody>();
         _health = GetComponent<Health>();
         _block = GetComponent<Block>();
+
+        _rb.freezeRotation = true;
         xScaleMult = _sprite.transform.localScale.x;
     }
 
@@ -86,54 +84,67 @@ public class PlayerMovement : MonoBehaviour
         GetComponent<Audio>().PlayDashSound();
     }
 
-    void Update()
+    void FixedUpdate()
     {
-        if (_characterController.isGrounded && verticalVelocity < 0) verticalVelocity = -2f; // Small downward force to keep grounded
-        if (!_characterController.isGrounded) verticalVelocity += gravity * Time.deltaTime;
-
         if (_animator.GetBool("isStunned")) return;
 
-        if (movementValue.x > 0) flipScale = 1;
-        else if (movementValue.x < 0) flipScale = -1;
-        if (Mathf.Abs(_sprite.transform.localScale.x - (flipScale * xScaleMult)) > 0.01f)
-        {
-            _sprite.transform.localScale = new Vector3(
-            Mathf.Lerp(_sprite.transform.localScale.x, flipScale * xScaleMult, _flipDampening * Time.deltaTime),
-            _sprite.transform.localScale.y,
-            _sprite.transform.localScale.z
-            );
-        }
+        HandleFlipping();
 
         if (isDashing)
         {
-            dashTimeElapsed += Time.deltaTime;
-            float normalizedTime = dashTimeElapsed / _dashDuration;
-            float dashSpeedFactor = dashSpeedCurve.Evaluate(normalizedTime);
-
-            float frameSpeed = (_dashDistance / _dashDuration) * dashSpeedFactor;
-            Vector3 dashVelocity = _dashDir * frameSpeed * Time.deltaTime;
-
-            _characterController.Move(dashVelocity);
-
-            if (dashTimeElapsed >= _dashDuration)
-            {
-                isDashing = false;
-                _health.isInvulnerable = false;
-            }
-
+            Dash();
             return;
         }
 
-        if (movementValue.magnitude > 0.1) gameObject.GetComponent<Audio>().PlayWalkSound();
-        else gameObject.GetComponent<Audio>().StopWalkSound();
-
-        Vector3 moveH = movementValue * _movementSpeed;
-        Vector3 move = new Vector3(moveH.x, verticalVelocity, moveH.z) * Time.deltaTime;
-        _characterController.Move(move);
-
-        float speed = new Vector3(movementValue.x, 0, movementValue.z).magnitude;
-        _animator.SetFloat("moveSpeed", speed);
+        HandleMovement();
     }
+
+    private void HandleFlipping()
+    {
+        if (movementValue.x > 0) flipScale = 1;
+        else if (movementValue.x < 0) flipScale = -1;
+
+        float currentXScale = _sprite.transform.localScale.x;
+        float targetXScale = flipScale * xScaleMult;
+
+        if (Mathf.Abs(currentXScale - targetXScale) > 0.01f)
+        {
+            float smoothedScale = Mathf.Lerp(currentXScale, targetXScale, _flipDampening * Time.fixedDeltaTime);
+            _sprite.transform.localScale = new Vector3(smoothedScale, _sprite.transform.localScale.y, _sprite.transform.localScale.z);
+        }
+    }
+
+    private void Dash()
+    {
+        dashTimeElapsed += Time.fixedDeltaTime;
+        float normalizedTime = dashTimeElapsed / _dashDuration;
+        float dashSpeedFactor = dashSpeedCurve.Evaluate(normalizedTime);
+        float frameSpeed = (_dashDistance / _dashDuration) * dashSpeedFactor;
+
+        Vector3 dashVelocity = _dashDir * frameSpeed;
+        _rb.linearVelocity = new Vector3(dashVelocity.x, _rb.linearVelocity.y, dashVelocity.z);
+
+        if (dashTimeElapsed >= _dashDuration)
+        {
+            isDashing = false;
+            _health.isInvulnerable = false;
+        }
+    }
+
+    private void HandleMovement()
+    {
+        Vector3 velocity = movementValue.normalized * _movementSpeed;
+        _rb.linearVelocity = new Vector3(velocity.x, _rb.linearVelocity.y, velocity.z);
+
+        float speed = new Vector2(movementValue.x, movementValue.z).magnitude;
+        _animator.SetFloat("moveSpeed", speed);
+
+        if (speed > 0.1f)
+            GetComponent<Audio>().PlayWalkSound();
+        else
+            GetComponent<Audio>().StopWalkSound();
+    }
+
     private void OnDestroy()
     {
         Players.Remove(this);

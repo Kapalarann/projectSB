@@ -26,6 +26,8 @@ public class Projectile : MonoBehaviour
 
     protected virtual void OnTriggerEnter(Collider other)
     {
+        if (other.gameObject == attacker) return;
+
         Health health = other.GetComponent<Health>();
         if (health == null || health.isInvulnerable) return;
 
