@@ -1,26 +1,32 @@
 using UnityEngine;
-
 public class EnemyApproachState : EnemyBaseState
 {
     public override void EnterState(EnemyStateManager enemy)
     {
-        if(!enemy.SearchTarget()) enemy.SwitchState(enemy.idleState);
+        if (!enemy.SearchTarget()) enemy.SwitchState(enemy.idleState);
     }
 
     public override void UpdateState(EnemyStateManager enemy)
     {
-        if(enemy._target == null) enemy.SwitchState(enemy.idleState);
-        float d = Vector3.Distance(enemy.transform.position, enemy._target.transform.position);
-
-        if (d <= enemy.rangedAttack._maxRange && d>= enemy.rangedAttack._minRange && enemy._attackTime >= enemy.rangedAttack._attackCooldown) { 
-            enemy.SwitchState(enemy.attackState);
+        if (enemy._target == null)
+        {
+            enemy.SwitchState(enemy.idleState);
+            return;
         }
 
-        Vector3 targetPosition = enemy._target.transform.position; //target's position
-        Vector3 targetLocation = targetPosition - (targetPosition - enemy.transform.position).normalized * enemy.rangedAttack._minRange; //target location to go
-        targetLocation.y = enemy.transform.position.y;
-        Vector3 directionToTarget = targetLocation - enemy.transform.position;
+        float d = Vector3.Distance(enemy.transform.position, enemy._target.transform.position);
 
-        enemy.Move(directionToTarget.normalized);
+        // Attempt attack if in range and cooldown is ready
+        if (d <= enemy.rangedAttack._maxRange &&
+            d >= enemy.rangedAttack._minRange &&
+            enemy._attackTime >= enemy.rangedAttack._attackCooldown)
+        {
+            enemy.SwitchState(enemy.attackState);
+            return;
+        }
+
+        // Always apply movement, even if in range and attack is cooling down
+        Vector3 boidDirection = enemy.GetBoidDirection();
+        enemy.Move(boidDirection);
     }
 }

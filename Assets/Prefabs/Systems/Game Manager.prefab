@@ -10,8 +10,8 @@ GameObject:
   m_Component:
   - component: {fileID: 5172200011998665279}
   - component: {fileID: 159616703979095759}
-  - component: {fileID: 1268546709676497644}
   - component: {fileID: 5898570117524084815}
+  - component: {fileID: 6412429449541070381}
   m_Layer: 0
   m_Name: Game Manager
   m_TagString: Untagged
@@ -47,24 +47,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   isPaused: 0
---- !u!114 &1268546709676497644
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 5910627953396736315}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: bbc6ead4617d68f40a5d5ad7817076d3, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  currentWave: {fileID: 11400000, guid: 48a356b6ea709374e8c97324c912a64f, type: 2}
-  _spawnPoints:
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
 --- !u!114 &5898570117524084815
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -77,3 +59,17 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 93dd130cb77cb5a47ac52d14c22a03f9, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!114 &6412429449541070381
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5910627953396736315}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b53841b8aaf595f4d9f1d602e1f19c83, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  knockbackStrengthMod: 1
+  knockbackAngle: 85

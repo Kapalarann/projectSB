@@ -18,10 +18,12 @@ public class Knockback : MonoBehaviour
         flatDirection.y = 0;
         flatDirection.Normalize();
 
-        // Convert angle from degrees to radians and calculate vertical component
         float angleRadians = angleDegrees * Mathf.Deg2Rad;
-        Vector3 knockbackDirection = Quaternion.AngleAxis(angleDegrees, Vector3.Cross(flatDirection, Vector3.up)) * flatDirection;
+        Vector3 knockbackDirection = flatDirection * Mathf.Cos(angleRadians) + Vector3.up * Mathf.Sin(angleRadians);
 
-        _rb.AddForce(knockbackDirection * knockbackForce * ( 1 - knockbackResistance ), ForceMode.Impulse);
+        Vector3 vel = _rb.linearVelocity;
+        vel.y = 0f;
+        _rb.linearVelocity = vel;
+        _rb.AddForce(knockbackDirection * knockbackForce * GlobalValues.instance.knockbackStrengthMod * ( 1 - knockbackResistance ), ForceMode.Impulse);
     }
 }

@@ -47,7 +47,7 @@ MonoBehaviour:
   m_NotificationBehavior: 0
   m_MaxPlayerCount: 4
   m_AllowJoining: 1
-  m_JoinBehavior: 0
+  m_JoinBehavior: 1
   m_PlayerJoinedEvent:
     m_PersistentCalls:
       m_Calls: []
@@ -65,7 +65,7 @@ MonoBehaviour:
       m_Interactions: 
       m_SingletonActionBindings: []
       m_Flags: 0
-    m_Reference: {fileID: 1532520516315489108, guid: d86a2db56727b72419b699124727c261, type: 3}
+    m_Reference: {fileID: -8144482945424728432, guid: d86a2db56727b72419b699124727c261, type: 3}
   m_PlayerPrefab: {fileID: 904410703393564044, guid: 84d5865d90890934ba49402701280a87, type: 3}
   m_SplitScreen: 0
   m_MaintainAspectRatioInSplitScreen: 0

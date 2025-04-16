@@ -30,14 +30,21 @@ public class PlayerMovement : MonoBehaviour
     private Rigidbody _rb;
     private Health _health;
     private Block _block;
+    private LayerMask defaultLayer;
+    private LayerMask dashLayer;
+
     float flipScale = 1f, xScaleMult = 1f;
     private void Awake()
     {
         Players.Add(this);
+        
         _camera = Camera.main;
         _rb = GetComponent<Rigidbody>();
         _health = GetComponent<Health>();
         _block = GetComponent<Block>();
+
+        defaultLayer = gameObject.layer;
+        dashLayer = LayerMask.NameToLayer("Dash");
 
         _rb.freezeRotation = true;
         xScaleMult = _sprite.transform.localScale.x;
@@ -82,6 +89,8 @@ public class PlayerMovement : MonoBehaviour
         _animator.SetFloat("dashSpeed", 1/_dashDuration);
 
         GetComponent<Audio>().PlayDashSound();
+
+        gameObject.layer = dashLayer;
     }
 
     void FixedUpdate()
@@ -128,6 +137,8 @@ public class PlayerMovement : MonoBehaviour
         {
             isDashing = false;
             _health.isInvulnerable = false;
+
+            gameObject.layer = defaultLayer;
         }
     }
 

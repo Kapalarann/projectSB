@@ -10,6 +10,7 @@ public class Health : MonoBehaviour
     [Header("Health")]
     [SerializeField] public float maxHP;
     [SerializeField] public float HP;
+    private bool isDead = false;
 
     [Header("Damage Effects")]
     [SerializeField] float damageNumberYOffset = 1.5f;
@@ -20,6 +21,7 @@ public class Health : MonoBehaviour
     [SerializeField] public float stunDuration = 1f;
     [SerializeField] public float stunResMultiplier;
     [SerializeField] public float stunResPerPlayer;
+    private bool stunEnded = false;
 
     [Header("References")]
     [SerializeField] Animator _animator;
@@ -72,7 +74,7 @@ public class Health : MonoBehaviour
 
                 if(isPerfect) spriteEffects.FlashWhite(0.1f);
 
-                if(knockback != null) knockback.ApplyKnockback(attackerPos, damage * 5f);
+                if(knockback != null) knockback.ApplyKnockback(attackerPos, damage * 3f);
                 HitAndShake(intensity);
                 ApplyStaminaDamage(staminaDamage);
                 return;
@@ -86,22 +88,24 @@ public class Health : MonoBehaviour
         if (isPlayer) HitAndShake(1f);
 
         ShowDamageNumber(gameObject.transform.position, damage);
+
         HP -= damage;
         HP = Mathf.Clamp(HP, 0, maxHP);
+        healthBar.UpdateHealth(transform, HP, maxHP);
 
         if (HP <= 0)
         {
-            Die();
-            return;
+            isDead = true;
         }
-        healthBar.UpdateHealth(transform, HP, maxHP);
 
         if (knockback != null) 
         {
-            float angle = isStunned ? 45f : 0f;
-            knockback.ApplyKnockback(attackerPos, damage * 5f, angle); 
+            float angle = isStunned ? GlobalValues.instance.knockbackAngle : 0f;
+            knockback.ApplyKnockback(attackerPos, damage * 3f, angle); 
         }
         ApplyStaminaDamage(damage);
+
+        if (isStunned) ComboCounterUI.instance.IncreaseCombo();
     }
 
     public void ShowDamageNumber(Vector3 worldPosition, float damage)
@@ -137,7 +141,11 @@ public class Health : MonoBehaviour
 
     private void ApplyStaminaDamage(float amount)
     {
-        if (isStunned) return;
+        if (isStunned)
+        {
+            AirCollider();
+            return;
+        }
 
         SP -= amount;
         SP = Mathf.Clamp(SP, 0, maxSP);
@@ -163,10 +171,39 @@ public class Health : MonoBehaviour
 
     public void StunEnd(AnimationEvent animationEvent)
     {
+        stunEnded = true;
+    }
+
+    private void EndStun()
+    {
+        GroundCollider();
+        stunEnded = false;
         isStunned = false;
         _animator.SetBool("isStunned", false);
         SP = maxSP;
         staminaBar.UpdateStamina(transform, SP, maxSP);
+    }
+
+    private void FixedUpdate()
+    {
+        if (GroundChecker.IsGrounded(gameObject))
+        {
+            if (stunEnded) EndStun();
+
+            if (isDead) Die();
+        }
+    }
+
+    private void AirCollider()
+    {
+        GetComponent<SphereCollider>().enabled = true;
+        GetComponent<CapsuleCollider>().enabled = false;
+    }
+
+    private void GroundCollider()
+    {
+        GetComponent<SphereCollider>().enabled = false;
+        GetComponent<CapsuleCollider>().enabled = true;
     }
 
     void Die()
