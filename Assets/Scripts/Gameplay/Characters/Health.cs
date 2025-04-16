@@ -105,7 +105,8 @@ public class Health : MonoBehaviour
         }
         ApplyStaminaDamage(damage);
 
-        if (isStunned) ComboCounterUI.instance.IncreaseCombo();
+        if (isStunned && !isPlayer) ComboCounterUI.instance.IncreaseCombo();
+        if (isPlayer) ComboCounterUI.instance.ResetCombo();
     }
 
     public void ShowDamageNumber(Vector3 worldPosition, float damage)

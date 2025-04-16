@@ -266,7 +266,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   isPlayer: 0
-  maxHP: 7
+  maxHP: 10
   HP: 0
   damageNumberYOffset: 1.5
   maxSP: 3
