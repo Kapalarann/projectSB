@@ -46,7 +46,6 @@ public class EnemySpawner : MonoBehaviour
         _budget = waveData.budget;
         _spawnInterval = waveData.spawnInterval;
         _enemiesSpawnedThisWave = 0;
-        Debug.Log($"Starting Wave {_currentWaveIndex + 1}");
     }
 
     private void SpawnEnemy()

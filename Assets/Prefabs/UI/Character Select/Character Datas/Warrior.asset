@@ -1,0 +1,25 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e3048af3ccde20449a5f974b4449d26a, type: 3}
+  m_Name: Warrior
+  m_EditorClassIdentifier: 
+  characterName: Warrior
+  icon: {fileID: -1769927649, guid: 1afcb03849d109240904e37d9a86aa91, type: 3}
+  description: Mandirigma
+  abilityDescriptions:
+  - abilityName: Slash
+    abilityIcon: {fileID: 0}
+    abilityDescription: A Basic 3-slash combo
+  - abilityName: Block
+    abilityIcon: {fileID: 0}
+    abilityDescription: Raises her shield to block attack
+  characterPrefab: {fileID: 904410703393564044, guid: 84d5865d90890934ba49402701280a87, type: 3}
