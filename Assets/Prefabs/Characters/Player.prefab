@@ -627,6 +627,8 @@ MonoBehaviour:
   damageNumberYOffset: 1.5
   maxSP: 5
   SP: 0
+  staminaRegen: 1
+  stamineDelay: 2
   stunDuration: 1
   stunResMultiplier: 0
   stunResPerPlayer: 0

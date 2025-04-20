@@ -36,6 +36,12 @@ public class PlayerStatManager : MonoBehaviour
         }
     }
 
+    public void UnsetCharacter(int playerIndex)
+    {
+        selectedCharacters[playerIndex] = null;
+        playerDevices[playerIndex] = null;
+    }
+
     public CharacterData GetCharacter(int playerIndex)
     {
         if (playerIndex >= 0 && playerIndex < selectedCharacters.Length)

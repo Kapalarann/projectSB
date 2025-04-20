@@ -349,8 +349,8 @@ MonoBehaviour:
   m_text: "Mouse: \tLeft click - attack\n\t\tRight click - dash\n\t\tMiddle click
     - block\nKeyboard: \tWASD - movement\n\t\tJ - attack\n\t\tK - block\n\t\tleft
     shift - dash\n\t\tescape - pause/unpause\n\t\tenter - restart\nController:\tright
-    stick - movement\n\t\tleft shoulder - dash\n\t\tleft trigger - block\n\t\tsquare/X
-    - attack"
+    stick - movement\n\t\tleft shoulder - dash\n\t\tsquare - attack\n\t\ttriangle
+    - block"
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
   m_sharedMaterial: {fileID: 2180264, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}

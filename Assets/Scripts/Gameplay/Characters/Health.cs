@@ -17,9 +17,15 @@ public class Health : MonoBehaviour
     [Header("Stamina")]
     [SerializeField] public float maxSP;
     [SerializeField] public float SP;
+    [SerializeField] public float staminaRegen;
+    [SerializeField] public float stamineDelay;
+
+    [Header("Stun")]
     [SerializeField] public float stunDuration = 1f;
     [SerializeField] public float stunResMultiplier;
     [SerializeField] public float stunResPerPlayer;
+    private float lastStaminaUseTime;
+    private bool isRegeneratingStamina = false;
     private bool stunEnded = false;
 
     [Header("References")]
@@ -40,6 +46,7 @@ public class Health : MonoBehaviour
     {
         HP = maxHP;
         SP = maxSP;
+        lastStaminaUseTime = Time.time;
 
         healthBar = FindFirstObjectByType<HealthBarManager>();
         staminaBar = FindFirstObjectByType<StaminaBarManager>();
@@ -153,6 +160,23 @@ public class Health : MonoBehaviour
         if (SP <= 0) Stun();
 
         staminaBar.UpdateStamina(transform, SP, maxSP);
+
+        lastStaminaUseTime = Time.time;
+        isRegeneratingStamina = false;
+    }
+
+    private void RegenerateStamina()
+    {
+        if (!isStunned && Time.time - lastStaminaUseTime >= stamineDelay)
+        {
+            if (SP < maxSP)
+            {
+                SP += staminaRegen * Time.fixedDeltaTime;
+                SP = Mathf.Clamp(SP, 0, maxSP);
+                staminaBar.UpdateStamina(transform, SP, maxSP);
+                isRegeneratingStamina = true;
+            }
+        }
     }
 
     void Stun()
@@ -192,6 +216,8 @@ public class Health : MonoBehaviour
 
             if (isDead) Die();
         }
+
+        RegenerateStamina();
     }
 
     private void AirCollider()

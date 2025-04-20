@@ -68,4 +68,13 @@ public class CharacterSelectManager : MonoBehaviour
 
         Debug.Log($"Player {index} selected: {data.characterName}");
     }
+
+    public void DeselectCharacter(SelectorController selector)
+    {
+        int index = selector.GetComponent<PlayerInput>().playerIndex;
+
+        PlayerStatManager.instance.UnsetCharacter(index);
+
+        displayBox[index].gameObject.SetActive(false);
+    }
 }

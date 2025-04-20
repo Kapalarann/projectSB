@@ -68,6 +68,17 @@ public class SelectorController : MonoBehaviour
         }
     }
 
+    public void OnBlock()
+    {
+        CharacterSelectManager.instance.DeselectCharacter(this);
+
+        PlayerInput input = GetComponent<PlayerInput>();
+        if (input != null) input.DeactivateInput();
+
+        Destroy(gameObject);
+    }
+
+
     void FixedUpdate()
     {
         Vector3 delta = (Vector3)moveInput * moveSpeed * Time.fixedDeltaTime;
