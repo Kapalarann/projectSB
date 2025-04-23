@@ -7,6 +7,11 @@ public class Projectile : MonoBehaviour
     public float lifeTime = 5f;
     public float damage = 1f;
 
+    [Header("OnHitEffects")]
+    [SerializeField] public Debuff debuff;
+    [SerializeField] public int stack = 1;
+    [SerializeField] public float duration = 2f;
+
     [HideInInspector] public GameObject attacker;
 
     protected virtual void Start()
@@ -31,7 +36,17 @@ public class Projectile : MonoBehaviour
         Health health = other.GetComponent<Health>();
         if (health == null || health.isInvulnerable) return;
 
+        if(debuff != null) OnHitEffect(other);
+
         health.TakeDamage(damage, transform.position);
         Destroy(gameObject);
+    }
+
+    protected virtual void OnHitEffect(Collider other)
+    {
+        DebuffManager deb = other.GetComponent<DebuffManager>();
+        if (other == null) return;
+
+        deb.ApplyDebuff(debuff, stack, duration);
     }
 }

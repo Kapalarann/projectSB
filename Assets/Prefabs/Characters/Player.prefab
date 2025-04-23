@@ -303,6 +303,7 @@ GameObject:
   - component: {fileID: 7407920682063627386}
   - component: {fileID: -532712861259591586}
   - component: {fileID: -6737236675665592195}
+  - component: {fileID: -4887786474362714206}
   m_Layer: 3
   m_Name: Player
   m_TagString: Player
@@ -547,6 +548,7 @@ MonoBehaviour:
   _movementSpeed: 3
   _flipDampening: 10
   _mouseDeadzone: 1
+  movementValue: {x: 0, y: 0, z: 0}
   dashes: 1
   dashSpeedCurve:
     serializedVersion: 2
@@ -879,6 +881,18 @@ AudioSource:
     m_PreInfinity: 2
     m_PostInfinity: 2
     m_RotationOrder: 4
+--- !u!114 &-4887786474362714206
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 904410703393564044}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c36522b4fa1d53d4c847601b45b0aff6, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &1130435097684123464
 GameObject:
   m_ObjectHideFlags: 0

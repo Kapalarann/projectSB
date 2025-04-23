@@ -128,8 +128,8 @@ public class ShadowPull : MonoBehaviour
     private void HandleSpectralFadeEffect()
     {
         float timerValue = Mathf.PingPong(Time.time / fadeDuration, 1);
-        Color cloneColor = spectralClone.GetComponent<Renderer>().material.color;
-        spectralClone.GetComponent<Renderer>().material.color = new Color(cloneColor.r, cloneColor.g, cloneColor.b, Mathf.Clamp01(timerValue));
+        Color cloneColor = spectralClone.GetComponent<SpriteRenderer>().color;
+        spectralClone.GetComponent<SpriteRenderer>().color = new Color(cloneColor.r, cloneColor.g, cloneColor.b, Mathf.Clamp01(timerValue));
     }
 
     private void ResetShadow()

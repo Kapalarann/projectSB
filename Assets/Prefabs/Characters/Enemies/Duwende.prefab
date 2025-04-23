@@ -194,7 +194,7 @@ SpriteRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 2100000, guid: 42104f74d8a110348953a0b03c818b6b, type: 2}
+  - {fileID: -876546973899608171, guid: 3764de8a499d615438021942eced6d1c, type: 3}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -261,6 +261,7 @@ GameObject:
   - component: {fileID: 2977367095178505756}
   - component: {fileID: -1265162537467022538}
   - component: {fileID: 3883087185345910129}
+  - component: {fileID: 1004813341832047461}
   m_Layer: 9
   m_Name: Duwende
   m_TagString: Enemy
@@ -5526,6 +5527,18 @@ MonoBehaviour:
   fadeDuration: 1
   scaleIncrease: 0.2
   offset: {x: 0, y: 0, z: 0}
+--- !u!114 &1004813341832047461
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1444261942843475992}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c36522b4fa1d53d4c847601b45b0aff6, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &1619935413552853309
 GameObject:
   m_ObjectHideFlags: 0

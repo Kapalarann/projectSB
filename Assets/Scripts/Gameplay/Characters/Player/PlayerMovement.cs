@@ -11,7 +11,7 @@ public class PlayerMovement : MonoBehaviour
     [SerializeField] float _flipDampening = 5f;
     [Range(0.0f, 1.0f)]
     [SerializeField] float _mouseDeadzone;
-    Vector3 movementValue;
+    [HideInInspector] public Vector3 movementValue;
 
     [Header("Dash")]
     [SerializeField] bool dashes;
@@ -34,7 +34,7 @@ public class PlayerMovement : MonoBehaviour
     private LayerMask defaultLayer;
     private LayerMask dashLayer;
 
-    float flipScale = 1f, xScaleMult = 1f;
+    [HideInInspector] public float flipScale = 1f, xScaleMult = 1f;
     private void Awake()
     {
         Players.Add(this);

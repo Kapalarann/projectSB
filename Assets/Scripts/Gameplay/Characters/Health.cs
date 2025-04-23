@@ -103,7 +103,7 @@ public class Health : MonoBehaviour
 
         HP -= damage;
         HP = Mathf.Clamp(HP, 0, maxHP);
-        healthBar.UpdateHealth(transform, HP, maxHP);
+        if (healthBar != null) healthBar.UpdateHealth(transform, HP, maxHP);
 
         if (HP <= 0)
         {
@@ -121,8 +121,27 @@ public class Health : MonoBehaviour
         if (isPlayer) ComboCounterUI.instance.ResetCombo();
     }
 
+    public void TakeDamage(float damage, bool isHP, bool isStamina)
+    {
+        if (isHP)
+        {
+            HP -= damage;
+            HP = Mathf.Clamp(HP, 0, maxHP);
+            if (healthBar != null) healthBar.UpdateHealth(transform, HP, maxHP);
+
+            if (HP <= 0)
+            {
+                isDead = true;
+            }
+        }
+        if (isStamina)
+        {
+            ApplyStaminaDamage(damage);
+        }
+    }
     public void ShowDamageNumber(Vector3 worldPosition, float damage)
     {
+        if (damageNumberPool == null) return;
         GameObject damageNumber = damageNumberPool.GetDamageNumber();
 
         // Set its position and initialize it
@@ -165,7 +184,7 @@ public class Health : MonoBehaviour
 
         if (SP <= 0) Stun();
 
-        staminaBar.UpdateStamina(transform, SP, maxSP);
+        if (staminaBar != null) staminaBar.UpdateStamina(transform, SP, maxSP);
 
         lastStaminaUseTime = Time.time;
         isRegeneratingStamina = false;
@@ -179,7 +198,7 @@ public class Health : MonoBehaviour
             {
                 SP += staminaRegen * Time.fixedDeltaTime;
                 SP = Mathf.Clamp(SP, 0, maxSP);
-                staminaBar.UpdateStamina(transform, SP, maxSP);
+                if (staminaBar != null) staminaBar.UpdateStamina(transform, SP, maxSP);
                 isRegeneratingStamina = true;
             }
         }
