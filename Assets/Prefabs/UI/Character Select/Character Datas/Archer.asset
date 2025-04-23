@@ -12,10 +12,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e3048af3ccde20449a5f974b4449d26a, type: 3}
   m_Name: Archer
   m_EditorClassIdentifier: 
-  characterName: Archer
+  characterName: Tala
   icon: {fileID: 334709278, guid: 50549d13e3f9ffb409a03e9e4d50535f, type: 3}
-  description: Tirador
+  description: Moon Mage
   abilityDescriptions:
   - abilityName: 
     abilityIcon: {fileID: 0}
     abilityDescription: 
+  characterPrefab: {fileID: 7162823930150663914, guid: be86c28b2b2ab304381e0c903ae5065c, type: 3}

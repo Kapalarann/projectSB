@@ -55,11 +55,17 @@ public class Health : MonoBehaviour
         _audio = GetComponent<Audio>();
         block = GetComponent<Block>();
 
-        healthBar.AddHealthBar(transform);
-        healthBar.UpdateHealth(transform, HP, maxHP);
+        if(healthBar != null)
+        {
+            healthBar.AddHealthBar(transform);
+            healthBar.UpdateHealth(transform, HP, maxHP);
+        }
 
-        staminaBar.AddStaminaBar(transform);
-        staminaBar.UpdateStamina(transform, SP, maxSP);
+        if (staminaBar != null)
+        {
+            staminaBar.AddStaminaBar(transform);
+            staminaBar.UpdateStamina(transform, SP, maxSP);
+        }
 
         _receiver.StunEnd += StunEnd;
     }

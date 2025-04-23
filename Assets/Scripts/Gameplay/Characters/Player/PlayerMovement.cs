@@ -14,6 +14,7 @@ public class PlayerMovement : MonoBehaviour
     Vector3 movementValue;
 
     [Header("Dash")]
+    [SerializeField] bool dashes;
     [SerializeField] private AnimationCurve dashSpeedCurve;
     [SerializeField] private float _dashDistance = 5f;
     [SerializeField] private float _dashDuration = 0.3f;
@@ -76,7 +77,7 @@ public class PlayerMovement : MonoBehaviour
 
     public void OnDash()
     {
-        if (movementValue.sqrMagnitude == 0 || _animator.GetBool("isStunned")) return;
+        if (movementValue.sqrMagnitude == 0 || _animator.GetBool("isStunned") || !dashes) return;
 
         isDashing = true;
         dashTimeElapsed = 0f;
