@@ -65,7 +65,7 @@ public class ShadowPull : MonoBehaviour
         else
         {
             float stretchAmount = stretchOverTime.Evaluate(t) * maxStretch;
-            shadowTransform.localScale = new Vector3(originalScale.x, originalScale.y - stretchAmount, originalScale.z);
+            shadowTransform.localScale = new Vector3(originalScale.x, originalScale.y + stretchAmount, originalScale.z);
 
             if (pullDirection != Vector3.zero)
             {
@@ -90,7 +90,7 @@ public class ShadowPull : MonoBehaviour
         {
             Vector3 direction = (targetPosition - transform.position).normalized;
             float distanceTraveled = moveOverTime.Evaluate(t) * pullDistance;
-            spectralClone.transform.position = transform.position - direction * distanceTraveled + offset;
+            spectralClone.transform.position = transform.position + direction * distanceTraveled + offset;
 
             float curveValue = moveOverTime.Evaluate(t);
             spectralClone.transform.localScale = initialScale * (1 + ( scaleIncrease * curveValue));

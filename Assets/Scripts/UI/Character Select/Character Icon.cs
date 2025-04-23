@@ -2,10 +2,11 @@ using UnityEngine;
 
 public class CharacterIcon : MonoBehaviour
 {
+    [SerializeField] public SpriteRenderer icon;
     public CharacterData characterData;
 
     private void Start()
     {
-        //GetComponent<SpriteRenderer>().sprite = characterData.icon;
+        icon.sprite = characterData.icon;
     }
 }

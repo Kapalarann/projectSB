@@ -1,8 +1,7 @@
 using UnityEngine;
-using UnityEngine.UI;
 using TMPro;
-using System.Collections.Generic;
 using UnityEngine.InputSystem;
+using System;
 
 public class CharacterSelectManager : MonoBehaviour
 {
@@ -10,25 +9,20 @@ public class CharacterSelectManager : MonoBehaviour
 
     public GameObject[] characterIcons;
 
-    // Arrays to support multiple players
-    public GameObject[] displayBox;
-    public TMP_Text[] nameText;
-    public TMP_Text[] descriptionText;
+    [SerializeField] public Display[] display;
 
-    // Track last hovered for each player
     private GameObject[] lastHovered;
 
     private void Awake()
     {
         instance = this;
 
-        // Ensure tracking for all players (assuming 4 max, or match your array sizes)
-        lastHovered = new GameObject[displayBox.Length];
+        lastHovered = new GameObject[display.Length];
     }
 
     public void Inst(int playerIndex)
     {
-        displayBox[playerIndex].gameObject.SetActive(true);
+        display[playerIndex].displayBox.gameObject.SetActive(true);
     }
 
     public GameObject GetHovered(Vector2 screenPos)
@@ -46,16 +40,22 @@ public class CharacterSelectManager : MonoBehaviour
 
     public void UpdateHover(GameObject hovered, int playerIndex)
     {
-        if (playerIndex < 0 || playerIndex >= displayBox.Length) return;
+        if (playerIndex < 0 || playerIndex >= display.Length) return;
         if (hovered == lastHovered[playerIndex] || hovered == null) return;
 
         lastHovered[playerIndex] = hovered;
 
-        var display = hovered.GetComponent<CharacterIcon>();
-        if (display)
+        var dis = hovered.GetComponent<CharacterIcon>();
+        if (dis)
         {
-            nameText[playerIndex].text = display.characterData.characterName;
-            descriptionText[playerIndex].text = display.characterData.description;
+            display[playerIndex].nameText.text = dis.characterData.characterName;
+            display[playerIndex].titleText.text = dis.characterData.description;
+            for (int i = 0; i < dis.characterData.abilityDescriptions.Length; i++)
+            {
+                display[playerIndex].abilityText[i].text = 
+                    dis.characterData.abilityDescriptions[i].abilityName + "\n" +
+                    dis.characterData.abilityDescriptions[i].abilityDescription;
+            }
         }
     }
 
@@ -75,6 +75,15 @@ public class CharacterSelectManager : MonoBehaviour
 
         PlayerStatManager.instance.UnsetCharacter(index);
 
-        displayBox[index].gameObject.SetActive(false);
+        display[index].displayBox.gameObject.SetActive(false);
     }
+}
+
+[Serializable]
+public class Display
+{
+    public GameObject displayBox;
+    public TMP_Text nameText;
+    public TMP_Text titleText;
+    public TMP_Text[] abilityText;
 }

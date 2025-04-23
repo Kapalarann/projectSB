@@ -3,7 +3,6 @@ using UnityEngine;
 public class ShadowPuller : MonoBehaviour
 {
     public Transform pullTarget;
-    public Debuff detonateDebuff;
 
     [Header("Attack")]
     public float range = 5f;
@@ -46,6 +45,7 @@ public class ShadowPuller : MonoBehaviour
             if (angle > coneAngle) continue;
 
             float damage = baseDamage;
+            float pullMult = 1f;
 
             DebuffManager deb = enemy.GetComponent<DebuffManager>();
             if (deb != null)
@@ -53,6 +53,7 @@ public class ShadowPuller : MonoBehaviour
                 if (deb.GetStacks("Moon") > 0)
                 {
                     damage += detonateDamage;
+                    pullMult = 3f;
                     deb.RemoveDebuff("Moon");
                 }
             }
@@ -63,7 +64,7 @@ public class ShadowPuller : MonoBehaviour
             ShadowPull pullEffect = enemy.GetComponentInChildren<ShadowPull>();
             if (pullEffect != null)
             {
-                pullEffect.PullTowards(pullTarget.position, pullStrength, pullDuration);
+                pullEffect.PullTowards(pullTarget.position, pullStrength * pullMult, pullDuration);
             }
         }
     }

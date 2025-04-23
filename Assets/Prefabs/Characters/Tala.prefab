@@ -589,7 +589,7 @@ MonoBehaviour:
   damageNumberYOffset: 1.5
   maxSP: 5
   SP: 0
-  staminaRegen: 1
+  staminaRegen: 0.2
   stamineDelay: 2
   stunDuration: 1
   stunResMultiplier: 0
@@ -853,7 +853,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   pullTarget: {fileID: 3264915876471449900}
-  detonateDebuff: {fileID: 0}
   range: 5
   coneAngle: 45
   baseDamage: 0.5

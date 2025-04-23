@@ -171,7 +171,7 @@ public class Health : MonoBehaviour
         ScreenShake.Instance.Shake(0.1f , 0.1f * intensity);
     }
 
-    private void ApplyStaminaDamage(float amount)
+    public void ApplyStaminaDamage(float amount)
     {
         if (isStunned)
         {
@@ -243,6 +243,23 @@ public class Health : MonoBehaviour
         }
 
         RegenerateStamina();
+    }
+
+    public void RecoverHealth(float amount)
+    {
+        HP += amount;
+        HP = Mathf.Clamp(HP, 0, maxHP);
+        if (healthBar != null) healthBar.UpdateHealth(transform, HP, maxHP);
+    }
+
+    public void RecoverStamina(float amount)
+    {
+        if (isStunned) EndStun();
+
+        SP += amount;
+        SP = Mathf.Clamp(SP, 0, maxSP);
+
+        if (staminaBar != null) staminaBar.UpdateStamina(transform, SP, maxSP);
     }
 
     private void AirCollider()

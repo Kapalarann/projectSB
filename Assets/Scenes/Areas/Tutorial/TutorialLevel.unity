@@ -973,12 +973,20 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 2190129253029309046, guid: fdce6ac21af53644bb99533145d0dfcb, type: 3}
       propertyPath: waves.Array.size
-      value: 1
+      value: 3
       objectReference: {fileID: 0}
     - target: {fileID: 2190129253029309046, guid: fdce6ac21af53644bb99533145d0dfcb, type: 3}
       propertyPath: 'waves.Array.data[0]'
       value: 
       objectReference: {fileID: 11400000, guid: 9118a612832c8e74eb7c1c7760067fe5, type: 2}
+    - target: {fileID: 2190129253029309046, guid: fdce6ac21af53644bb99533145d0dfcb, type: 3}
+      propertyPath: 'waves.Array.data[1]'
+      value: 
+      objectReference: {fileID: 11400000, guid: 48a356b6ea709374e8c97324c912a64f, type: 2}
+    - target: {fileID: 2190129253029309046, guid: fdce6ac21af53644bb99533145d0dfcb, type: 3}
+      propertyPath: 'waves.Array.data[2]'
+      value: 
+      objectReference: {fileID: 11400000, guid: 4055f927fae498a469b3ae148e80e0cc, type: 2}
     - target: {fileID: 4647341697123313303, guid: fdce6ac21af53644bb99533145d0dfcb, type: 3}
       propertyPath: m_Name
       value: Level T-1

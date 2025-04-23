@@ -49,6 +49,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4d4a882c5ae227648a38d7a81e69748b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  icon: {fileID: 3210378711982601313}
   characterData: {fileID: 11400000, guid: fd82b68f94c369441b31eb5d435024b5, type: 2}
 --- !u!1 &8884612688530216595
 GameObject:
