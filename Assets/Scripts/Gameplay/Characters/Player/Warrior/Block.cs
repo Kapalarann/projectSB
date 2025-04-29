@@ -12,17 +12,15 @@ public class Block : MonoBehaviour
     private bool isBlocking;
 
     [Header("References")]
-    private Health health;
     [SerializeField]private Animator animator;
     private InputAction inputAction;
 
     void Awake()
     {
-        health = GetComponent<Health>();
-        inputAction = GetComponent<PlayerInput>().actions["Block"];
+        inputAction = GetComponent<PlayerInput>().actions["Secondary"];
     }
 
-    public void OnBlock()
+    public void OnSecondary()
     {
         bool held = inputAction.ReadValue<float>() > 0.5f;
 

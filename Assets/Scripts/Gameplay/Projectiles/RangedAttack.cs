@@ -39,7 +39,7 @@ public class RangedAttack
         {
             proj.attacker = attacker;
             proj.speed = speed;
-            proj.lifeTime = lifeTime;
+            proj.lifetime = lifeTime;
             proj.damage = damage;
         }
     }

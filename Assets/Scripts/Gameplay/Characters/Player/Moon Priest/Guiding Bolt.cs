@@ -1,25 +1,18 @@
 using UnityEngine;
 
-public class GuidingBolt : MonoBehaviour
+public class GuidingBolt : Ability
 {
     public RangedAttack rangedAttack;
     private PlayerMovement playerMovement;
-    private float cooldownTimer = 0f;
 
     private void Awake()
     {
         playerMovement = GetComponent<PlayerMovement>();
     }
 
-    private void Update()
+    public void OnSecondary()
     {
-        if (cooldownTimer > 0f) cooldownTimer -= Time.deltaTime;
-    }
-
-    public void OnBlock()
-    {
-        if (playerMovement == null || rangedAttack == null) return;
-        if (cooldownTimer > 0f) return;
+        if (playerMovement == null || rangedAttack == null || _animator.GetBool("isStunned")) return;
 
         Vector3 direction = playerMovement.movementValue.normalized;
 
@@ -28,5 +21,7 @@ public class GuidingBolt : MonoBehaviour
             rangedAttack.FireInDirection(gameObject, direction);
             cooldownTimer = rangedAttack._attackCooldown;
         }
+
+        ConsumeStamina();
     }
 }

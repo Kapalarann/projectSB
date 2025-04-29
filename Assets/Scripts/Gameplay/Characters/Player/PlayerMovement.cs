@@ -2,6 +2,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.InputSystem;
 
+[RequireComponent(typeof(Rigidbody))]
 public class PlayerMovement : MonoBehaviour
 {
     public static readonly HashSet<PlayerMovement> Players = new HashSet<PlayerMovement>();
@@ -13,99 +14,67 @@ public class PlayerMovement : MonoBehaviour
     [SerializeField] float _mouseDeadzone;
     [HideInInspector] public Vector3 movementValue;
 
-    [Header("Dash")]
-    [SerializeField] bool dashes;
-    [SerializeField] private AnimationCurve dashSpeedCurve;
-    [SerializeField] private float _dashDistance = 5f;
-    [SerializeField] private float _dashDuration = 0.3f;
-    bool isDashing = false;
-    private float dashTimeElapsed;
-    private Vector3 _dashDir;
-
-    [Header("Reference")]
+    [Header("References")]
     [SerializeField] Animator _animator;
     [SerializeField] GameObject _sprite;
-    [SerializeField] AnimationReciever _receiver;
 
     private Camera _camera;
     private Rigidbody _rb;
-    private Health _health;
-    private Block _block;
-    private LayerMask defaultLayer;
-    private LayerMask dashLayer;
 
     [HideInInspector] public float flipScale = 1f, xScaleMult = 1f;
+
     private void Awake()
     {
         Players.Add(this);
-        
         _camera = Camera.main;
         _rb = GetComponent<Rigidbody>();
-        _health = GetComponent<Health>();
-        _block = GetComponent<Block>();
-
-        defaultLayer = gameObject.layer;
-        dashLayer = LayerMask.NameToLayer("Dash");
-
         _rb.freezeRotation = true;
+
         xScaleMult = _sprite.transform.localScale.x;
     }
 
     public void OnMove(InputValue value)
     {
-        movementValue = new Vector3( value.Get<Vector2>().x, 0, value.Get<Vector2>().y);
+        movementValue = new Vector3(value.Get<Vector2>().x, 0, value.Get<Vector2>().y);
     }
 
     public void OnMouseMove(InputValue value)
     {
         Vector2 mousePosition = value.Get<Vector2>();
-
         Ray ray = _camera.ScreenPointToRay(mousePosition);
-        RaycastHit hit;
-        if (Physics.Raycast(ray, out hit))
+        int layerMask = 1 << 6;
+
+        RaycastHit[] hits = Physics.RaycastAll(ray, Mathf.Infinity, layerMask);
+
+        if (hits.Length > 0)
         {
-            Vector3 targetPosition = hit.point;
+            RaycastHit closestHit = hits[0];
+            float closestDistance = closestHit.distance;
+
+            foreach (var hit in hits)
+            {
+                if (hit.distance < closestDistance)
+                {
+                    closestHit = hit;
+                    closestDistance = hit.distance;
+                }
+            }
+
+            Vector3 targetPosition = closestHit.point;
             targetPosition.y = transform.position.y;
             Vector3 directionToTarget = targetPosition - transform.position;
 
             float distanceToTarget = new Vector2(directionToTarget.x, directionToTarget.z).magnitude;
 
-            if (distanceToTarget < _mouseDeadzone) movementValue = Vector3.zero;
-            else movementValue = directionToTarget.normalized;
+            movementValue = distanceToTarget < _mouseDeadzone ? Vector3.zero : directionToTarget.normalized;
         }
     }
 
-    public void OnDash()
-    {
-        if (movementValue.sqrMagnitude == 0 || _animator.GetBool("isStunned") || !dashes) return;
-
-        isDashing = true;
-        dashTimeElapsed = 0f;
-        _dashDir = movementValue.normalized;
-
-        if(_block != null) _block.CancelBlock();
-
-        _health.isInvulnerable = true;
-        _animator.SetTrigger("onDash");
-        _animator.SetFloat("dashSpeed", 1/_dashDuration);
-
-        GetComponent<Audio>().PlayDashSound();
-
-        gameObject.layer = dashLayer;
-    }
-
-    void FixedUpdate()
+    private void FixedUpdate()
     {
         if (_animator.GetBool("isStunned")) return;
 
         HandleFlipping();
-
-        if (isDashing)
-        {
-            Dash();
-            return;
-        }
-
         HandleMovement();
     }
 
@@ -124,25 +93,6 @@ public class PlayerMovement : MonoBehaviour
         }
     }
 
-    private void Dash()
-    {
-        dashTimeElapsed += Time.fixedDeltaTime;
-        float normalizedTime = dashTimeElapsed / _dashDuration;
-        float dashSpeedFactor = dashSpeedCurve.Evaluate(normalizedTime);
-        float frameSpeed = (_dashDistance / _dashDuration) * dashSpeedFactor;
-
-        Vector3 dashVelocity = _dashDir * frameSpeed;
-        _rb.linearVelocity = new Vector3(dashVelocity.x, _rb.linearVelocity.y, dashVelocity.z);
-
-        if (dashTimeElapsed >= _dashDuration)
-        {
-            isDashing = false;
-            _health.isInvulnerable = false;
-
-            gameObject.layer = defaultLayer;
-        }
-    }
-
     private void HandleMovement()
     {
         Vector3 velocity = movementValue.normalized * _movementSpeed;
@@ -151,10 +101,11 @@ public class PlayerMovement : MonoBehaviour
         float speed = new Vector2(movementValue.x, movementValue.z).magnitude;
         _animator.SetFloat("moveSpeed", speed);
 
+        Audio audio = GetComponent<Audio>();
         if (speed > 0.1f)
-            GetComponent<Audio>().PlayWalkSound();
+            audio.PlayWalkSound();
         else
-            GetComponent<Audio>().StopWalkSound();
+            audio.StopWalkSound();
     }
 
     private void OnDestroy()

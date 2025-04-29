@@ -2,6 +2,7 @@ using UnityEngine;
 using TMPro;
 using UnityEngine.InputSystem;
 using System;
+using UnityEngine.UI;
 
 public class CharacterSelectManager : MonoBehaviour
 {
@@ -63,6 +64,7 @@ public class CharacterSelectManager : MonoBehaviour
     {
         int index = selector.GetComponent<PlayerInput>().playerIndex;
         var data = selected.GetComponent<CharacterIcon>().characterData;
+        display[index].bg.color = Color.black;
 
         PlayerStatManager.instance.SetCharacter(index, data, input);
 
@@ -72,6 +74,7 @@ public class CharacterSelectManager : MonoBehaviour
     public void DeselectCharacter(SelectorController selector)
     {
         int index = selector.GetComponent<PlayerInput>().playerIndex;
+        display[index].bg.color = Color.gray;
 
         PlayerStatManager.instance.UnsetCharacter(index);
 
@@ -83,6 +86,7 @@ public class CharacterSelectManager : MonoBehaviour
 public class Display
 {
     public GameObject displayBox;
+    public Image bg;
     public TMP_Text nameText;
     public TMP_Text titleText;
     public TMP_Text[] abilityText;

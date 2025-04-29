@@ -1,6 +1,5 @@
 using UnityEngine.InputSystem;
 using UnityEngine;
-using UnityEngine.UI;
 using System.Collections.Generic;
 
 public class SelectorController : MonoBehaviour
@@ -53,7 +52,7 @@ public class SelectorController : MonoBehaviour
         rect.anchoredPosition = localPoint;
     }
 
-    public void OnAttack()
+    public void OnPrimary()
     {
         GameObject hovered = CharacterSelectManager.instance.GetHovered(rect.position);
         if (hovered)
@@ -66,9 +65,15 @@ public class SelectorController : MonoBehaviour
                 CharacterSelectManager.instance.SelectCharacter(this, hovered, device);
             }
         }
+
+        Vector2 screenPoint = RectTransformUtility.WorldToScreenPoint(canvas.worldCamera, rect.position);
+        if (RectTransformUtility.RectangleContainsScreenPoint(ReadyButton.instance.GetComponent<RectTransform>(), screenPoint, canvas.worldCamera))
+        {
+            PlayerStatManager.instance.LoadScene("TutorialLevel");
+        }
     }
 
-    public void OnBlock()
+    public void OnSecondary()
     {
         CharacterSelectManager.instance.DeselectCharacter(this);
 

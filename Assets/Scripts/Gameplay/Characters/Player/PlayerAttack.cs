@@ -1,20 +1,18 @@
 using UnityEngine;
 
-public class PlayerAttack : MonoBehaviour
+public class PlayerAttack : Ability
 {
     [Header("Reference")]
-    [SerializeField] Animator _animator;
     [SerializeField] Animator _attackEffect;
     [SerializeField] Transform _attackPoint;
     [SerializeField] LayerMask _targetLayer;
-    [SerializeField] AnimationReciever _receiver;
 
     [Header("Attack 1 stats")]
     [SerializeField] float _attackRadius = 1.5f;
     [SerializeField] float _damage = 1f;
     [SerializeField] float _attackSpeed = 1f;
 
-    public void OnAttack()
+    public void OnPrimary()
     {
         _animator.SetTrigger("onAttack");
         _animator.SetFloat("attackSpeed", _attackSpeed);
@@ -32,7 +30,6 @@ public class PlayerAttack : MonoBehaviour
     public void DealDamage(AnimationEvent animationEvent)
     {
         gameObject.GetComponent<Audio>().PlaySlashSound();
-
         _attackEffect.Play("Main_Character_Attack1_Effect");
 
         Collider[] hitColliders = Physics.OverlapSphere(_attackPoint.position, _attackRadius, _targetLayer);
@@ -52,5 +49,6 @@ public class PlayerAttack : MonoBehaviour
                 health.TakeDamage(_damage, transform.position);
             }
         }
+        ConsumeStamina();
     }
 }

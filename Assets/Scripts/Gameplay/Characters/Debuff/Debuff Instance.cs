@@ -7,14 +7,16 @@ public class DebuffInstance
     public int currentStacks;
     public float remainingDuration;
 
+    public GameObject source;
     private GameObject target;
     private GameObject visualEffectInstance;
 
-    public void Initialize(Debuff template, int stacks, float duration, GameObject target)
+    public void Initialize(Debuff template, int stacks, float duration, GameObject target, GameObject source)
     {
         this.template = template;
         this.currentStacks = stacks;
         this.remainingDuration = duration;
+        this.source = source;
         this.target = target;
 
         if (template.visualEffectPrefab != null)
@@ -22,7 +24,7 @@ public class DebuffInstance
             visualEffectInstance = Object.Instantiate(template.visualEffectPrefab, target.transform);
         }
 
-        template.OnApply(target, stacks);
+        template.OnApply(target, stacks, source);
     }
 
     public void Tick(float deltaTime)
@@ -44,14 +46,8 @@ public class DebuffInstance
         if (currentStacks == 0)
         {
             RemoveVisual();
-            template.OnRemove(target);
+            template.OnRemove(target, source);
         }
-    }
-
-    public void ForceRemove()
-    {
-        RemoveVisual();
-        template.OnRemove(target);
     }
 
     private void RemoveVisual()

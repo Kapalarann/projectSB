@@ -295,15 +295,16 @@ GameObject:
   - component: {fileID: 7250031100144634120}
   - component: {fileID: 5490484956394697869}
   - component: {fileID: 9191328559233657291}
-  - component: {fileID: 7611333634711174827}
-  - component: {fileID: 4635182161267759673}
-  - component: {fileID: -3640166133368597214}
   - component: {fileID: 8286748519264088613}
+  - component: {fileID: -4887786474362714206}
   - component: {fileID: 7269345385486729967}
   - component: {fileID: 7407920682063627386}
   - component: {fileID: -532712861259591586}
   - component: {fileID: -6737236675665592195}
-  - component: {fileID: -4887786474362714206}
+  - component: {fileID: 4635182161267759673}
+  - component: {fileID: 7611333634711174827}
+  - component: {fileID: -3640166133368597214}
+  - component: {fileID: 7390739680086206066}
   - component: {fileID: 980146651367106931}
   m_Layer: 3
   m_Name: Player
@@ -513,109 +514,6 @@ MonoBehaviour:
   m_DefaultActionMap: Player Movement
   m_SplitScreenIndex: -1
   m_Camera: {fileID: 0}
---- !u!114 &7611333634711174827
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 904410703393564044}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: cf52eeb3fb4905f4f83ae3aa70500be4, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  _animator: {fileID: 5235221205479957441}
-  _attackEffect: {fileID: 8984935571876133511}
-  _attackPoint: {fileID: 543485196735016535}
-  _targetLayer:
-    serializedVersion: 2
-    m_Bits: 512
-  _receiver: {fileID: 6278342242069635708}
-  _attackRadius: 1.115
-  _damage: 1
-  _attackSpeed: 2
---- !u!114 &4635182161267759673
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 904410703393564044}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 85cf9d0a7f783764a9c45bd71bbe1d8d, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  _movementSpeed: 3
-  _flipDampening: 10
-  _mouseDeadzone: 1
-  movementValue: {x: 0, y: 0, z: 0}
-  dashes: 1
-  dashSpeedCurve:
-    serializedVersion: 2
-    m_Curve:
-    - serializedVersion: 3
-      time: 0
-      value: 0
-      inSlope: 7.5
-      outSlope: 7.5
-      tangentMode: 34
-      weightedMode: 0
-      inWeight: 0
-      outWeight: 0.33333334
-    - serializedVersion: 3
-      time: 0.2
-      value: 1.5
-      inSlope: 0
-      outSlope: 0
-      tangentMode: 0
-      weightedMode: 0
-      inWeight: 0.33333334
-      outWeight: 0.33811274
-    - serializedVersion: 3
-      time: 0.5
-      value: 1.2
-      inSlope: -1.6999999
-      outSlope: -1.6999999
-      tangentMode: 34
-      weightedMode: 0
-      inWeight: 0.33333334
-      outWeight: 0.33333334
-    - serializedVersion: 3
-      time: 1
-      value: 0
-      inSlope: -2.4
-      outSlope: -2.4
-      tangentMode: 34
-      weightedMode: 0
-      inWeight: 0.33333334
-      outWeight: 0
-    m_PreInfinity: 2
-    m_PostInfinity: 2
-    m_RotationOrder: 4
-  _dashDistance: 5
-  _dashDuration: 0.4
-  _animator: {fileID: 5235221205479957441}
-  _sprite: {fileID: 131299571691295107}
-  _receiver: {fileID: 6278342242069635708}
-  flipScale: 1
-  xScaleMult: 1
---- !u!114 &-3640166133368597214
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 904410703393564044}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 778a69683079c774cb9f73dd33053694, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  perfectBlockWindow: 0.2
-  blockValue: 0.5
-  animator: {fileID: 5235221205479957441}
 --- !u!114 &8286748519264088613
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -634,15 +532,52 @@ MonoBehaviour:
   damageNumberYOffset: 1.5
   maxSP: 5
   SP: 0
-  staminaRegen: 0.2
+  staminaRegen: 2
   stamineDelay: 2
-  stunDuration: 1
+  staminaRegenCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 0
+      inSlope: 1
+      outSlope: 1
+      tangentMode: 34
+      weightedMode: 0
+      inWeight: 0
+      outWeight: 0
+    - serializedVersion: 3
+      time: 1
+      value: 1
+      inSlope: 1
+      outSlope: 1
+      tangentMode: 34
+      weightedMode: 0
+      inWeight: 0
+      outWeight: 0
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+  regenCurveDuration: 2
+  stunDuration: 3
   stunResMultiplier: 0
   stunResPerPlayer: 0
   _animator: {fileID: 5235221205479957441}
   _receiver: {fileID: 6278342242069635708}
   spriteEffects: {fileID: 1931622460169953284}
   bloodEffects: {fileID: 2057496772416942116}
+--- !u!114 &-4887786474362714206
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 904410703393564044}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c36522b4fa1d53d4c847601b45b0aff6, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!114 &7269345385486729967
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -885,7 +820,7 @@ AudioSource:
     m_PreInfinity: 2
     m_PostInfinity: 2
     m_RotationOrder: 4
---- !u!114 &-4887786474362714206
+--- !u!114 &4635182161267759673
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -894,9 +829,127 @@ MonoBehaviour:
   m_GameObject: {fileID: 904410703393564044}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: c36522b4fa1d53d4c847601b45b0aff6, type: 3}
+  m_Script: {fileID: 11500000, guid: 85cf9d0a7f783764a9c45bd71bbe1d8d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _movementSpeed: 3
+  _flipDampening: 10
+  _mouseDeadzone: 1
+  movementValue: {x: 0, y: 0, z: 0}
+  _animator: {fileID: 5235221205479957441}
+  _sprite: {fileID: 131299571691295107}
+  flipScale: 1
+  xScaleMult: 1
+--- !u!114 &7611333634711174827
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 904410703393564044}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: cf52eeb3fb4905f4f83ae3aa70500be4, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  staminaCost: 0.1
+  cooldownDuration: 0
+  cooldownTimer: 0
+  _animator: {fileID: 5235221205479957441}
+  _receiver: {fileID: 6278342242069635708}
+  _attackEffect: {fileID: 8984935571876133511}
+  _attackPoint: {fileID: 543485196735016535}
+  _targetLayer:
+    serializedVersion: 2
+    m_Bits: 512
+  _attackRadius: 1.115
+  _damage: 1
+  _attackSpeed: 2
+--- !u!114 &-3640166133368597214
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 904410703393564044}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 778a69683079c774cb9f73dd33053694, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  perfectBlockWindow: 0.2
+  blockValue: 0.5
+  animator: {fileID: 5235221205479957441}
+--- !u!114 &7390739680086206066
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 904410703393564044}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ae674e11d87d45543a33f79b7a405f47, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  staminaCost: 0.5
+  cooldownDuration: 0
+  cooldownTimer: 0
+  _animator: {fileID: 5235221205479957441}
+  _receiver: {fileID: 6278342242069635708}
+  dashSpeedCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 0
+      inSlope: 4
+      outSlope: 4
+      tangentMode: 34
+      weightedMode: 0
+      inWeight: 0
+      outWeight: 0.33333334
+    - serializedVersion: 3
+      time: 0.2
+      value: 0.8
+      inSlope: 2.1680338
+      outSlope: 2.1680338
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.1536864
+    - serializedVersion: 3
+      time: 0.5
+      value: 1
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    - serializedVersion: 3
+      time: 0.8
+      value: 0.9
+      inSlope: -1.1782167
+      outSlope: -1.1782167
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.2471443
+      outWeight: 0.33333334
+    - serializedVersion: 3
+      time: 1
+      value: 0
+      inSlope: -4.5
+      outSlope: -4.5
+      tangentMode: 34
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+  _dashDistance: 5
+  _dashDuration: 0.3
 --- !u!114 &980146651367106931
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -909,9 +962,14 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0c0a831496fed30428011d5603a8c63f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  staminaCost: 0
+  cooldownDuration: 5
+  cooldownTimer: 0
+  _animator: {fileID: 5235221205479957441}
+  _receiver: {fileID: 6278342242069635708}
   maxRadius: 5
   expansionDuration: 0.2
-  staminaEffectAmount: 1
+  staminaEffectAmount: 2.5
   allyTag: Player
   enemyTag: Enemy
   sphereCollider: {fileID: 6068360795330973705}

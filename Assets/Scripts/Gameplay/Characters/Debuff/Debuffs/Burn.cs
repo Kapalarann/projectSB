@@ -3,7 +3,7 @@ using UnityEngine;
 [CreateAssetMenu(menuName = "Debuff System/Burn Debuff")]
 public class BurnDebuffSO : Debuff
 {
-    public int damagePerTick = 1;
+    public int damagePerSecond = 1;
 
     public override void OnTick(GameObject target, int currentStacks)
     {
@@ -11,6 +11,6 @@ public class BurnDebuffSO : Debuff
         var health = target.GetComponent<Health>();
         if (health == null) return;
 
-        health.TakeDamage(damagePerTick * currentStacks * Time.deltaTime, true, false);
+        health.TakeDamage(damagePerSecond * currentStacks * Time.deltaTime, true, false);
     }
 }

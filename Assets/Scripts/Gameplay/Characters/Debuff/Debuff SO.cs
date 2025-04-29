@@ -8,6 +8,6 @@ public abstract class Debuff : ScriptableObject
     public GameObject visualEffectPrefab;
 
     public virtual void OnTick(GameObject target, int currentStacks) { }
-    public virtual void OnApply(GameObject target, int stacksAdded) { }
-    public virtual void OnRemove(GameObject target) { }
+    public virtual void OnApply(GameObject target, int stacksAdded, GameObject source) { }
+    public virtual void OnRemove(GameObject target, GameObject source) { }
 }

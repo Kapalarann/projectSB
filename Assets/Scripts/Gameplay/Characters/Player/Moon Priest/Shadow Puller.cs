@@ -1,34 +1,43 @@
+using System.Collections;
 using UnityEngine;
 
-public class ShadowPuller : MonoBehaviour
+public class ShadowPuller : Ability
 {
-    public Transform pullTarget;
-
     [Header("Attack")]
     public float range = 5f;
     public float coneAngle = 45f;
     public float baseDamage;
     public float detonateDamage;
+    private float baseDamageBase;
+    private float detonateDamageBase;
+    private Coroutine damageBuffCoroutine;
 
     [Header("Effect")]
     public float pullStrength = 2f;
     public float pullDuration = 0.5f;
+
+    [Header("Reference")]
+    [SerializeField] public Debuff debuffToDetonate;
+    public Transform pullTarget;
 
     private PlayerMovement movement;
 
     private void Awake()
     {
         movement = GetComponent<PlayerMovement>();
+
+        baseDamageBase = baseDamage;
+        detonateDamageBase = detonateDamage;
     }
 
-    public void OnAttack()
+    public void OnPrimary()
     {
         TriggerShadowPull();
     }
 
     public void TriggerShadowPull()
     {
-        if (pullTarget == null) return;
+        if (pullTarget == null || _animator.GetBool("isStunned")) return;
 
         Vector3 moveDir = movement.movementValue;
         if (moveDir == Vector3.zero) moveDir = Vector3.right * movement.flipScale;
@@ -54,7 +63,7 @@ public class ShadowPuller : MonoBehaviour
                 {
                     damage += detonateDamage;
                     pullMult = 3f;
-                    deb.RemoveDebuff("Moon");
+                    deb.ApplyDebuff(debuffToDetonate, -1, gameObject);
                 }
             }
 
@@ -67,5 +76,35 @@ public class ShadowPuller : MonoBehaviour
                 pullEffect.PullTowards(pullTarget.position, pullStrength * pullMult, pullDuration);
             }
         }
+
+        ConsumeStamina();
+    }
+
+    public void IncreaseDamage(float baseBonus, float baseMultiplier, float detonateBonus, float detonateMultiplier, float duration)
+    {
+        // If there's already a buff active, cancel it first
+        if (damageBuffCoroutine != null)
+        {
+            StopCoroutine(damageBuffCoroutine);
+            ResetDamage();
+        }
+
+        baseDamage = baseDamageBase * baseMultiplier + baseBonus;
+        detonateDamage = detonateDamageBase * detonateMultiplier + detonateBonus;
+
+        damageBuffCoroutine = StartCoroutine(DamageBuffTimer(duration));
+    }
+
+    private IEnumerator DamageBuffTimer(float duration)
+    {
+        yield return new WaitForSeconds(duration);
+        ResetDamage();
+        damageBuffCoroutine = null;
+    }
+
+    private void ResetDamage()
+    {
+        baseDamage = baseDamageBase;
+        detonateDamage = detonateDamageBase;
     }
 }

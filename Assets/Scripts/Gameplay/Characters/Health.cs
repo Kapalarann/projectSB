@@ -19,6 +19,8 @@ public class Health : MonoBehaviour
     [SerializeField] public float SP;
     [SerializeField] public float staminaRegen;
     [SerializeField] public float stamineDelay;
+    [SerializeField] public AnimationCurve staminaRegenCurve;
+    [SerializeField] public float regenCurveDuration = 2f;
 
     [Header("Stun")]
     [SerializeField] public float stunDuration = 1f;
@@ -69,6 +71,7 @@ public class Health : MonoBehaviour
 
         _receiver.StunEnd += StunEnd;
     }
+
     private void OnDestroy()
     {
         _receiver.StunEnd -= StunEnd;
@@ -196,9 +199,16 @@ public class Health : MonoBehaviour
         {
             if (SP < maxSP)
             {
-                SP += staminaRegen * Time.fixedDeltaTime;
+                float timeSinceRegenStarted = Time.time - (lastStaminaUseTime + stamineDelay);
+                float normalizedTime = Mathf.Clamp01(timeSinceRegenStarted / regenCurveDuration);
+                float regenMultiplier = staminaRegenCurve.Evaluate(normalizedTime);
+
+                SP += staminaRegen * regenMultiplier * Time.fixedDeltaTime;
                 SP = Mathf.Clamp(SP, 0, maxSP);
-                if (staminaBar != null) staminaBar.UpdateStamina(transform, SP, maxSP);
+
+                if (staminaBar != null)
+                    staminaBar.UpdateStamina(transform, SP, maxSP);
+
                 isRegeneratingStamina = true;
             }
         }
@@ -220,7 +230,7 @@ public class Health : MonoBehaviour
 
     public void StunEnd(AnimationEvent animationEvent)
     {
-        stunEnded = true;
+        EndStun();
     }
 
     private void EndStun()

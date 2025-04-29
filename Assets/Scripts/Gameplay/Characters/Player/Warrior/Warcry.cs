@@ -1,6 +1,6 @@
 using UnityEngine;
 
-public class Warcry : MonoBehaviour
+public class Warcry : Ability
 {
     [Header("Sphere Settings")]
     public float maxRadius = 5f;
@@ -10,11 +10,6 @@ public class Warcry : MonoBehaviour
     [Header("Ally and Enemy Tags")]
     public string allyTag = "Player";
     public string enemyTag = "Enemy";
-
-    [Header("Cooldown")]
-    public float cooldownDuration = 5f;
-    private float cooldownTimer = 0f;
-    public bool IsOnCooldown => cooldownTimer > 0f;
 
     [Header("References")]
     public GameObject sphereCollider;
@@ -30,7 +25,7 @@ public class Warcry : MonoBehaviour
 
     void Update()
     {
-        if (IsOnCooldown)
+        if (cooldownTimer > 0f)
         {
             cooldownTimer -= Time.deltaTime;
         }
@@ -51,10 +46,11 @@ public class Warcry : MonoBehaviour
 
     public void OnSpecial()
     {
-        if (IsOnCooldown) return;
+        if (cooldownTimer > 0f) return;
 
         ScreenShake.Instance.Shake(0.2f, 0.2f);
 
+        ConsumeStamina();
         hasAppliedEffect = false;
         isActive = true;
         currentTime = 0f;

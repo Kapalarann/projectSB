@@ -16,14 +16,14 @@ public class DebuffManager : MonoBehaviour
 
             if (debuff.remainingDuration <= 0)
             {
-                debuff.template.OnRemove(gameObject);
+                //debuff.template.OnRemove(gameObject, debuff.source);
                 RemoveDebuffAt(i);
             }
         }
     }
 
 
-    public void ApplyDebuff(Debuff so, int stacksToAdd, float? customDuration = null)
+    public void ApplyDebuff(Debuff so, int stacksToAdd, GameObject source, float? customDuration = null)
     {
         float duration = customDuration ?? so.defaultDuration;
 
@@ -45,21 +45,8 @@ public class DebuffManager : MonoBehaviour
         if (activeCount < activeDebuffs.Length)
         {
             var newInstance = new DebuffInstance();
-            newInstance.Initialize(so, stacksToAdd, duration, gameObject);
+            newInstance.Initialize(so, stacksToAdd, duration, gameObject, source);
             activeDebuffs[activeCount++] = newInstance;
-        }
-    }
-
-
-    public void RemoveDebuff(string debuffID)
-    {
-        for (int i = 0; i < activeCount; i++)
-        {
-            if (activeDebuffs[i].template != null && activeDebuffs[i].template.debuffID == debuffID)
-            {
-                RemoveDebuffAt(i);
-                return;
-            }
         }
     }
 

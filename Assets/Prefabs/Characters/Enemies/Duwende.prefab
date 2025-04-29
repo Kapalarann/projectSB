@@ -216,7 +216,7 @@ SpriteRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 0
   m_Sprite: {fileID: 334709278, guid: 50549d13e3f9ffb409a03e9e4d50535f, type: 3}
-  m_Color: {r: 0.2256141, g: 0.59887534, b: 0.735849, a: 0.78431374}
+  m_Color: {r: 0.740566, g: 0.9296861, b: 1, a: 1}
   m_FlipX: 0
   m_FlipY: 0
   m_DrawMode: 0
@@ -378,6 +378,13 @@ MonoBehaviour:
   SP: 0
   staminaRegen: 0
   stamineDelay: 0
+  staminaRegenCurve:
+    serializedVersion: 2
+    m_Curve: []
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+  regenCurveDuration: 2
   stunDuration: 2
   stunResMultiplier: 0
   stunResPerPlayer: 0

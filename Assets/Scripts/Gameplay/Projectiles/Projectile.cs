@@ -4,7 +4,7 @@ public class Projectile : MonoBehaviour
 {
     [Header("Projectile Settings")]
     public float speed = 10f;
-    public float lifeTime = 5f;
+    public float lifetime = 5f;
     public float damage = 1f;
 
     [Header("OnHitEffects")]
@@ -16,10 +16,10 @@ public class Projectile : MonoBehaviour
 
     protected virtual void Start()
     {
-        if (lifeTime > 0f) Destroy(gameObject, lifeTime);
+        if (lifetime > 0f) Destroy(gameObject, lifetime);
     }
 
-    protected virtual void Update()
+    public virtual void Update()
     {
         Move();
     }
@@ -47,6 +47,6 @@ public class Projectile : MonoBehaviour
         DebuffManager deb = other.GetComponent<DebuffManager>();
         if (other == null) return;
 
-        deb.ApplyDebuff(debuff, stack, duration);
+        deb.ApplyDebuff(debuff, stack, attacker,duration);
     }
 }
