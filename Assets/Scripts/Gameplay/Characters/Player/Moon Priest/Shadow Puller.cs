@@ -69,6 +69,7 @@ public class ShadowPuller : Ability
 
             Health hp = enemy.GetComponent<Health>();
             hp.TakeDamage(damage, transform.position);
+            GenerateEnergy();
 
             ShadowPull pullEffect = enemy.GetComponentInChildren<ShadowPull>();
             if (pullEffect != null)
@@ -76,8 +77,6 @@ public class ShadowPuller : Ability
                 pullEffect.PullTowards(pullTarget.position, pullStrength * pullMult, pullDuration);
             }
         }
-
-        ConsumeStamina();
     }
 
     public void IncreaseDamage(float baseBonus, float baseMultiplier, float detonateBonus, float detonateMultiplier, float duration)

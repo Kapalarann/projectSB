@@ -34,7 +34,7 @@ public class Projectile : MonoBehaviour
         if (other.gameObject == attacker) return;
 
         Health health = other.GetComponent<Health>();
-        if (health == null || health.isInvulnerable) return;
+        if (health == null) return;
 
         if(debuff != null) OnHitEffect(other);
 

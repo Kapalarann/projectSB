@@ -3,7 +3,9 @@ using UnityEngine;
 
 public abstract class Ability : MonoBehaviour
 {
-    [SerializeField] public float staminaCost = 0f;
+    [Header("Energy Settings")]
+    [SerializeField] public float energyCost = 0f;
+    [SerializeField] public float energyGenerated = 0f;
 
     [Header("Cooldown")]
     [SerializeField] public float cooldownDuration = 0f;
@@ -13,15 +15,26 @@ public abstract class Ability : MonoBehaviour
     [SerializeField] public Animator _animator;
     [SerializeField] public AnimationReciever _receiver;
 
-    private Health health;
+    private Energy energy;
 
     public void Start()
     {
-        health = GetComponent<Health>();
+        energy = GetComponent<Energy>();
     }
 
-    public void ConsumeStamina() 
+    public void GenerateEnergy()
     {
-        health.ApplyStaminaDamage(staminaCost);
+        energy.ChangeEnergy(energyGenerated);
+    }
+
+    public bool HasEnoughEnergy()
+    {
+        if (energy.EP > energyCost) return true;
+        return false;
+    }
+
+    public void ConsumeEnergy() 
+    {
+        energy.ChangeEnergy(-energyCost);
     }
 }

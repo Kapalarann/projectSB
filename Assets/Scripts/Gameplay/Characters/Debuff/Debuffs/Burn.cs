@@ -11,6 +11,6 @@ public class BurnDebuffSO : Debuff
         var health = target.GetComponent<Health>();
         if (health == null) return;
 
-        health.TakeDamage(damagePerSecond * currentStacks * Time.deltaTime, true, false);
+        health.TakeDamage(damagePerSecond * currentStacks * Time.deltaTime, true);
     }
 }

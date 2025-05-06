@@ -32,7 +32,7 @@ public class Dash : Ability
 
     public void OnUtility()
     {
-        if (_movement.movementValue.sqrMagnitude == 0 || _animator.GetBool("isStunned")) return;
+        if (_movement.movementValue.sqrMagnitude == 0 || _animator.GetBool("isStunned") || !HasEnoughEnergy()) return;
 
         isDashing = true;
         dashTimeElapsed = 0f;
@@ -40,7 +40,7 @@ public class Dash : Ability
 
         _block?.CancelBlock();
 
-        ConsumeStamina();
+        ConsumeEnergy();
         _health.isInvulnerable = true;
         _animator.SetTrigger("onDash");
         _animator.SetFloat("dashSpeed", 1f / _dashDuration);

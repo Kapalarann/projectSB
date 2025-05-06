@@ -40,6 +40,7 @@ public class EnemyStateManager : MonoBehaviour
     [HideInInspector] public float _attackTime = 0f;
     [HideInInspector] public GameObject _target;
 
+    private Stamina stamina;
     Rigidbody _rigidbody;
     Vector3 _desiredMove = Vector3.zero;
 
@@ -48,6 +49,7 @@ public class EnemyStateManager : MonoBehaviour
     void Start()
     {
         Enemies.Add(this);
+        stamina = GetComponent<Stamina>();
         _rigidbody = GetComponent<Rigidbody>();
         _rigidbody.constraints = RigidbodyConstraints.FreezeRotation;
         _rigidbody.useGravity = true;
@@ -73,7 +75,7 @@ public class EnemyStateManager : MonoBehaviour
 
     void FixedUpdate()
     {
-        if (GetComponent<Health>().isStunned) return;
+        if (stamina.isStunned) return;
 
         _desiredMove = Vector3.zero;
 

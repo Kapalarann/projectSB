@@ -33,7 +33,7 @@ public class AOE : Projectile
             var health = hit.GetComponent<Health>();
             if (health != null)
             {
-                health.TakeDamage(damagePerTick, true, false);
+                health.TakeDamage(damagePerTick, true);
             }
         }
     }

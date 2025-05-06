@@ -46,18 +46,16 @@ public class Warcry : Ability
 
     public void OnSpecial()
     {
-        if (cooldownTimer > 0f) return;
+        if (!HasEnoughEnergy()) return;
 
         ScreenShake.Instance.Shake(0.2f, 0.2f);
 
-        ConsumeStamina();
+        ConsumeEnergy();
         hasAppliedEffect = false;
         isActive = true;
         currentTime = 0f;
         sphereCollider.transform.localScale = Vector3.zero;
         sphereCollider.SetActive(true);
-
-        cooldownTimer = cooldownDuration;
     }
 
     private void ApplyEffects()
@@ -66,16 +64,18 @@ public class Warcry : Ability
 
         foreach (var hit in hitColliders)
         {
-            Health health = hit.GetComponent<Health>();
-            if (health == null) continue;
+            if (hit.gameObject == this.gameObject) continue;
 
-            if (hit.CompareTag(enemyTag))
+            Stamina stamina = hit.GetComponent<Stamina>();
+            if (hit.CompareTag(enemyTag) && stamina != null)
             {
-                health.ApplyStaminaDamage(staminaEffectAmount);
+                stamina.ApplyStaminaDamage(staminaEffectAmount);
             }
-            else if (hit.CompareTag(allyTag))
+
+            Energy energy = hit.GetComponent<Energy>();
+            if (hit.CompareTag(allyTag) && energy != null)
             {
-                health.RecoverStamina(staminaEffectAmount);
+                energy.ChangeEnergy(staminaEffectAmount);
             }
         }
     }

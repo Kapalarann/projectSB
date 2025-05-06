@@ -47,8 +47,8 @@ public class PlayerAttack : Ability
             else
             {
                 health.TakeDamage(_damage, transform.position);
+                GenerateEnergy();
             }
         }
-        ConsumeStamina();
     }
 }

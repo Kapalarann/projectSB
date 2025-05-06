@@ -12,7 +12,7 @@ public class GuidingBolt : Ability
 
     public void OnSecondary()
     {
-        if (playerMovement == null || rangedAttack == null || _animator.GetBool("isStunned")) return;
+        if (playerMovement == null || rangedAttack == null || _animator.GetBool("isStunned") || !HasEnoughEnergy()) return;
 
         Vector3 direction = playerMovement.movementValue.normalized;
 
@@ -22,6 +22,6 @@ public class GuidingBolt : Ability
             cooldownTimer = rangedAttack._attackCooldown;
         }
 
-        ConsumeStamina();
+        ConsumeEnergy();
     }
 }
