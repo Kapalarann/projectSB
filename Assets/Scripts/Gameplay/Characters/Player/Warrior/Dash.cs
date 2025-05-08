@@ -32,7 +32,7 @@ public class Dash : Ability
 
     public void OnUtility()
     {
-        if (_movement.movementValue.sqrMagnitude == 0 || _animator.GetBool("isStunned") || !HasEnoughEnergy()) return;
+        if (_movement.movementValue.sqrMagnitude == 0 || _animator.GetBool("isStunned") || !HasEnoughEnergy() || cooldownTimer > 0f) return;
 
         isDashing = true;
         dashTimeElapsed = 0f;

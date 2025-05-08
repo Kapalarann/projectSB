@@ -14,7 +14,7 @@ public class Projectile : MonoBehaviour
 
     [HideInInspector] public GameObject attacker;
 
-    protected virtual void Start()
+    public virtual void Start()
     {
         if (lifetime > 0f) Destroy(gameObject, lifetime);
     }

@@ -22,6 +22,19 @@ public abstract class Ability : MonoBehaviour
         energy = GetComponent<Energy>();
     }
 
+    public virtual void Update()
+    {
+        if (cooldownTimer > 0f)
+        {
+            cooldownTimer -= Time.deltaTime;
+        }
+    }
+
+    public void ResetCooldown()
+    {
+        cooldownTimer = cooldownDuration;
+    }
+
     public void GenerateEnergy()
     {
         energy.ChangeEnergy(energyGenerated);

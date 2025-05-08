@@ -1,18 +1,24 @@
 using UnityEngine;
+using UnityEngine.InputSystem;
 
 public class GuidingBolt : Ability
 {
     public RangedAttack rangedAttack;
     private PlayerMovement playerMovement;
+    private InputAction inputAction;
 
     private void Awake()
     {
         playerMovement = GetComponent<PlayerMovement>();
+        inputAction = GetComponent<PlayerInput>().actions["Secondary"];
     }
 
     public void OnSecondary()
     {
-        if (playerMovement == null || rangedAttack == null || _animator.GetBool("isStunned") || !HasEnoughEnergy()) return;
+        if (playerMovement == null || rangedAttack == null || _animator.GetBool("isStunned") || !HasEnoughEnergy() || cooldownTimer > 0f) return;
+        bool held = inputAction.ReadValue<float>() > 0.5f;
+
+        if (!held) return; //if release, don't run
 
         Vector3 direction = playerMovement.movementValue.normalized;
 

@@ -6,6 +6,7 @@ public class StaminaBarManager : MonoBehaviour
     [SerializeField] public GameObject staminaBarPrefab;
     [SerializeField] float yOffset = 2f; // The vertical offset from the character
     [SerializeField] float staminaBarTime;
+    [SerializeField] private GameObject notchPrefab;
 
     private RectTransform canvasRect;
 
@@ -59,4 +60,20 @@ public class StaminaBarManager : MonoBehaviour
             }
         }
     }
+
+    public void AddNotchToStaminaBar(Transform character, float percentage)
+    {
+        if (percentage < 0f || percentage > 1f) return;
+
+        RectTransform staminaBar = staminaBars[character];
+        float width = staminaBar.rect.width;
+        percentage -= 0.5f;
+
+        GameObject notch = Instantiate(notchPrefab, staminaBar);
+        RectTransform notchRect = notch.GetComponent<RectTransform>();
+
+        notchRect.anchoredPosition = new Vector2(width * percentage, 0f);
+        notchRect.localScale = Vector3.one;
+    }
+
 }

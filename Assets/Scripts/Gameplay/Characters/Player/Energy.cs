@@ -7,6 +7,9 @@ public class Energy : MonoBehaviour
     [SerializeField] public float maxEP;
     public float EP = 0f;
 
+    [Header("Abilities")]
+    [SerializeField] public Ability[] abilities;
+
     private StaminaBarManager staminaBar;
 
     private void Awake()
@@ -17,6 +20,11 @@ public class Energy : MonoBehaviour
         {
             staminaBar.AddStaminaBar(transform);
             staminaBar.UpdateStamina(transform, EP, maxEP);
+
+            foreach (Ability ability in abilities)
+            {
+                staminaBar.AddNotchToStaminaBar(transform, ability.energyCost/maxEP);
+            }
         }
     }
 

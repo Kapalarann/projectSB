@@ -130,9 +130,10 @@ MonoBehaviour:
   stack: 1
   duration: 10
   attacker: {fileID: 0}
-  tickRate: 0.5
+  tickRate: 0.3
   radius: 0.8
   damagePerTick: 1
   tickTimer: 0
   switchDistance: 0.3
+  swerveSpeed: 180
   target: {fileID: 0}

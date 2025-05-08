@@ -5,6 +5,7 @@ public class Warcry : Ability
     [Header("Sphere Settings")]
     public float maxRadius = 5f;
     public float expansionDuration = 1f;
+    public float damage;
     public float staminaEffectAmount = 2f;
 
     [Header("Ally and Enemy Tags")]
@@ -23,12 +24,9 @@ public class Warcry : Ability
         sphereCollider.SetActive(false); // start inactive by default
     }
 
-    void Update()
+    public override void Update()
     {
-        if (cooldownTimer > 0f)
-        {
-            cooldownTimer -= Time.deltaTime;
-        }
+        base.Update();
 
         if (!isActive) return;
 
@@ -46,7 +44,7 @@ public class Warcry : Ability
 
     public void OnSpecial()
     {
-        if (!HasEnoughEnergy()) return;
+        if (!HasEnoughEnergy() || cooldownTimer > 0f) return;
 
         ScreenShake.Instance.Shake(0.2f, 0.2f);
 
@@ -56,6 +54,8 @@ public class Warcry : Ability
         currentTime = 0f;
         sphereCollider.transform.localScale = Vector3.zero;
         sphereCollider.SetActive(true);
+
+        ResetCooldown();
     }
 
     private void ApplyEffects()
@@ -66,9 +66,11 @@ public class Warcry : Ability
         {
             if (hit.gameObject == this.gameObject) continue;
 
+            Health health = hit.GetComponent<Health>();
             Stamina stamina = hit.GetComponent<Stamina>();
             if (hit.CompareTag(enemyTag) && stamina != null)
             {
+                health.TakeDamage(damage, true);
                 stamina.ApplyStaminaDamage(staminaEffectAmount);
             }
 

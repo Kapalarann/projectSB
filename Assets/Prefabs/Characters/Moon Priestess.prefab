@@ -564,6 +564,9 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   maxEP: 10
   EP: 0
+  abilities:
+  - {fileID: 4807102951453391465}
+  - {fileID: 2316292976314376305}
 --- !u!114 &470515079998066307
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -832,7 +835,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   energyCost: 0
   energyGenerated: 0.5
-  cooldownDuration: 0
+  cooldownDuration: 0.3
   cooldownTimer: 0
   _animator: {fileID: 8124580865139366059}
   _receiver: {fileID: 4856946710090860011}
@@ -901,7 +904,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 451451190fbfb6e42bb22d9e6b7f449e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  energyCost: 0
+  energyCost: 5
   energyGenerated: 0
   cooldownDuration: 10
   cooldownTimer: 0
@@ -914,7 +917,7 @@ MonoBehaviour:
     projectilePrefab: {fileID: 93274175096045495, guid: 1c75862bc59e9d84bb7c3e52ca1a6cd7, type: 3}
     attackPoint: {fileID: 4043308146533692441}
     damage: 1
-    speed: 10
+    speed: 5
     lifeTime: 5
 --- !u!1 &7368381724465631478
 GameObject:

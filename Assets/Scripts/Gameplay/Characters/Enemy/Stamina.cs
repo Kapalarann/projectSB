@@ -17,7 +17,6 @@ public class Stamina : MonoBehaviour
     [SerializeField] public float stunResMultiplier;
     [SerializeField] public float stunResPerPlayer;
     private float lastStaminaUseTime;
-    private bool isRegeneratingStamina = false;
     private bool stunEnded = false;
 
     [Header("References")]
@@ -68,7 +67,6 @@ public class Stamina : MonoBehaviour
         if (staminaBar != null) staminaBar.UpdateStamina(transform, SP, maxSP);
 
         lastStaminaUseTime = Time.time;
-        isRegeneratingStamina = false;
     }
 
     private void RegenerateStamina()
@@ -86,8 +84,6 @@ public class Stamina : MonoBehaviour
 
                 if (staminaBar != null)
                     staminaBar.UpdateStamina(transform, SP, maxSP);
-
-                isRegeneratingStamina = true;
             }
         }
     }

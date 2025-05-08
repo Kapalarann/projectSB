@@ -11,7 +11,7 @@ public class CameraController : MonoBehaviour
     [SerializeField] private Vector3 offset = new Vector3(0, 10, -10);
     [SerializeField] private float maxDistance = 20f;
 
-    private List<Transform> players = new List<Transform>();
+    private List<Transform> players;
     private Camera cam;
     private int prevCount = 0;
 

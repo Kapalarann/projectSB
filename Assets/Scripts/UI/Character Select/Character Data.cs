@@ -10,6 +10,7 @@ public class CharacterData : ScriptableObject
     [TextArea] public string description;
     public AbilityDescription[] abilityDescriptions;
     public GameObject characterPrefab;
+    public bool locked = false;
 }
 
 [Serializable]

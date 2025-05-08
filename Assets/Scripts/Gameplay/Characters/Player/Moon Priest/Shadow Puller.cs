@@ -30,6 +30,11 @@ public class ShadowPuller : Ability
         detonateDamageBase = detonateDamage;
     }
 
+    public override void Update()
+    {
+        base.Update();
+    }
+
     public void OnPrimary()
     {
         TriggerShadowPull();
@@ -37,7 +42,7 @@ public class ShadowPuller : Ability
 
     public void TriggerShadowPull()
     {
-        if (pullTarget == null || _animator.GetBool("isStunned")) return;
+        if (pullTarget == null || _animator.GetBool("isStunned") || cooldownTimer > 0f) return;
 
         Vector3 moveDir = movement.movementValue;
         if (moveDir == Vector3.zero) moveDir = Vector3.right * movement.flipScale;
@@ -77,6 +82,8 @@ public class ShadowPuller : Ability
                 pullEffect.PullTowards(pullTarget.position, pullStrength * pullMult, pullDuration);
             }
         }
+
+        ResetCooldown();
     }
 
     public void IncreaseDamage(float baseBonus, float baseMultiplier, float detonateBonus, float detonateMultiplier, float duration)

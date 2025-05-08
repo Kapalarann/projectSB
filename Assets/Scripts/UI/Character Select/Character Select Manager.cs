@@ -16,7 +16,7 @@ public class CharacterSelectManager : MonoBehaviour
 
     private void Awake()
     {
-        instance = this;
+        if (instance == null) instance = this;
 
         lastHovered = new GameObject[display.Length];
     }
@@ -41,6 +41,7 @@ public class CharacterSelectManager : MonoBehaviour
 
     public void UpdateHover(GameObject hovered, int playerIndex)
     {
+        if (display[playerIndex].locked) return;
         if (playerIndex < 0 || playerIndex >= display.Length) return;
         if (hovered == lastHovered[playerIndex] || hovered == null) return;
 
@@ -65,6 +66,7 @@ public class CharacterSelectManager : MonoBehaviour
         int index = selector.GetComponent<PlayerInput>().playerIndex;
         var data = selected.GetComponent<CharacterIcon>().characterData;
         display[index].bg.color = Color.black;
+        display[index].locked = true;
 
         PlayerStatManager.instance.SetCharacter(index, data, input);
 
@@ -75,6 +77,7 @@ public class CharacterSelectManager : MonoBehaviour
     {
         int index = selector.GetComponent<PlayerInput>().playerIndex;
         display[index].bg.color = Color.gray;
+        display[index].locked = false;
 
         PlayerStatManager.instance.UnsetCharacter(index);
 
@@ -90,4 +93,6 @@ public class Display
     public TMP_Text nameText;
     public TMP_Text titleText;
     public TMP_Text[] abilityText;
+
+    public bool locked = false;
 }

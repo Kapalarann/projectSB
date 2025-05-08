@@ -468,8 +468,8 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 879.99994, y: 0}
-  m_SizeDelta: {x: 160, y: 30}
+  m_AnchoredPosition: {x: 0, y: 0}
+  m_SizeDelta: {x: 241.611, y: 50.877}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &218071482
 MonoBehaviour:
@@ -1247,6 +1247,7 @@ MonoBehaviour:
     - {fileID: 1836434190}
     - {fileID: 1368636546}
     - {fileID: 15390322}
+    locked: 0
   - displayBox: {fileID: 1006739706}
     bg: {fileID: 1790340050}
     nameText: {fileID: 1560607096}
@@ -1256,6 +1257,7 @@ MonoBehaviour:
     - {fileID: 694335235}
     - {fileID: 477739569}
     - {fileID: 1777566784}
+    locked: 0
   - displayBox: {fileID: 208025245}
     bg: {fileID: 1215592677}
     nameText: {fileID: 1179969052}
@@ -1265,6 +1267,7 @@ MonoBehaviour:
     - {fileID: 1684678787}
     - {fileID: 324846709}
     - {fileID: 378522599}
+    locked: 0
   - displayBox: {fileID: 1541907798}
     bg: {fileID: 1714069957}
     nameText: {fileID: 817846527}
@@ -1274,6 +1277,7 @@ MonoBehaviour:
     - {fileID: 934813496}
     - {fileID: 1947085582}
     - {fileID: 473131178}
+    locked: 0
 --- !u!1 &1509324920
 GameObject:
   m_ObjectHideFlags: 0
@@ -1424,8 +1428,8 @@ MonoBehaviour:
   m_faceColor:
     serializedVersion: 2
     rgba: 4294967295
-  m_fontSize: 24
-  m_fontSizeBase: 24
+  m_fontSize: 50
+  m_fontSizeBase: 50
   m_fontWeight: 400
   m_enableAutoSizing: 0
   m_fontSizeMin: 18

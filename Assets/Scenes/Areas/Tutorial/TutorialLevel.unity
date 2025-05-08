@@ -346,11 +346,12 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: "Mouse: \tLeft click - attack\n\t\tRight click - dash\n\t\tMiddle click
-    - block\nKeyboard: \tWASD - movement\n\t\tJ - attack\n\t\tK - block\n\t\tleft
-    shift - dash\n\t\tescape - pause/unpause\n\t\tenter - restart\nController:\tright
-    stick - movement\n\t\tleft shoulder - dash\n\t\tleft trigger - block\n\t\tsquare/X
-    - attack"
+  m_text: "Mouse: \tLeft click - primary\n\t\tRight click - secondary\n\t\tMiddle
+    click - mability\n\t\tMouse 4 - special\nKeyboard: \tWASD - movement\n\t\tJ -
+    primary\n\t\tK - secondary\n\t\tleft shift - mobility\n\t\tL - special\n\t\tescape
+    - pause/unpause\n\t\tenter - restart\nController:\tright stick - movement\n\t\tbutton
+    west - primary\n\t\tbutton north - secondary\n\t\tleft shoulder - mobility\n\t\tbutton
+    east - special"
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
   m_sharedMaterial: {fileID: 2180264, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
@@ -991,6 +992,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: Level T-1
       objectReference: {fileID: 0}
+    - target: {fileID: 7223884130541676013, guid: fdce6ac21af53644bb99533145d0dfcb, type: 3}
+      propertyPath: m_LocalScale.y
+      value: 7
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
@@ -1098,6 +1103,7 @@ MonoBehaviour:
   staminaBarPrefab: {fileID: 6261654558830306833, guid: 42238332e91a2524880ab4b8bc7ff61d, type: 3}
   yOffset: 1.8
   staminaBarTime: 0
+  notchPrefab: {fileID: 7098957400013130673, guid: 8d9aaaf0ea1c1f24598c196931195798, type: 3}
 --- !u!1660057539 &9223372036854775807
 SceneRoots:
   m_ObjectHideFlags: 0

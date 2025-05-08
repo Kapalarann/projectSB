@@ -40,6 +40,8 @@ public class GameManager : MonoBehaviour
 
     public void RestartLevel()
     {
+        PlayerMovement.Players.Clear();
+        EnemyStateManager.Enemies.Clear();
         SceneManager.LoadScene(SceneManager.GetActiveScene().name);
     }
 }

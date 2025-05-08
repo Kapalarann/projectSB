@@ -38,7 +38,7 @@
                     "id": "1aaad837-78a3-4f11-b7b2-8f4d954e6df8",
                     "expectedControlType": "",
                     "processors": "",
-                    "interactions": "Press",
+                    "interactions": "Press(behavior=2)",
                     "initialStateCheck": false
                 },
                 {
@@ -250,8 +250,8 @@
                 },
                 {
                     "name": "",
-                    "id": "2de0ae2a-06f8-4cbf-bc87-b15089160fe3",
-                    "path": "<Mouse>/rightButton",
+                    "id": "c41e8ce3-e029-404e-9e19-9dcf5b6c767b",
+                    "path": "<Mouse>/middleButton",
                     "interactions": "",
                     "processors": "",
                     "groups": "",
@@ -283,8 +283,8 @@
                 },
                 {
                     "name": "",
-                    "id": "c41e8ce3-e029-404e-9e19-9dcf5b6c767b",
-                    "path": "<Mouse>/middleButton",
+                    "id": "2de0ae2a-06f8-4cbf-bc87-b15089160fe3",
+                    "path": "<Mouse>/rightButton",
                     "interactions": "",
                     "processors": "",
                     "groups": "",

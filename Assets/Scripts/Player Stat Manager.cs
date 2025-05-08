@@ -1,3 +1,4 @@
+using System;
 using UnityEngine;
 using UnityEngine.InputSystem;
 using UnityEngine.SceneManagement;
@@ -32,6 +33,7 @@ public class PlayerStatManager : MonoBehaviour
         if (playerIndex >= 0 && playerIndex < selectedCharacters.Length)
         {
             selectedCharacters[playerIndex] = character;
+            selectedCharacters[playerIndex].locked = true;
             playerDevices[playerIndex] = device;
         }
     }
@@ -39,6 +41,7 @@ public class PlayerStatManager : MonoBehaviour
     public void UnsetCharacter(int playerIndex)
     {
         selectedCharacters[playerIndex] = null;
+        selectedCharacters[playerIndex].locked = false;
         playerDevices[playerIndex] = null;
     }
 
@@ -53,6 +56,15 @@ public class PlayerStatManager : MonoBehaviour
 
     public void LoadScene(string sceneName)
     {
+        bool proceed = true;
+        int i = 0;
+        foreach (CharacterData cd in selectedCharacters)
+        {
+            if (i + 1 > SelectorController.selectorControllers.Count) continue;
+            if (!cd.locked) proceed = false;
+            i++;
+        }
+        if(!proceed) return;
         SceneManager.LoadScene(sceneName);
     }
 

@@ -549,6 +549,9 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   maxEP: 10
   EP: 0
+  abilities:
+  - {fileID: 7390739680086206066}
+  - {fileID: 980146651367106931}
 --- !u!114 &-4887786474362714206
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -947,7 +950,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0c0a831496fed30428011d5603a8c63f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  energyCost: 3
+  energyCost: 5
   energyGenerated: 0
   cooldownDuration: 5
   cooldownTimer: 0
@@ -955,6 +958,7 @@ MonoBehaviour:
   _receiver: {fileID: 6278342242069635708}
   maxRadius: 5
   expansionDuration: 0.2
+  damage: 4
   staminaEffectAmount: 2.5
   allyTag: Player
   enemyTag: Enemy

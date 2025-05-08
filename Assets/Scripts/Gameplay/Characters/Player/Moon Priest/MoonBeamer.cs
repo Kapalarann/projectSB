@@ -10,13 +10,22 @@ public class MoonBeamer : Ability
         playerMovement = GetComponent<PlayerMovement>();
     }
 
+    public override void Update()
+    {
+        base.Update();
+    }
+
     public void OnSpecial()
     {
-        if (cooldownTimer > 0f) return;
+        if (!HasEnoughEnergy() || cooldownTimer > 0f) return;
 
         if (rangedAttack == null || _animator.GetBool("isStunned")) return;
 
+        ConsumeEnergy();
+
         rangedAttack.FireInDirection(gameObject, Vector3.zero);
         cooldownTimer = rangedAttack._attackCooldown;
+
+        ResetCooldown();
     }
 }
