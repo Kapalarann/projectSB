@@ -19,6 +19,7 @@ public class Health : MonoBehaviour
     [SerializeField] AnimationReciever _receiver;
     [SerializeField] SpriteEffects spriteEffects;
     [SerializeField] BloodEffect bloodEffects;
+    [SerializeField] SparkEffect sparkEffects;
 
     [System.NonSerialized] public bool isInvulnerable = false;
     private HealthBarManager healthBar;
@@ -113,6 +114,7 @@ public class Health : MonoBehaviour
             if (isPerfect)
             {
                 spriteEffects.FlashWhite(0.1f);
+                if (sparkEffects != null) sparkEffects.PlayEffect(attackerPos); 
                 isReflected = true;
             }
 
