@@ -38,8 +38,17 @@ public class Projectile : MonoBehaviour
 
         if(debuff != null) OnHitEffect(other);
 
-        health.TakeDamage(damage, transform.position);
-        Destroy(gameObject);
+        bool isReflected = false;
+        health.TryBlock(damage, transform.position, out isReflected);
+        if (isReflected)
+        {
+            Reflect(other.gameObject);
+        }
+        else
+        {
+            health.TakeDamage(damage, transform.position);
+            Destroy(gameObject);
+        }
     }
 
     protected virtual void OnHitEffect(Collider other)
@@ -48,5 +57,12 @@ public class Projectile : MonoBehaviour
         if (other == null) return;
 
         deb.ApplyDebuff(debuff, stack, attacker,duration);
+    }
+
+    protected virtual void Reflect(GameObject reflector)
+    {
+        attacker = reflector;
+
+        transform.Rotate(Vector3.up * 180);
     }
 }

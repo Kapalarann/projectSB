@@ -50,31 +50,6 @@ public class Health : MonoBehaviour
 
     public void TakeDamage(float damage, Vector3 attackerPos)
     {
-        if (block != null)
-        {
-            bool isPerfect;
-            float blockVal;
-            if (block.TryBlock(damage, attackerPos, out isPerfect, out blockVal))
-            {
-                float staminaDamage = isPerfect ? 0 : damage * (1 - blockVal);
-                float intensity = isPerfect ? 1f : 0.5f;
-
-                if (isPerfect) spriteEffects.FlashWhite(0.1f);
-
-                if (knockback != null) knockback.ApplyKnockback(attackerPos, damage * 3f);
-                HitAndShake(intensity);
-                if (stamina != null) stamina.ApplyStaminaDamage(staminaDamage);
-
-                bool enoughEP = true;
-                if (energy != null)
-                {
-                    if (energy.EP >= staminaDamage) energy.ChangeEnergy(-staminaDamage);
-                    else enoughEP = false;
-                }
-                if(enoughEP) return;
-            }
-        }
-
         if (_audio != null) _audio.PlayHurtSound();
 
         if (spriteEffects != null) spriteEffects.FlashWhite(0.1f);
@@ -120,6 +95,38 @@ public class Health : MonoBehaviour
             {
                 isDead = true;
             }
+        }
+    }
+
+    public void TryBlock(float damage, Vector3 attackerPos, out bool isReflected)
+    {
+        isReflected = false;
+        if (block == null) return;
+
+        bool isPerfect;
+        float blockVal;
+        if (block.TryBlock(damage, attackerPos, out isPerfect, out blockVal))
+        {
+            float staminaDamage = isPerfect ? 0 : damage * (1 - blockVal);
+            float intensity = isPerfect ? 1f : 0.5f;
+
+            if (isPerfect)
+            {
+                spriteEffects.FlashWhite(0.1f);
+                isReflected = true;
+            }
+
+            if (knockback != null) knockback.ApplyKnockback(attackerPos, damage * 3f);
+            HitAndShake(intensity);
+            if (stamina != null) stamina.ApplyStaminaDamage(staminaDamage);
+
+            bool enoughEP = true;
+            if (energy != null)
+            {
+                if (energy.EP >= staminaDamage) energy.ChangeEnergy(-staminaDamage);
+                else enoughEP = false;
+            }
+            if (enoughEP) return;
         }
     }
 
