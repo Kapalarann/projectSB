@@ -14,19 +14,27 @@ public class EnemyApproachState : EnemyBaseState
             return;
         }
 
-        float d = Vector3.Distance(enemy.transform.position, enemy._target.transform.position);
+        float distance = Vector3.Distance(enemy.transform.position, enemy._target.transform.position);
 
-        // Attempt attack if in range and cooldown is ready
-        if (d <= enemy.rangedAttack._maxRange &&
-            d >= enemy.rangedAttack._minRange &&
+        if (enemy.isRanged &&
+            distance <= enemy.rangedAttack._maxRange &&
+            distance >= enemy.rangedAttack._minRange &&
             enemy._attackTime >= enemy.rangedAttack._attackCooldown)
         {
             enemy.SwitchState(enemy.attackState);
             return;
         }
 
-        // Always apply movement, even if in range and attack is cooling down
+        if (enemy.isMelee &&
+            distance <= enemy.meleeAttack.attackRange &&
+            enemy._attackTime >= enemy.meleeAttack.attackCooldown)
+        {
+            enemy.SwitchState(enemy.attackState);
+            return;
+        }
+
         Vector3 boidDirection = enemy.GetBoidDirection();
         enemy.Move(boidDirection);
     }
+
 }

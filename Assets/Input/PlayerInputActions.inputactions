@@ -237,17 +237,6 @@
                 },
                 {
                     "name": "",
-                    "id": "d361260f-4675-4237-8fc0-3a2fd0adcaeb",
-                    "path": "<Keyboard>/z",
-                    "interactions": "",
-                    "processors": "",
-                    "groups": "",
-                    "action": "Utility",
-                    "isComposite": false,
-                    "isPartOfComposite": false
-                },
-                {
-                    "name": "",
                     "id": "5ae76d1c-1c60-4d76-a882-fbb100a4c55a",
                     "path": "<Gamepad>/leftShoulder",
                     "interactions": "",
@@ -292,8 +281,8 @@
                 },
                 {
                     "name": "",
-                    "id": "2de0ae2a-06f8-4cbf-bc87-b15089160fe3",
-                    "path": "<Mouse>/rightButton",
+                    "id": "2c7774fa-6335-403a-9694-f194d60d314e",
+                    "path": "<Gamepad>/buttonNorth",
                     "interactions": "",
                     "processors": "",
                     "groups": "",
@@ -303,8 +292,8 @@
                 },
                 {
                     "name": "",
-                    "id": "2c7774fa-6335-403a-9694-f194d60d314e",
-                    "path": "<Gamepad>/buttonNorth",
+                    "id": "2de0ae2a-06f8-4cbf-bc87-b15089160fe3",
+                    "path": "<Mouse>/rightButton",
                     "interactions": "",
                     "processors": "",
                     "groups": "",
@@ -325,8 +314,8 @@
                 },
                 {
                     "name": "",
-                    "id": "9e38cf7f-a0e6-4064-91b9-f6c4a32f9d63",
-                    "path": "<Mouse>/backButton",
+                    "id": "509af555-f46e-48be-bc85-3c9098e3edb4",
+                    "path": "<Gamepad>/buttonEast",
                     "interactions": "",
                     "processors": "",
                     "groups": "",
@@ -336,8 +325,8 @@
                 },
                 {
                     "name": "",
-                    "id": "509af555-f46e-48be-bc85-3c9098e3edb4",
-                    "path": "<Gamepad>/buttonEast",
+                    "id": "9e38cf7f-a0e6-4064-91b9-f6c4a32f9d63",
+                    "path": "<Mouse>/backButton",
                     "interactions": "",
                     "processors": "",
                     "groups": "",

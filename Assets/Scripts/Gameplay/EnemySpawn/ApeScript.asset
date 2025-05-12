@@ -9,11 +9,8 @@ MonoBehaviour:
   m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 82287a98a551f9d418ba257fcd73c6cb, type: 3}
-  m_Name: Wave T-1.1
+  m_Script: {fileID: 11500000, guid: df2085c1079c63541acc57f9c1415975, type: 3}
+  m_Name: ApeScript
   m_EditorClassIdentifier: 
-  enemyList:
-  - {fileID: 11400000, guid: 7305f05678f941f4daeb2428ad8d133b, type: 2}
-  budget: 6
-  spawnInterval: 5
-  percentOfEnter: 0
+  enemyPrefab: {fileID: 5328335917398062649, guid: efef962279398384a820c3fc90b64b44, type: 3}
+  enemyCost: 1

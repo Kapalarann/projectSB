@@ -1,4 +1,4 @@
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using UnityEngine;
 
 public class EnemyStateManager : MonoBehaviour
@@ -12,6 +12,8 @@ public class EnemyStateManager : MonoBehaviour
 
     [Header("Behavior")]
     [SerializeField] public float _idleDuration;
+    [SerializeField] public bool isRanged;
+    [SerializeField] public bool isMelee;
 
     [Header("Movement")]
     [SerializeField] float _movementSpeed = 3f;
@@ -19,6 +21,7 @@ public class EnemyStateManager : MonoBehaviour
     [SerializeField] float _flipDampening = 0.2f;
     [SerializeField] float _steeringSpeed = 5f;
     private Vector3 _currentMoveDirection = Vector3.forward;
+    [HideInInspector] public bool dashing = false;
 
     [Header("Boid Behavior")]
     public float separationDistance = 2f;
@@ -30,6 +33,7 @@ public class EnemyStateManager : MonoBehaviour
 
     [Header("Attacks")]
     [SerializeField] public RangedAttack rangedAttack;
+    [SerializeField] public MeleeAttack meleeAttack;
 
     [Header("References")]
     [SerializeField] public Animator _animator;
@@ -41,7 +45,7 @@ public class EnemyStateManager : MonoBehaviour
     [HideInInspector] public GameObject _target;
 
     private Stamina stamina;
-    Rigidbody _rigidbody;
+    [HideInInspector] public Rigidbody _rigidbody;
     Vector3 _desiredMove = Vector3.zero;
 
     float flipScale = 1f, xScaleMult = 1f;
@@ -83,8 +87,12 @@ public class EnemyStateManager : MonoBehaviour
         currentState.UpdateState(this);
 
         // Attack cooldown
-        if (_attackTime < rangedAttack._attackCooldown)
+        if ((isRanged && _attackTime < rangedAttack._attackCooldown)
+            || (isMelee && _attackTime < meleeAttack.attackCooldown)
+            )
+        {
             _attackTime += Time.fixedDeltaTime;
+        }
 
         // Smooth sprite flip
         if (Mathf.Abs(_sprite.transform.localScale.x - (flipScale * xScaleMult)) > 0.01f)
@@ -96,6 +104,7 @@ public class EnemyStateManager : MonoBehaviour
             );
         }
 
+        if (dashing) return;
         // Apply horizontal movement with preserved vertical velocity
         Vector3 currentVelocity = _rigidbody.linearVelocity;
         Vector3 horizontalVelocity = new Vector3(_desiredMove.x, currentVelocity.y, _desiredMove.z);
@@ -155,7 +164,8 @@ public class EnemyStateManager : MonoBehaviour
         // 1. Direction to target
         Vector3 toTarget = _target.transform.position - pos;
         toTarget.y = 0f;
-        Vector3 desiredTargetPos = _target.transform.position - toTarget.normalized * rangedAttack._minRange;
+        float optimalRange = isRanged ? rangedAttack._minRange : 0f;
+        Vector3 desiredTargetPos = _target.transform.position - toTarget.normalized * optimalRange;
         Vector3 targetDir = (desiredTargetPos - pos).normalized;
 
         // 2. Separation
@@ -201,11 +211,30 @@ public class EnemyStateManager : MonoBehaviour
     void Shoot(AnimationEvent animationEvent)
     {
         _sprite.GetComponent<SpriteRenderer>().color = Color.white;
-        rangedAttack.FireAtTarget(gameObject, _target);
+
+        if (isRanged)
+            rangedAttack.FireAtTarget(gameObject, _target);
+        else if (isMelee)
+        {
+            meleeAttack.PerformMeleeAttack(
+                this,
+                _rigidbody,
+                transform,
+                _target,
+                () => {
+                    // ✅ Callback: Dash complete
+                    FinishAttack(null);
+                }
+            );
+            dashing = true;
+        }
+            
     }
 
     public void FinishAttack(AnimationEvent animationEvent)
     {
         SwitchState(idleState);
+        _animator.SetTrigger("onAttackEnd");
+        dashing = false;
     }
 }
