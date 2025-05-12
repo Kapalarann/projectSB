@@ -42,6 +42,7 @@ public class GameManager : MonoBehaviour
     {
         PlayerMovement.Players.Clear();
         EnemyStateManager.Enemies.Clear();
+        PlayerStatManager.instance.downedPlayers = 0;
         SceneManager.LoadScene(SceneManager.GetActiveScene().name);
     }
 }

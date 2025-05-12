@@ -2,14 +2,20 @@ using System.Collections;
 using TMPro;
 using UnityEngine;
 
-public class Health : MonoBehaviour
+public class Health : Interactable
 {
     [SerializeField] bool isPlayer;
 
     [Header("Health")]
     [SerializeField] public float maxHP;
     [SerializeField] public float HP;
-    private bool isDead = false;
+    [HideInInspector] public bool isDown = false;
+    [HideInInspector] public bool isDead = false;
+
+    [Header("Revive")]
+    [SerializeField] public float maxRP;
+    [SerializeField] public float RP = 0;
+    [SerializeField] public float RPperSec;
 
     [Header("Damage Effects")]
     [SerializeField] float damageNumberYOffset = 1.5f;
@@ -22,6 +28,7 @@ public class Health : MonoBehaviour
     [SerializeField] SparkEffect sparkEffects;
 
     [System.NonSerialized] public bool isInvulnerable = false;
+    private PlayerMovement playerMovement;
     private HealthBarManager healthBar;
     private GlobalDamageNumberPool damageNumberPool;
     private Knockback knockback;
@@ -29,6 +36,9 @@ public class Health : MonoBehaviour
     private Stamina stamina;
     private Energy energy;
     private Block block;
+
+    private int defaultLayer;
+    private int downedLayer;
 
     private void Awake()
     {
@@ -41,6 +51,11 @@ public class Health : MonoBehaviour
         stamina = GetComponent<Stamina>();
         energy = GetComponent<Energy>();
         block = GetComponent<Block>();
+
+        if(isPlayer) playerMovement = GetComponent<PlayerMovement>();
+
+        defaultLayer = gameObject.layer;
+        downedLayer = LayerMask.NameToLayer("Downed");
 
         if (healthBar != null)
         {
@@ -167,7 +182,28 @@ public class Health : MonoBehaviour
     {
         if (GroundChecker.IsGrounded(gameObject))
         {
-            if (isDead) Die();
+            if (isDead)
+            {
+                if (isPlayer)
+                {
+                    if(!isDown) Downed();
+                }
+                else
+                {
+                    Die();
+                }
+            } 
+        }
+
+        if (isPlayer && isDown)
+        {
+            if(RP + Time.fixedDeltaTime * RPperSec < maxRP)
+            {
+                RP += Time.fixedDeltaTime * RPperSec;
+                healthBar.UpdateHealth(transform, RP, maxRP);
+            }
+
+            if(RP >= maxRP) Revived();
         }
     }
 
@@ -182,5 +218,42 @@ public class Health : MonoBehaviour
     {
         healthBar.RemoveHealthBar(transform);
         Destroy(gameObject);
+    }
+
+    public void Downed()
+    {
+        isDown = true;
+        RP = 0;
+
+        playerMovement.ApplySlow(0.75f, -1);
+        _animator.SetBool("isDowned", true);
+        gameObject.layer = downedLayer;
+        PlayerStatManager.instance.downedPlayers++;
+
+        if (PlayerStatManager.instance.downedPlayers >= PlayerMovement.Players.Count)
+        {
+            GameManager.Instance.RestartLevel();
+        }
+    }
+
+    public void Revived()
+    {
+        isDown = false;
+        isDead = false;
+        HP = maxHP / 2;
+        if (healthBar != null) healthBar.UpdateHealth(transform, HP, maxHP);
+
+        playerMovement.RemovePermanentSlow();
+        _animator.SetBool("isDowned", false);
+        gameObject.layer = defaultLayer;
+        PlayerStatManager.instance.downedPlayers--;
+    }
+
+    public override void Interact()
+    {
+        if (isDown)
+        {
+            RP += RPperSec;
+        }
     }
 }

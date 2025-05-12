@@ -116,9 +116,10 @@ public class EnemyStateManager : MonoBehaviour
         if (PlayerMovement.Players.Count <= 0) return false;
 
         float dist = float.PositiveInfinity;
-        foreach (var player in PlayerMovement.Players)
+        foreach (PlayerMovement player in PlayerMovement.Players)
         {
-            float d = Vector3.Distance(transform.position, player.transform.position);
+            if (player.gameObject.GetComponent<Health>().isDown) continue;
+            float d = Vector3.Distance(transform.position, player.gameObject.transform.position);
             if (d < dist)
             {
                 _target = player.gameObject;

@@ -13,7 +13,7 @@ GameObject:
   - component: {fileID: -1007845833723118626}
   - component: {fileID: -7047998750121203167}
   - component: {fileID: 6791117048643404543}
-  m_Layer: 0
+  m_Layer: 11
   m_Name: Duwende Arrow
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -216,7 +216,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   speed: 10
-  lifeTime: 5
+  lifetime: 5
   damage: 1
   debuff: {fileID: 0}
   stack: 0
@@ -232,7 +232,7 @@ GameObject:
   m_Component:
   - component: {fileID: 9019627297945668017}
   - component: {fileID: 1928949664304444981}
-  m_Layer: 0
+  m_Layer: 11
   m_Name: Arrow1
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -319,7 +319,7 @@ GameObject:
   m_Component:
   - component: {fileID: 3910289576927425348}
   - component: {fileID: 7215396385392920926}
-  m_Layer: 0
+  m_Layer: 11
   m_Name: Arrow2
   m_TagString: Untagged
   m_Icon: {fileID: 0}

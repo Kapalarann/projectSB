@@ -307,6 +307,7 @@ GameObject:
   - component: {fileID: -3640166133368597214}
   - component: {fileID: 7390739680086206066}
   - component: {fileID: 980146651367106931}
+  - component: {fileID: 7480702231485087873}
   m_Layer: 3
   m_Name: Warrior
   m_TagString: Player
@@ -531,6 +532,11 @@ MonoBehaviour:
   isPlayer: 1
   maxHP: 10
   HP: 0
+  isDown: 0
+  isDead: 0
+  maxRP: 100
+  RP: 0
+  RPperSec: 2
   damageNumberYOffset: 1.5
   _animator: {fileID: 5235221205479957441}
   _receiver: {fileID: 6278342242069635708}
@@ -965,6 +971,23 @@ MonoBehaviour:
   allyTag: Player
   enemyTag: Enemy
   sphereCollider: {fileID: 6068360795330973705}
+--- !u!114 &7480702231485087873
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 904410703393564044}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a7432ef2758ea4c4b82aeedb0ee9eb3b, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _animator: {fileID: 5235221205479957441}
+  interactRadius: 1
+  interactableLayer:
+    serializedVersion: 2
+    m_Bits: 1024
 --- !u!1 &1130435097684123464
 GameObject:
   m_ObjectHideFlags: 0

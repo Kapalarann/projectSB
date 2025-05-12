@@ -10,7 +10,7 @@ GameObject:
   m_Component:
   - component: {fileID: 265882364972061726}
   - component: {fileID: 6375678777971369020}
-  m_Layer: 0
+  m_Layer: 11
   m_Name: Crescent Sprite
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -100,7 +100,7 @@ GameObject:
   - component: {fileID: 8297033731097668763}
   - component: {fileID: -7077981814313238878}
   - component: {fileID: 2270461636785271296}
-  m_Layer: 0
+  m_Layer: 11
   m_Name: Crescent
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -300,7 +300,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   speed: 10
-  lifeTime: 5
+  lifetime: 5
   damage: 1
   debuff: {fileID: 11400000, guid: 535ebc1f30f6fb54bb6f13c1a424b87e, type: 2}
   stack: 1

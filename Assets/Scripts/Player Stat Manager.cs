@@ -10,6 +10,8 @@ public class PlayerStatManager : MonoBehaviour
     public CharacterData[] selectedCharacters;
     public InputDevice[] playerDevices;
 
+    public int downedPlayers = 0;
+
     private void Awake()
     {
         if (instance != null && instance != this)

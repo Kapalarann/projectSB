@@ -1,3 +1,4 @@
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.InputSystem;
@@ -13,6 +14,10 @@ public class PlayerMovement : MonoBehaviour
     [Range(0.0f, 1.0f)]
     [SerializeField] float _mouseDeadzone;
     [HideInInspector] public Vector3 movementValue;
+    private float _originalSpeed;
+    private Coroutine _slowCoroutine;
+    private float _currentSlowPercent = 0f;
+    private bool _isPermanentSlow = false;
 
     [Header("References")]
     [SerializeField] Animator _animator;
@@ -31,6 +36,7 @@ public class PlayerMovement : MonoBehaviour
         _rb.freezeRotation = true;
 
         xScaleMult = _sprite.transform.localScale.x;
+        _originalSpeed = _movementSpeed;
     }
 
     public void OnMove(InputValue value)
@@ -111,5 +117,49 @@ public class PlayerMovement : MonoBehaviour
     private void OnDestroy()
     {
         Players.Remove(this);
+    }
+
+    public void ApplySlow(float slowPercent, float duration)
+    {
+        if (_isPermanentSlow || slowPercent <= _currentSlowPercent)
+            return;
+
+        if (_slowCoroutine != null)
+        {
+            StopCoroutine(_slowCoroutine);
+            _slowCoroutine = null;
+        }
+
+        _currentSlowPercent = slowPercent;
+        _movementSpeed = _originalSpeed * (1 - _currentSlowPercent);
+
+        if (duration < 0f)
+        {
+            _isPermanentSlow = true;
+        }
+        else
+        {
+            _isPermanentSlow = false;
+            _slowCoroutine = StartCoroutine(SlowCoroutine(duration));
+        }
+    }
+
+    private IEnumerator SlowCoroutine(float duration)
+    {
+        yield return new WaitForSeconds(duration);
+
+        _currentSlowPercent = 0f;
+        _movementSpeed = _originalSpeed;
+        _slowCoroutine = null;
+    }
+
+    public void RemovePermanentSlow()
+    {
+        if (_isPermanentSlow)
+        {
+            _currentSlowPercent = 0f;
+            _movementSpeed = _originalSpeed;
+            _isPermanentSlow = false;
+        }
     }
 }

@@ -300,6 +300,7 @@ GameObject:
   - component: {fileID: 4807102951453391465}
   - component: {fileID: 6981513883614557311}
   - component: {fileID: 2316292976314376305}
+  - component: {fileID: 7232501394603950954}
   m_Layer: 3
   m_Name: Moon Priestess
   m_TagString: Player
@@ -545,11 +546,17 @@ MonoBehaviour:
   isPlayer: 1
   maxHP: 10
   HP: 0
+  isDown: 0
+  isDead: 0
+  maxRP: 100
+  RP: 0
+  RPperSec: 2
   damageNumberYOffset: 1.5
   _animator: {fileID: 8124580865139366059}
   _receiver: {fileID: 4856946710090860011}
   spriteEffects: {fileID: 4737547779983702534}
   bloodEffects: {fileID: 4132651121838979713}
+  sparkEffects: {fileID: 0}
 --- !u!114 &2793596100940729806
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -887,7 +894,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   eclipseStacks: 0
-  maxStacks: 8
+  maxStacks: 4
   duration: 10
   damageMultiplier: 2
   isTransformed: 0
@@ -919,6 +926,23 @@ MonoBehaviour:
     damage: 1
     speed: 5
     lifeTime: 5
+--- !u!114 &7232501394603950954
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7162823930150663914}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a7432ef2758ea4c4b82aeedb0ee9eb3b, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _animator: {fileID: 8124580865139366059}
+  interactRadius: 1
+  interactableLayer:
+    serializedVersion: 2
+    m_Bits: 1024
 --- !u!1 &7539422327092964516
 GameObject:
   m_ObjectHideFlags: 0
