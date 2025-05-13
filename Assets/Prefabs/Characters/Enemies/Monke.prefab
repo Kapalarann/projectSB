@@ -206,9 +206,9 @@ MonoBehaviour:
   _flipDampening: 0.2
   _steeringSpeed: 5
   dashing: 0
-  separationDistance: 1
-  separationWeight: 2
-  targetWeight: 4
+  separationDistance: 2
+  separationWeight: 3
+  targetWeight: 1
   avoidWallWeight: 7
   wallDetectionRange: 2
   wallLayer:
@@ -225,8 +225,11 @@ MonoBehaviour:
     lifeTime: 5
   meleeAttack:
     attackCooldown: 4
+    idealRange: 2
     attackRange: 3
+    attackRadius: 1
     damage: 1
+    attackPoint: {fileID: 2013934094436411360}
     dashDistance: 6
     dashDuration: 0.5
     dashSpeedCurve:
@@ -5414,7 +5417,7 @@ Transform:
   m_GameObject: {fileID: 5583056511356084688}
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 0.060000002, y: -0.050000004, z: 0}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 0.25, y: 0.25, z: 0.25}
   m_ConstrainProportionsScale: 0
   m_Children: []

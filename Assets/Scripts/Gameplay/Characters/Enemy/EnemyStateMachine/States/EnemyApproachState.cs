@@ -26,7 +26,7 @@ public class EnemyApproachState : EnemyBaseState
         }
 
         if (enemy.isMelee &&
-            distance <= enemy.meleeAttack.attackRange &&
+            distance <= enemy.meleeAttack.idealRange &&
             enemy._attackTime >= enemy.meleeAttack.attackCooldown)
         {
             enemy.SwitchState(enemy.attackState);

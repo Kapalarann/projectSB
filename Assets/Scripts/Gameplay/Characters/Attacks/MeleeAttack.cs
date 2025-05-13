@@ -1,13 +1,18 @@
 using System;
+using System.Collections.Generic;
 using UnityEngine;
 
 [System.Serializable]
 public class MeleeAttack
 {
     [Header("Attack Settings")]
-    public float attackCooldown = 1f;
-    public float attackRange = 3f;
-    public float damage = 1f;
+    [SerializeField] public float attackCooldown = 1f;
+    [SerializeField] public float idealRange = 2f;
+    [SerializeField] public float attackRange = 3f;
+    [SerializeField] public float attackRadius = 1f;
+    [SerializeField] public float damage = 1f;
+    [SerializeField] private Transform attackPoint;
+    HashSet<GameObject> alreadyHit = new HashSet<GameObject>();
 
     [Header("Dash Settings")]
     public float dashDistance = 10f;
@@ -25,6 +30,7 @@ public class MeleeAttack
 
     private System.Collections.IEnumerator DashAttack(Rigidbody rb, Vector3 dir, float dist, float duration, Action onDashComplete)
     {
+        alreadyHit.Clear();
         float timer = 0f;
         while (timer < duration)
         {
@@ -35,6 +41,28 @@ public class MeleeAttack
 
             Vector3 dashVelocity = dir * frameSpeed;
             rb.linearVelocity = new Vector3(dashVelocity.x, rb.linearVelocity.y, dashVelocity.z);
+
+            Collider[] hitColliders = Physics.OverlapSphere(attackPoint.position, attackRadius);
+            foreach (Collider hit in hitColliders)
+            {
+                if (hit.gameObject == rb.gameObject || alreadyHit.Contains(hit.gameObject)) continue;
+                alreadyHit.Add(hit.gameObject);
+
+                Health health = hit.GetComponent<Health>();
+                if (health == null) continue;
+
+                bool isParried = false;
+                health.TryBlock(damage, rb.position, out isParried);
+                if (isParried)
+                {
+                    rb.GetComponent<Stamina>().ApplyStaminaDamage(damage);
+                }
+                else
+                {
+                    health.TakeDamage(damage, rb.position);
+                }
+            }
+
             yield return new WaitForFixedUpdate();
         }
 

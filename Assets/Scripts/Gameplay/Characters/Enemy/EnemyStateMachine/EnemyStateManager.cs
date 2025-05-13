@@ -164,7 +164,7 @@ public class EnemyStateManager : MonoBehaviour
         // 1. Direction to target
         Vector3 toTarget = _target.transform.position - pos;
         toTarget.y = 0f;
-        float optimalRange = isRanged ? rangedAttack._minRange : 0f;
+        float optimalRange = isRanged ? rangedAttack._minRange : meleeAttack.idealRange;
         Vector3 desiredTargetPos = _target.transform.position - toTarget.normalized * optimalRange;
         Vector3 targetDir = (desiredTargetPos - pos).normalized;
 
