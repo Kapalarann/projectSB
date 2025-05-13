@@ -39,14 +39,15 @@ public class Projectile : MonoBehaviour
         if(debuff != null) OnHitEffect(other);
 
         bool isReflected = false;
-        health.TryBlock(damage, transform.position, out isReflected);
+        float damageMult = 1f;
+        health.TryBlock(damage, transform.position, out isReflected, out damageMult);
         if (isReflected)
         {
             Reflect(other.gameObject);
         }
         else
         {
-            health.TakeDamage(damage, transform.position);
+            health.TakeDamage(damage * damageMult, transform.position);
             Destroy(gameObject);
         }
     }

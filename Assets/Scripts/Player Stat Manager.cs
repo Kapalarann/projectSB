@@ -10,6 +10,7 @@ public class PlayerStatManager : MonoBehaviour
     public CharacterData[] selectedCharacters;
     public InputDevice[] playerDevices;
 
+    [SerializeField] private Vector3 spawnOffset = new Vector3(2f, 0f, 0f);
     public int downedPlayers = 0;
 
     private void Awake()
@@ -87,14 +88,17 @@ public class PlayerStatManager : MonoBehaviour
             if (prefab == null) continue;
 
             InputDevice device = playerDevices[i];
-            Vector3 spawnPos = new Vector3(i * 2f, 0, 0);
-            PlayerInput.Instantiate(
-            prefab,
-            playerIndex: i,
-            controlScheme: null,
-            splitScreenIndex: -1,
-            pairWithDevice: device
+            Vector3 spawnPos = spawnOffset * i;
+
+            PlayerInput player = PlayerInput.Instantiate(
+                prefab,
+                playerIndex: i,
+                controlScheme: null,
+                splitScreenIndex: -1,
+                pairWithDevice: device
             );
+
+            player.transform.position = spawnPos;
         }
     }
 }

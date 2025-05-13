@@ -52,14 +52,15 @@ public class MeleeAttack
                 if (health == null) continue;
 
                 bool isParried = false;
-                health.TryBlock(damage, rb.position, out isParried);
+                float damageMult = 1f;
+                health.TryBlock(damage, rb.position, out isParried, out damageMult);
                 if (isParried)
                 {
                     rb.GetComponent<Stamina>().ApplyStaminaDamage(damage);
                 }
                 else
                 {
-                    health.TakeDamage(damage, rb.position);
+                    health.TakeDamage(damage * damageMult, rb.position);
                 }
             }
 

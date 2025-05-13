@@ -114,9 +114,10 @@ public class Health : Interactable
         }
     }
 
-    public void TryBlock(float damage, Vector3 attackerPos, out bool isReflected)
+    public void TryBlock(float damage, Vector3 attackerPos, out bool isReflected, out float damageLeft)
     {
         isReflected = false;
+        damageLeft = damage;
         if (block == null) return;
 
         bool isPerfect;
@@ -124,13 +125,14 @@ public class Health : Interactable
         if (block.TryBlock(damage, attackerPos, out isPerfect, out blockVal))
         {
             float staminaDamage = isPerfect ? 0 : damage * (1 - blockVal);
-            float intensity = isPerfect ? 1f : 0.5f;
+            float intensity = isPerfect ? 2f : 0.5f;
 
             if (isPerfect)
             {
                 spriteEffects.FlashWhite(0.1f);
                 if (sparkEffects != null) sparkEffects.PlayEffect(attackerPos); 
                 isReflected = true;
+                damageLeft = 0f;
             }
 
             if (knockback != null) knockback.ApplyKnockback(attackerPos, damage * 3f);
@@ -140,7 +142,11 @@ public class Health : Interactable
             bool enoughEP = true;
             if (energy != null)
             {
-                if (energy.EP >= staminaDamage) energy.ChangeEnergy(-staminaDamage);
+                if (energy.EP >= staminaDamage)
+                {
+                    energy.ChangeEnergy(-staminaDamage);
+                    damageLeft = (1 - blockVal) * damage;
+                }
                 else enoughEP = false;
             }
             if (enoughEP) return;
