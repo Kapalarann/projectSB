@@ -202,7 +202,7 @@ MonoBehaviour:
   _idleDuration: 2
   isRanged: 0
   isMelee: 1
-  _movementSpeed: 3
+  _movementSpeed: 2.5
   _flipDampening: 0.2
   _steeringSpeed: 5
   dashing: 0

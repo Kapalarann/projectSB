@@ -22,11 +22,10 @@ public class GuidingBolt : Ability
 
         Vector3 direction = playerMovement.movementValue.normalized;
 
-        if (direction != Vector3.zero)
-        {
-            rangedAttack.FireInDirection(gameObject, direction);
-            cooldownTimer = rangedAttack._attackCooldown;
-        }
+        if (direction == Vector3.zero) direction = Vector3.right * playerMovement.flipScale;
+
+        rangedAttack.FireInDirection(gameObject, direction);
+        cooldownTimer = rangedAttack._attackCooldown;
 
         ConsumeEnergy();
     }
