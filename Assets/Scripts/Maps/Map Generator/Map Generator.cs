@@ -3,152 +3,211 @@ using UnityEngine;
 
 public class MapGenerator : MonoBehaviour
 {
-    [Header("Node Settings")]
-    public int nodeCount = 10;
-    public float nodeMinDistance = 3f;
-    public GameObject nodePrefab;
+    [Header("Map Gen Settings")]
+    public int nodeCount = 15;
+    public Vector2 mapSize = new(20, 20);
+    public float extraEdgePercent = 0f;
 
-    [Header("Line Settings")]
+    [Header("Connection Constraints")]
+    [SerializeField] private float minDistanceBetweenNodes = 3f;
+    [SerializeField] private float maxDistanceBetweenNodes = 10f;
+
+    [Header("References")]
+    public GameObject nodePrefab;
     public GameObject linePrefab;
 
-    [Header("Map Size")]
-    public Vector2 mapMin = new Vector2(-10, -10);
-    public Vector2 mapMax = new Vector2(10, 10);
+    private List<Node> nodes = new();
+    private List<Edge> triangulatedEdges = new();
+    private List<Edge> mstEdges = new();
+    private GameObject[] edges = new GameObject[99];
 
-    private List<MapNode> nodes = new();
-    private List<(MapNode, MapNode)> connections = new();
-
-    private void Start()
+    void Start()
     {
-        GenerateNodes();
-        GenerateConnections();
-        AddExtraConnections(Mathf.FloorToInt(nodeCount * 0.3f));
-        SpawnVisuals();
+        GenerateMap();
     }
 
-    void GenerateNodes()
+    private void Update()
     {
-        int maxAttempts = 100;
-
-        for (int i = 0; i < nodeCount; i++)
+        if (Input.GetKeyDown(KeyCode.P))
         {
-            Vector2 pos;
-            int attempts = 0;
-            bool valid;
-
-            do
-            {
-                pos = new Vector2(Random.Range(mapMin.x, mapMax.x), Random.Range(mapMin.y, mapMax.y));
-                valid = true;
-
-                foreach (var other in nodes)
-                {
-                    if (Vector2.Distance(other.position, pos) < nodeMinDistance)
-                    {
-                        valid = false;
-                        break;
-                    }
-                }
-
-                attempts++;
-            } while (!valid && attempts < maxAttempts);
-
-            if (valid)
-            {
-                nodes.Add(new MapNode { position = pos });
-            }
+            ClearMap();
+            GenerateMap();
         }
     }
 
-    void GenerateConnections()
+    void ClearMap()
     {
-        HashSet<MapNode> connected = new();
-        connected.Add(nodes[0]);
-
-        while (connected.Count < nodes.Count)
+        foreach (Node node in nodes)
         {
-            float bestDist = float.MaxValue;
-            MapNode bestA = null;
-            MapNode bestB = null;
-
-            foreach (var a in connected)
-            {
-                foreach (var b in nodes)
-                {
-                    if (connected.Contains(b)) continue;
-
-                    float dist = Vector2.Distance(a.position, b.position);
-                    if (dist < bestDist)
-                    {
-                        bestDist = dist;
-                        bestA = a;
-                        bestB = b;
-                    }
-                }
-            }
-
-            if (bestA != null && bestB != null)
-            {
-                bestA.neighbors.Add(bestB);
-                bestB.neighbors.Add(bestA);
-                connections.Add((bestA, bestB));
-                connected.Add(bestB);
-            }
+            Destroy(node.obj);
         }
+        foreach (GameObject edge in edges)
+        {
+            Destroy(edge);
+        }
+        nodes.Clear();
+        triangulatedEdges.Clear();
+        mstEdges.Clear();
     }
 
-    void AddExtraConnections(int count)
+    void GenerateMap()
+    {
+        GeneratePoints();
+        GenerateAllEdges();
+        ComputeMST();
+        AddExtraEdges(extraEdgePercent);
+        DrawGraph();
+    }
+
+    void GeneratePoints()
     {
         int attempts = 0;
-        int added = 0;
-        int maxAttempts = 100;
+        int maxAttempts = 1000;
 
-        while (added < count && attempts < maxAttempts)
+        while (nodes.Count < nodeCount && attempts < maxAttempts)
         {
-            var a = nodes[Random.Range(0, nodes.Count)];
-            var b = nodes[Random.Range(0, nodes.Count)];
+            Vector2 candidate = new Vector2(Random.Range(-mapSize.x, mapSize.x), Random.Range(-mapSize.y, mapSize.y));
+            bool tooClose = false;
+            bool hasNeighbor = false;
 
-            if (a != b && !a.neighbors.Contains(b))
+            foreach (var existing in nodes)
             {
-                a.neighbors.Add(b);
-                b.neighbors.Add(a);
-                connections.Add((a, b));
-                added++;
+                float distance = Vector2.Distance(existing.position, candidate);
+
+                if (distance < minDistanceBetweenNodes)
+                {
+                    tooClose = true;
+                    break; // immediately reject
+                }
+
+                if (distance <= maxDistanceBetweenNodes)
+                {
+                    hasNeighbor = true; // potential connection
+                }
+            }
+
+            if (!tooClose && (nodes.Count == 0 || hasNeighbor))
+            {
+                nodes.Add(new Node(candidate));
             }
 
             attempts++;
         }
+
+        if (nodes.Count < nodeCount)
+            Debug.LogWarning($"Only generated {nodes.Count} nodes after {attempts} attempts. Try adjusting map size or distance limits.");
     }
 
-    void SpawnVisuals()
+
+    void GenerateAllEdges()
+    {
+        triangulatedEdges.Clear();
+
+        // Fully connect each point (naive Delaunay-like)
+        for (int i = 0; i < nodes.Count; i++)
+        {
+            for (int j = i + 1; j < nodes.Count; j++)
+            {
+                float dist = Vector2.Distance(nodes[i].position, nodes[j].position);
+                triangulatedEdges.Add(new Edge(nodes[i], nodes[j], dist));
+            }
+        }
+
+        // Sort by distance to simulate natural graph behavior
+        triangulatedEdges.Sort((a, b) => a.distance.CompareTo(b.distance));
+    }
+
+    void ComputeMST()
+    {
+        mstEdges.Clear();
+        DisjointSet<Node> ds = new();
+
+        foreach (var node in nodes)
+            ds.MakeSet(node);
+
+        foreach (var edge in triangulatedEdges)
+        {
+            if (ds.Find(edge.a) != ds.Find(edge.b))
+            {
+                mstEdges.Add(edge);
+                ds.Union(edge.a, edge.b);
+            }
+
+            if (mstEdges.Count >= nodes.Count - 1)
+                break;
+        }
+    }
+
+    void AddExtraEdges(float percentage)
+    {
+        int extras = Mathf.FloorToInt(triangulatedEdges.Count * percentage);
+        int added = 0;
+
+        foreach (var edge in triangulatedEdges)
+        {
+            if (mstEdges.Contains(edge)) continue;
+            mstEdges.Add(edge);
+            added++;
+
+            if (added >= extras)
+                break;
+        }
+    }
+
+    void DrawGraph()
     {
         foreach (var node in nodes)
         {
-            Vector3 pos3D = new Vector3(node.position.x, 0, node.position.y);
-            node.orbGO = Instantiate(nodePrefab, pos3D, Quaternion.identity, transform);
+            var go = Instantiate(nodePrefab, new Vector3(node.position.x, 0, node.position.y), Quaternion.identity, transform);
+            node.obj = go;
         }
 
-        foreach (var (a, b) in connections)
+        int i=0;
+        foreach (var edge in mstEdges)
         {
-            GameObject lineGO = Instantiate(linePrefab, transform);
-            LineRenderer lr = lineGO.GetComponent<LineRenderer>();
-
-            if (lr)
-            {
-                Vector3 p1 = new Vector3(a.position.x, 0, a.position.y);
-                Vector3 p2 = new Vector3(b.position.x, 0, b.position.y);
-
-                lr.positionCount = 2;
-                lr.SetPosition(0, p1);
-                lr.SetPosition(1, p2);
-            }
+            edges[i] = Instantiate(linePrefab, transform);
+            var lr = edges[i].GetComponent<LineRenderer>();
+            lr.positionCount = 2;
+            lr.SetPosition(0, new Vector3(edge.a.position.x, 0, edge.a.position.y));
+            lr.SetPosition(1, new Vector3(edge.b.position.x, 0, edge.b.position.y));
+            i++;
         }
     }
 
-    public class MapNode
+    public class Node
     {
         public Vector2 position;
-        public GameObject orbGO;
-        public List<MapNode> neighbors = new();
+        public GameObject obj;
+        public Node(Vector2 pos) { position = pos; }
+    }
+
+    public class Edge
+    {
+        public Node a, b;
+        public float distance;
+        public Edge(Node a, Node b, float d) { this.a = a; this.b = b; distance = d; }
+    }
+
+    public class DisjointSet<T>
+    {
+        Dictionary<T, T> parent = new();
+
+        public void MakeSet(T item) => parent[item] = item;
+
+        public T Find(T item)
+        {
+            if (!parent.ContainsKey(item)) return item;
+            if (!EqualityComparer<T>.Default.Equals(parent[item], item))
+                parent[item] = Find(parent[item]);
+            return parent[item];
+        }
+
+        public void Union(T a, T b)
+        {
+            T rootA = Find(a);
+            T rootB = Find(b);
+            if (!EqualityComparer<T>.Default.Equals(rootA, rootB))
+                parent[rootB] = rootA;
+        }
     }
 }
