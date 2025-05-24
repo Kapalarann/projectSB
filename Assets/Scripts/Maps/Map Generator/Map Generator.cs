@@ -13,8 +13,8 @@ public class MapGenerator : MonoBehaviour
     [SerializeField] private float maxDistanceBetweenNodes = 10f;
 
     [Header("References")]
-    public GameObject nodePrefab;
-    public GameObject linePrefab;
+    [SerializeField] private GameObject nodePrefab;
+    [SerializeField] private GameObject roadPrefab;
 
     private List<Node> nodes = new();
     private List<Edge> triangulatedEdges = new();
@@ -61,12 +61,22 @@ public class MapGenerator : MonoBehaviour
 
     void GeneratePoints()
     {
+        nodes.Clear();
+
+        // 1. Add the first node at this object's transform position
+        Vector2 origin2D = new Vector2(transform.position.x, transform.position.z); // Assume Y is up
+        nodes.Add(new Node(origin2D));
+
         int attempts = 0;
         int maxAttempts = 1000;
 
         while (nodes.Count < nodeCount && attempts < maxAttempts)
         {
-            Vector2 candidate = new Vector2(Random.Range(-mapSize.x, mapSize.x), Random.Range(-mapSize.y, mapSize.y));
+            Vector2 candidate = new Vector2(
+                Random.Range(-mapSize.x, mapSize.x),
+                Random.Range(-mapSize.y, mapSize.y)
+            );
+
             bool tooClose = false;
             bool hasNeighbor = false;
 
@@ -77,16 +87,17 @@ public class MapGenerator : MonoBehaviour
                 if (distance < minDistanceBetweenNodes)
                 {
                     tooClose = true;
-                    break; // immediately reject
+                    break;
                 }
 
                 if (distance <= maxDistanceBetweenNodes)
                 {
-                    hasNeighbor = true; // potential connection
+                    hasNeighbor = true;
                 }
             }
 
-            if (!tooClose && (nodes.Count == 0 || hasNeighbor))
+            // Now always skip if too close to any, and require at least one neighbor (except the first, already added)
+            if (!tooClose && hasNeighbor)
             {
                 nodes.Add(new Node(candidate));
             }
@@ -97,6 +108,7 @@ public class MapGenerator : MonoBehaviour
         if (nodes.Count < nodeCount)
             Debug.LogWarning($"Only generated {nodes.Count} nodes after {attempts} attempts. Try adjusting map size or distance limits.");
     }
+
 
 
     void GenerateAllEdges()
@@ -162,14 +174,24 @@ public class MapGenerator : MonoBehaviour
             node.obj = go;
         }
 
-        int i=0;
+        int i = 0;
         foreach (var edge in mstEdges)
         {
-            edges[i] = Instantiate(linePrefab, transform);
-            var lr = edges[i].GetComponent<LineRenderer>();
-            lr.positionCount = 2;
-            lr.SetPosition(0, new Vector3(edge.a.position.x, 0, edge.a.position.y));
-            lr.SetPosition(1, new Vector3(edge.b.position.x, 0, edge.b.position.y));
+            Vector3 start = new Vector3(edge.a.position.x, 0, edge.a.position.y);
+            Vector3 end = new Vector3(edge.b.position.x, 0, edge.b.position.y);
+            Vector3 direction = end - start;
+            float distance = direction.magnitude;
+            Vector3 midPoint = start + direction * 0.5f;
+
+            GameObject road = Instantiate(roadPrefab, midPoint, Quaternion.identity, transform);
+            road.transform.forward = direction.normalized;
+            road.transform.localScale = new Vector3(
+                road.transform.localScale.x,
+                road.transform.localScale.y,
+                distance / 10
+            );
+
+            edges[i] = road;
             i++;
         }
     }
